@@ -15,10 +15,11 @@ CREATE TABLE IF NOT EXISTS lifap5.quiz_user (
 
 CREATE TABLE IF NOT EXISTS lifap5.quiz (
   quiz_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
   title TEXT UNIQUE NOT NULL,
   description TEXT NOT NULL,
-  owner_id TEXT REFERENCES lifap5.quiz_user(user_id)
+  owner_id TEXT REFERENCES lifap5.quiz_user(user_id),
+  open BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE IF NOT EXISTS lifap5.question (
@@ -26,8 +27,8 @@ CREATE TABLE IF NOT EXISTS lifap5.question (
   quiz_id INTEGER REFERENCES lifap5.quiz,
   question_id INTEGER GENERATED ALWAYS AS IDENTITY,
   content TEXT NOT NULL,
-  optional BOOLEAN DEFAULT FALSE,
-  weight INTEGER DEFAULT 1
+  optional BOOLEAN NOT NULL DEFAULT FALSE,
+  weight INTEGER NOT NULL DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS lifap5.proposition (
@@ -43,9 +44,9 @@ CREATE TABLE IF NOT EXISTS lifap5.proposition (
 CREATE TABLE IF NOT EXISTS lifap5.answer (
   PRIMARY KEY (quiz_id, question_id, user_id),
   FOREIGN KEY (quiz_id, question_id, proposition_id) REFERENCES lifap5.proposition,
-  user_id TEXT REFERENCES lifap5.quiz_user,
   quiz_id INTEGER,
   question_id INTEGER,
+  user_id TEXT REFERENCES lifap5.quiz_user,
   proposition_id INTEGER,
-  answered_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+  answered_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
