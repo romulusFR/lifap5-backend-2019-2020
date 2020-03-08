@@ -12,8 +12,6 @@ Ce dépôt est celui du projet 2019-2020 (Printemps) de l'unité d'enseignement 
 
 Le serveur est réalisé en Node.js/Express/PostgreSQL.
 
-Ce projet est sous licence Crative Commons by-nc-sa/3.0/fr/
-
 Licence
 -------
 
