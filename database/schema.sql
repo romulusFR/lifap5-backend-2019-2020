@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS lifap5.quiz_user (
   user_id TEXT PRIMARY KEY,
   firstname TEXT NOT NULL,
   lastname TEXT NOT NULL,
-  api_key UUID UNIQUE NOT NULL
+  api_key UUID UNIQUE NULL
 );
 
 CREATE TABLE IF NOT EXISTS lifap5.quiz (
