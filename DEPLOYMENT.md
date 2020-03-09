@@ -116,11 +116,18 @@ Exécuter le script [`database/init-db.sh`](database/init-db.sh) en tant que `po
 ```
 
 
-Configration Node.js
+Configuration Node.js
 --------------------
 
  **TBD**
+ <https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally>
 
+```bash
+ mkdir ~/.npm-global
+ npm config set prefix '~/.npm-global'
+ export PATH=~/.npm-global/bin:$PATH
+ source ~/.profile
+```
 
 Lancement de l'application Node.js
 ----------------------------------
@@ -170,33 +177,4 @@ sudo systemctl restart nginx
 openssl s_client -connect lifap5:443 -tls1_3
 ```
 
-
-Pour le fichier `/etc/nginx/sites-available/default`
-```nginx
-# Load balancing / server declaration
-upstream nodejs {
-    zone nodejs 64k;
-    server localhost:3000;
-}
-
-# HTTP front for node
-server {
-    listen       80;
-    server_name  _;
-
-    location / {
-       include /etc/nginx/conf.d/proxy_set_header.inc;
-       proxy_pass http://nodejs;
-    }
-}
-```
-
-Pour le fichier `/etc/nginx/conf.d/proxy_set_header.inc`
-```nginx
-proxy_set_header X-Forwarded-By $server_addr:$server_port;
-proxy_set_header X-Forwarded-For $remote_addr;
-proxy_set_header X-Forwarded-Proto $scheme;
-proxy_set_header Host $host;
-```
-
-A ce stade on a une 502 sur le port 80 car l'application n'est pas lancée
+A ce stade on a une 502 sur le port 80 si l'application n'est pas lancée.
