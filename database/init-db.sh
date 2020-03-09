@@ -1,5 +1,5 @@
 # a executer en temps qu'utilisateur postgres
-# sudo -u postgres -i
+# sudo -u postgres -s
 
 createuser --no-createdb --echo --pwprompt lifap5
 createdb --echo --owner lifap5 lifap5 
