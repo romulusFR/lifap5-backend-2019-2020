@@ -5,6 +5,7 @@ Ce dépôt est celui du projet 2019-2020 (Printemps) de l'unité d'enseignement 
 
 * le sujet du projet,
 * la spécification de l'API du serveur,
+* la [base de données PostgreSQL](./database/schema.sql)
 * le code du serveur,
 * les tests,
 * le guide de développement,
