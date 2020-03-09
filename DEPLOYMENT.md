@@ -163,7 +163,11 @@ sudo cp nginx.conf /etc/nginx/
 sudo cp proxy-params.conf /etc/nginx/snippets/
 sudo cp default.conf /etc/nginx/sites-available/default
 
-sudo nginx -t -s reload
+sudo systemctl restart nginx
+#sudo nginx -t -s reload
+
+#on peut tester avec openssl que tls1.3 est bien supporté
+openssl s_client -connect lifap5:443 -tls1_3
 ```
 
 
