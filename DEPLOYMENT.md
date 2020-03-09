@@ -71,13 +71,23 @@ su lifap5
 Configuration PostgreSQL
 ------------------------
 
-**TBD**
+On va sauvegarder la configuration et mettre la notre :
+
+* accès ssl et authentif scram-sha-256
+* logging
+* tuning des paramètres mémoire
 
 ```bash
- sudo -u postgres -s
- cd /etc/postgresql/12/main
- cp pg_hba.conf pg_hba.conf.back
- cp postgresql.conf postgresql.conf.back
+sudo -u postgres cp /etc/postgresql/12/main/pg_hba.conf \
+                    /etc/postgresql/12/main/pg_hba.conf.back
+sudo -u postgres cp /etc/postgresql/12/main/postgresql.conf \
+                    /etc/postgresql/12/main/postgresql.conf.back
+
+cd ~/lifap5-backend-2019-2020/database
+sudo -u postgres cp pg_hba.conf /etc/postgresql/12/main/pg_hba.conf
+sudo -u postgres cp postgresql.conf /etc/postgresql/12/main/postgresql.conf
+
+sudo service postgresql restart
 ```
 
 Exécuter le script [`database/init-db.sh`](database/init-db.sh) en tant que `postgres`.
@@ -93,22 +103,69 @@ Exécuter le script [`database/init-db.sh`](database/init-db.sh) en tant que `po
 # on configure le fichier ~/.pgpass
  echo localhost:5432:lifap5:lifap5:LEPASSWORD > ~/.pgpas
  chmod 600  ~/.pgpass
+
+# on va récupérer un .sqlrc
+ rm -f ~/.psql_history
+ mkdir -p ~/.psql_history/
+ curl 'https://forge.univ-lyon1.fr/bd-pedago/bd-pedago/-/raw/master/.psqlrc' > ~.psqlrc
+
+# maintenant on peut se logguer depuis le compte ubuntu
+ psql -U lifap5 -h localhost
+# ou via la socket unix en authentif peer
+ sudo -u lifap5 psql
 ```
 
+
+Configration Node.js
+--------------------
+
+ **TBD**
+
+
+Lancement de l'application Node.js
+----------------------------------
+
+**TBD**
 
 
 Configuration nginx
 -------------------
 
+On va commencer par [le certbot de Let's encrypt](https://certbot.eff.org/lets-encrypt/ubuntubionic-other)
+
 ```bash
+sudo apt install -y software-properties-common
+sudo add-apt-repository universe
+sudo add-apt-repository ppa:certbot/certbot
+sudo apt update
+sudo apt install -y certbot python-certbot-nginx
+
 # on va configurer nginx en reverse proxy
-cd /etc/nginx/sites-available/
-sudo mv default default.back
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.back
+sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.back
 
-
-# puis créer les deux fichiers de configuration ci-dessous
-# [...]
+sudo certbot --nginx
+# répondre intéractivement
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.certbot
 ```
+
+Là, on a la rediretion 80 vers 443 et un HTTPS de qualité B sur <https://www.ssllabs.com/ssltest/analyze.html?d=lifap5.univ-lyon1.fr>
+On va maitenant durcir la configuration TLS et configurer les redirections vers Node.JS
+
+# sudo openssl dhparam -out /etc/nginx/dhparam.pem 4096
+
+```bash
+sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+cd /home/ubuntu/lifap5-backend-2019-2020/nginx
+sudo cp ssl-params.conf /etc/nginx/snippets/
+sudo cp nginx.conf /etc/nginx/
+
+sudo cp proxy-params.conf /etc/nginx/snippets/
+sudo cp default.conf /etc/nginx/sites-available/default
+
+sudo nginx -t -s reload
+```
+
 
 Pour le fichier `/etc/nginx/sites-available/default`
 ```nginx
@@ -139,16 +196,3 @@ proxy_set_header Host $host;
 ```
 
 A ce stade on a une 502 sur le port 80 car l'application n'est pas lancée
-
-
-Configration Node.js
---------------------
-
- **TBD**
-
-
-Lancement de l'application Node.js
-----------------------------------
-
-**TBD**
-
