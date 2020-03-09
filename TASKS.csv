@@ -1,4 +1,4 @@
 Tâche               ;Date       ;Durée (h) ; Commentaires
 Init BD             ;2020-03-08 ;2         ; init, schema, inserts
-Init serveur prod   ;2020-03-08 ;2         ; install ppa + postgres + nginx
-Init projet Node.JS ;2020-03-08 ;
+Init serveur prod   ;2020-03-08 ;2.5       ; install ppa (postgres + nginx + node), config PG + nginx (tls)
+Init projet Node.JS ;2020-03-08 ;1.5       ; npm init et app minimaliste
