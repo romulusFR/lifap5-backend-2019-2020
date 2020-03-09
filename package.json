@@ -1,0 +1,40 @@
+{
+  "name": "lifap5-backend-2019-2020",
+  "version": "0.0.0",
+  "description": "Backend pour le projet LIFAP5 2020-2020 (qcm)",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/romulusFR/lifap5-backend-2019-2020.git"
+  },
+  "keywords": [
+    "nodejs",
+    "lifap5",
+    "backend",
+    "licence",
+    "informatique",
+    "tutoriel",
+    "postgresql",
+    "nginx",
+    "webapp",
+    "lyon1",
+    "express"
+  ],
+  "author": "Romuald THION",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/romulusFR/lifap5-backend-2019-2020/issues"
+  },
+  "homepage": "https://github.com/romulusFR/lifap5-backend-2019-2020#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "http-errors": "^1.7.3",
+    "pg": "^7.18.2",
+    "ws": "^7.2.2"
+  }
+}
