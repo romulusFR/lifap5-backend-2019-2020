@@ -4,6 +4,9 @@
   "description": "Backend pour le projet LIFAP5 2020-2020 (qcm)",
   "main": "app.js",
   "scripts": {
+    "start": "npm run start:dev",
+    "start:prod": "NODE_ENV=production node ./bin/www",
+    "start:dev": "DEBUG=lifap5:* nodemon ./bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -31,10 +34,15 @@
   "homepage": "https://github.com/romulusFR/lifap5-backend-2019-2020#readme",
   "dependencies": {
     "cors": "^2.8.5",
+    "debug": "^4.1.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "http-errors": "^1.7.3",
     "pg": "^7.18.2",
     "ws": "^7.2.2"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "nodemon": "^2.0.2"
   }
 }

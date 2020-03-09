@@ -1,0 +1,14 @@
+
+'use strict'; 
+// #!/usr/bin/env node
+
+const debug = require("debug")("lifap5:server");
+const app = require('../app');
+const {name, version} = require('../package.json');
+require('dotenv').config();
+
+const http_port = process.env.PORT || '3000';
+
+app.listen(http_port, () => {
+  debug(`${name}@${version} is running on port ${http_port} with env '${app.get('env')}'`);
+});
