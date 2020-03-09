@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS lifap5.quiz (
   created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
   title TEXT UNIQUE NOT NULL,
   description TEXT NOT NULL,
-  owner_id TEXT REFERENCES lifap5.quiz_user(user_id),
+  owner_id TEXT REFERENCES lifap5.quiz_user(user_id) NOT NULL,
   open BOOLEAN NOT NULL DEFAULT FALSE
 );
 
@@ -47,6 +47,6 @@ CREATE TABLE IF NOT EXISTS lifap5.answer (
   quiz_id INTEGER,
   question_id INTEGER,
   user_id TEXT REFERENCES lifap5.quiz_user,
-  proposition_id INTEGER,
+  proposition_id INTEGER NOT NULL,
   answered_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
