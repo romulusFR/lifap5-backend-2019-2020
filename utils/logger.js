@@ -10,7 +10,7 @@
 const winston = require('winston');
 const morgan = require('morgan');
 const path = require('path');
-const { logLevel, env } = require('./config');
+const { env } = require('./config');
 
 // https://github.com/winstonjs/winston#logging
 // const levels = { error: 0, warn: 1, info: 2, http: 3, verbose: 4, debug: 5, silly: 6};
