@@ -5,30 +5,35 @@
     "node": true
   },
   "extends": [
-    "eslint:recommended", 
+    "eslint:recommended",
     "airbnb-base",
-    "plugin:import/errors",
-    "plugin:import/warnings"
+    "prettier",
+    "plugin:node/recommended",
+    "plugin:promise/recommended",
+    "plugin:import/recommended",
+    "plugin:security/recommended"
   ],
+  "plugins": ["filenames"],
+  "parserOptions": {
+    "ecmaVersion": 2020
+  },
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
   },
   "rules": {
-    "no-var": [
-      "error"
-    ],
-    "no-unused-vars": [
-      "error",
-      { "argsIgnorePattern": "^_" }
-    ],
+    "filenames/match-exported": "error",
+    "import/order": "error",
+    "no-var": ["error"],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "object-curly-newline": [
       "error",
-      { "ObjectExpression": { "multiline": true},
-        "ObjectPattern": { "multiline": true},
+      {
+        "ObjectExpression": { "multiline": true },
+        "ObjectPattern": { "multiline": true },
         "ImportDeclaration": "never",
         "ExportDeclaration": "never"
-      } 
+      }
     ]
   }
 }
