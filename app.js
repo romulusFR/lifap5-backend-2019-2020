@@ -1,11 +1,12 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const favicon = require('serve-favicon');
 const helmet = require('helmet');
 const cors = require('cors');
 const path = require('path');
 const { morgan } = require('./utils/');
 const {
-  basicRouter,
+  rootRouter,
   notFoundHandler,
   defaultErrorHandler,
 } = require('./routes/');
@@ -17,9 +18,16 @@ app.use(helmet());
 app.use(cors({ origin: '*' }));
 app.use(favicon(path.join(__dirname, 'static', 'favicon.ico')));
 
-app.use(morgan);
-app.use(basicRouter);
+app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
 
+// logging
+app.use(morgan);
+
+// router for '/'
+app.use(rootRouter);
+
+// error handlers
 app.use(notFoundHandler);
 app.use(defaultErrorHandler);
 
