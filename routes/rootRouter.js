@@ -25,4 +25,4 @@ rootRouter.get('/', (_req, res, _next) => {
   </html>`);
 });
 
-module.exports = rootRouter;
+module.exports = { rootRouter };

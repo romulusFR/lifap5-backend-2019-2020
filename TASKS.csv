@@ -5,3 +5,4 @@ Init projet Node.JS ;2020-03-09 ;1.5       ; npm init et app minimaliste
 Logging Node.JS     ;2020-03-09 ;2.5       ; choix et 1ere configuration de la lib de logging (winston) après plusieurs essais (debug, morgan, pino)
 Refactor loggin     ;2020-03-10 ;3.0       ; on reprend le logging winston avec morgan pour les requêtes HTTP, et configurant plusieurs transports, ajouts de index.js pour le modules
 Tooling             ;2020-03-10 ;3.0       ; on mets en place eslint et prettier avec une config assez durcie et on relance sur tout le code
+Connection BD       ;2020-03-10 ;2.0       ; mise en place de la connection à BD et test avec un premier DAO et sa route

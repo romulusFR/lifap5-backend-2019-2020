@@ -6,9 +6,10 @@ const cors = require('cors');
 const path = require('path');
 const { morgan } = require('./utils/');
 const {
-  rootRouter,
   notFoundHandler,
   defaultErrorHandler,
+  rootRouter,
+  userRouter,
 } = require('./routes/');
 
 const app = express();
@@ -26,6 +27,9 @@ app.use(morgan);
 
 // router for '/'
 app.use(rootRouter);
+
+// router for '/user'
+app.use('/user', userRouter);
 
 // error handlers
 app.use(notFoundHandler);
