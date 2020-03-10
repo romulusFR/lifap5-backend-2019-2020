@@ -1,8 +1,8 @@
 // #!/usr/bin/env node
 
-const { logger, httpPort, env, name, version } = require('../utils/');
+const { logger, config} = require('../utils/');
 const app = require('../app');
 
-app.listen(httpPort, () => {
-  logger.info(`${name}@${version}[${env}] running on ${httpPort}`);
+app.listen(config.httpPort, () => {
+  logger.info(`${config.name}@${config.version}[${config.env}] running on ${config.httpPort}`);
 });

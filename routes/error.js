@@ -1,5 +1,5 @@
 const createError = require('http-errors');
-const { logger, env } = require('../utils/');
+const { logger, config } = require('../utils/');
 
 function notFoundHandler(req, res, next) {
   next(createError.NotFound(`${req.url}`));
@@ -8,7 +8,7 @@ function notFoundHandler(req, res, next) {
 function defaultErrorHandler(err, req, res, _next) {
   res.locals.message = err.message;
   res.locals.status = err.status || 500;
-  res.locals.error = env === 'development' ? err : '';
+  res.locals.error = config.env === 'development' ? err : '';
   res.status(res.locals.status);
   res.send(`
   <!DOCTYPE html>

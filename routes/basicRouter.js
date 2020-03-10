@@ -2,7 +2,7 @@
 
 const express = require('express');
 const createError = require('http-errors');
-const { name, version } = require('../package.json');
+const { config } = require('../utils/');
 
 const basicRouter = express.Router();
 
@@ -14,7 +14,7 @@ basicRouter.get('/', (req, res, _next) => {
   res.send(`
   <!DOCTYPE html>
   <html lang="en">
-    <h1>${name}@${version}</h1>
+    <h1>${config.name}@${config.version}</h1>
   </html>`);
 });
 

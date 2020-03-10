@@ -50,7 +50,7 @@ const winstonTransports = [
 if (env === 'development') {
   winstonTransports.push(
     new winston.transports.Console({
-      level: logLevel,
+      level: 'debug',
       handleExceptions: true,
       format: winston.format.combine(
         winston.format.timestamp(),
