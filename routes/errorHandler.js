@@ -26,5 +26,4 @@ function defaultErrorHandler(err, req, res, _next) {
   }
 }
 
-module.exports.notFoundHandler = notFoundHandler;
-module.exports.defaultErrorHandler = defaultErrorHandler;
+module.exports = { notFoundHandler, defaultErrorHandler};
