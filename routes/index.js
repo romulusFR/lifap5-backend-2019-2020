@@ -1,8 +1,8 @@
 // all routers are exported from this file
 
-const basicRouter = require('./basicRouter');
+const rootRouter = require('./rootRouter');
 const { notFoundHandler, defaultErrorHandler } = require('./error');
 
-module.exports.basicRouter = basicRouter;
+module.exports.rootRouter = rootRouter;
 module.exports.notFoundHandler = notFoundHandler;
 module.exports.defaultErrorHandler = defaultErrorHandler;
