@@ -3,7 +3,7 @@ server/
 
 # Generic
 *~
-.*
+.env*
 *.bak
 
 # Logs

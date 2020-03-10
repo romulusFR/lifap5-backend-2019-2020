@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm run start:dev",
     "start:prod": "NODE_ENV=production node ./bin/www",
-    "start:dev": "DEBUG=lifap5:* nodemon ./bin/www",
+    "start:dev": "DEBUG=lifap5:* npx nodemon ./bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -41,12 +41,16 @@
     "morgan": "^1.9.1",
     "pg": "^7.18.2",
     "serve-favicon": "^2.5.0",
-    "triple-beam": "^1.3.0",
     "winston": "^3.2.1",
     "ws": "^7.2.2"
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-security": "^1.4.0",
     "nodemon": "^2.0.2"
   }
 }
