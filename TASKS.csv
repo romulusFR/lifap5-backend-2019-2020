@@ -2,4 +2,5 @@ Tâche               ;Date       ;Durée (h) ; Commentaires
 Init BD             ;2020-03-08 ;2         ; init, schema, inserts
 Init serveur prod   ;2020-03-09 ;2.5       ; install ppa (postgres + nginx + node), config PG + nginx (tls)
 Init projet Node.JS ;2020-03-09 ;1.5       ; npm init et app minimaliste
-Loggin Node.JS      ;2020-03-09 ;2.5       ; choix et 1ere configuration de la lib de logging (winston) après plusieurs essais (debug, morgan, pino)
+Logging Node.JS     ;2020-03-09 ;2.5       ; choix et 1ere configuration de la lib de logging (winston) après plusieurs essais (debug, morgan, pino)
+Refactor (logging)  ;2020-03-09 ;3.0       ; on reprend complètement winston avec morgan pour les requêtes HTTP, et configurant plusieurs transports, ajouts de index.js pour le modules

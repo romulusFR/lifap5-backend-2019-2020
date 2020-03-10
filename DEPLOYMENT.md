@@ -115,6 +115,11 @@ Exécuter le script [`database/init-db.sh`](database/init-db.sh) en tant que `po
  sudo -u lifap5 psql
 ```
 
+Pour créer le schéma
+
+```bash
+ psql -U lifap5 -h localhost -f ./database/schema.sql
+```
 
 Configuration Node.js
 --------------------
