@@ -1,7 +1,7 @@
 'use strict'; 
 
 
-// const {logger} = require('./utils/');
+const {logger, morgan} = require('./utils/');
 const {basic_router} = require('./routes/');
 
 const createError = require('http-errors');
@@ -16,7 +16,7 @@ app.use(favicon('./static/favicon.ico'));
 app.use(helmet());
 app.use(cors({origin: '*' }));
 
-
+app.use(morgan);
 app.use(basic_router);
 
 
