@@ -1,10 +1,10 @@
 // A default router for examples and tests
 
-const express = require('express');
+const { Router } = require('express');
 const createError = require('http-errors');
 const { logger, config } = require('../utils');
 
-const rootRouter = express.Router();
+const rootRouter = Router();
 
 rootRouter.get('/error', (_req, _res, next) =>
   next(new createError.NotImplemented('Not yet'))
