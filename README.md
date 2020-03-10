@@ -18,6 +18,13 @@ TODO
 
 * [ ] gérer le cache pour les fichiers statiques
 
+Tooling
+-------
+
+Utilise VSCode, eslint (avec ses plugins) et prettier.
+
+* Pour prettier et son intéraction avec eslint <https://stackoverflow.com/questions/44690308/whats-the-difference-between-prettier-eslint-eslint-plugin-prettier-and-eslint>
+
 Licence
 -------
 
