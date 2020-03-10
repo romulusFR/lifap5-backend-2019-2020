@@ -2,7 +2,8 @@
 
 // Main configurations for winston and morgan
 // https://github.com/winstonjs/winston
-// https://github.com/bithavoc/express-winston
+// https://github.com/bithavoc/express-winston pas utilisé
+// https://github.com/winstonjs/winston-transport
 // https://github.com/winstonjs/logform
 // https://github.com/expressjs/morgan
 
@@ -13,42 +14,30 @@ const winston = require('winston');
 const morgan = require('morgan');
 const path = require('path');
 
+// https://github.com/winstonjs/winston#logging
+// const levels = { error: 0, warn: 1, info: 2, http: 3, verbose: 4, debug: 5, silly: 6};
+
+// Winston : transports
+
+// file loggers
 const error_file_name = path.join(__dirname, '../logs', 'error.log');
 const http_file_name = path.join(__dirname, '../logs', 'access.log');
 // const error_stream = fs.createWriteStream(error_file_name, {flags: 'a'});
 // const http_stream = fs.createWriteStream(http_file_name, {flags: 'a'});
 
-// npm levels { 
-//   error: 0, 
-//   warn: 1, 
-//   info: 2, 
-//   http: 3,
-//   verbose: 4, 
-//   debug: 5, 
-//   silly: 6 
-// }
-
-// Winston
+const winston_transports_file_opts = {
+    handleExceptions: true,
+    maxsize: 5242880, //5MB
+    maxFiles: 5,
+    format: winston.format.combine(
+      winston.format.timestamp(),
+      winston.format.json(),
+    ),
+};
 
 const winston_transports = [
-  new winston.transports.File({
-    level: 'error',
-    filename: error_file_name,
-    handleExceptions: true,
-    format: winston.format.combine(
-      winston.format.timestamp(),
-      winston.format.json()
-    ),
-  }),
-  new winston.transports.File({
-    level: 'http',
-    filename: http_file_name,
-    handleExceptions: true,
-    format: winston.format.combine(
-      winston.format.timestamp(),
-      winston.format.json()
-    ),
-  }),
+  new winston.transports.File({...winston_transports_file_opts, filename: error_file_name, level: 'info'}),
+  new winston.transports.File({...winston_transports_file_opts, filename: http_file_name,  level: 'http'}),
 ];
 
 if (env === 'development'){
@@ -65,6 +54,7 @@ if (env === 'development'){
   );
 }
 
+// Winston : logger
 const winston_opts = {
   level: 'info',
   transports: winston_transports,
@@ -79,8 +69,7 @@ winston_logger.stream = {
 };
 
 // Morgan
-
-morgan.token('x-api-key', function (req, res) {
+morgan.token('x-api-key', function (req, _res) {
   return req.headers['x-api-key'] }
 );
 
