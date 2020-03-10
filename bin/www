@@ -1,9 +1,9 @@
 'use strict'; 
 // #!/usr/bin/env node
 
-const {logger, http_port, environment} = require('../utils/');
+const {logger, http_port, env, name, version} = require('../utils/');
 const app = require('../app');
 
 app.listen(http_port, () => {
-  logger.info(`Running on port ${http_port} with env '${environment}'`);
+  logger.info(`${name}@${version}[${env}] running on ${http_port}`);
 });

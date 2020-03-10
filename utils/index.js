@@ -2,12 +2,12 @@
 
 // common utils and environment variables exported once
 
-const {name, version, environment, http_port} = require('./config');
+const {name, version, env, http_port} = require('./config');
 const {logger, morgan} = require('./logger');
 
 module.exports.name = name;
 module.exports.version = version;
-module.exports.environment = environment;
+module.exports.env = env;
 module.exports.http_port = http_port;
 
 module.exports.logger = logger;
