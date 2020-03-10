@@ -1,5 +1,5 @@
 const createError = require('http-errors');
-const { logger, config } = require('../utils/');
+const { logger, config } = require('../utils');
 
 function notFoundHandler(req, res, next) {
   next(createError.NotFound(`${req.url}`));
