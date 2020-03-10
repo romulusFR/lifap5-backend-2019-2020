@@ -15,7 +15,11 @@
   ],
   "plugins": ["filenames"],
   "parserOptions": {
-    "ecmaVersion": 2020
+    "ecmaVersion": 2020,
+    "ecmaFeatures": {
+      "impliedStrict": true
+    },
+    "sourceType": "module"
   },
   "globals": {
     "Atomics": "readonly",
