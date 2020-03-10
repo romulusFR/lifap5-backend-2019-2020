@@ -1,4 +1,3 @@
-
 // Main configurations for winston and morgan
 // https://github.com/winstonjs/winston
 // https://github.com/bithavoc/express-winston pas utilisé
@@ -31,13 +30,21 @@ const transportsFileOpts = {
   maxFiles: 5,
   format: winston.format.combine(
     winston.format.timestamp(),
-    winston.format.json(),
+    winston.format.json()
   ),
 };
 
 const winstonTransports = [
-  new winston.transports.File({ ...transportsFileOpts, filename: errorFileName, level: 'info' }),
-  new winston.transports.File({ ...transportsFileOpts, filename: httpFileName, level: 'http' }),
+  new winston.transports.File({
+    ...transportsFileOpts,
+    filename: errorFileName,
+    level: 'info',
+  }),
+  new winston.transports.File({
+    ...transportsFileOpts,
+    filename: httpFileName,
+    level: 'http',
+  }),
 ];
 
 if (env === 'development') {
@@ -48,9 +55,11 @@ if (env === 'development') {
       format: winston.format.combine(
         winston.format.timestamp(),
         winston.format.colorize({ all: true }),
-        winston.format.printf((info) => `${info.level}@${info.timestamp}: ${info.message}`),
+        winston.format.printf(
+          (info) => `${info.level}@${info.timestamp}: ${info.message}`
+        )
       ),
-    }),
+    })
   );
 }
 
@@ -71,24 +80,10 @@ winstonLogger.stream = {
 // Morgan
 morgan.token('x-api-key', (req, _res) => req.headers['x-api-key']);
 
-// eslint-disable-next-line no-unused-vars
-function morganFormatJson(tokens, req, res) {
-  const msg = {
-    'x-api-key': tokens['x-api-key'](req, res),
-    referrer: tokens.referrer(req, res),
-    'remote-addr': tokens['remote-addr'],
-    method: tokens.method(req, res),
-    url: tokens.url(req, res),
-    status: tokens.status(req, res),
-    length: tokens.res(req, res, 'content-length'),
-    'response-time': tokens['response-time'](req, res, 3),
-  };
-  return JSON.stringify(msg);
-}
-
 // pipe morgan to winston
 const morganOpts = { stream: winstonLogger.stream };
-const morganFormat = ':status - :method :url - :remote-addr(:x-api-key) - :res[content-length]B (:response-time ms)';
+const morganFormat =
+  ':status - :method :url - :remote-addr(:x-api-key) - :res[content-length]B (:response-time ms)';
 const morganLogger = morgan(morganFormat, morganOpts);
 
 // Exports

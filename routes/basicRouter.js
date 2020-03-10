@@ -1,15 +1,16 @@
-
 // A default router for examples and tests
 
 const express = require('express');
 const createError = require('http-errors');
 const { name, version } = require('../package.json');
 
-const router = express.Router();
+const basicRouter = express.Router();
 
-router.get('/error', (req, res, next) => next(new createError.NotImplemented('Not yet')));
+basicRouter.get('/error', (req, res, next) =>
+  next(new createError.NotImplemented('Not yet'))
+);
 
-router.get('/', (req, res, _next) => {
+basicRouter.get('/', (req, res, _next) => {
   res.send(`
   <!DOCTYPE html>
   <html lang="en">
@@ -17,4 +18,4 @@ router.get('/', (req, res, _next) => {
   </html>`);
 });
 
-module.exports = router;
+module.exports = basicRouter;

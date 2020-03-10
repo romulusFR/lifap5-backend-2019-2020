@@ -1,4 +1,3 @@
-
 const { name, version } = require('../package.json');
 require('dotenv').config();
 
@@ -6,7 +5,7 @@ const env = process.env.NODE_ENV || 'development';
 const httpPort = process.env.PORT || '3000';
 const logLevel = process.env.LOG_LEVEL || 'debug';
 
-const configuration = {
+const config = {
   name,
   version,
   env,
@@ -14,4 +13,4 @@ const configuration = {
   logLevel,
 };
 
-module.exports = configuration;
+module.exports = config;

@@ -8,7 +8,7 @@ function notFoundHandler(req, res, next) {
 function defaultErrorHandler(err, req, res, _next) {
   res.locals.message = err.message;
   res.locals.status = err.status || 500;
-  res.locals.error = (env === 'development') ? err : '';
+  res.locals.error = env === 'development' ? err : '';
   res.status(res.locals.status);
   res.send(`
   <!DOCTYPE html>
@@ -18,8 +18,12 @@ function defaultErrorHandler(err, req, res, _next) {
     <p>${res.locals.error}</p>
   </html>`);
 
-  const level = (res.locals.status >= 500) ? 'error' : 'info';
-  logger.log(level, `${res.locals.status} - ${req.method} ${req.url} - ${req.ip}`);
+  const msg = `${res.locals.status} - ${req.method} ${req.url} - ${req.ip}`;
+  if (res.locals.status >= 500) {
+    logger.error(msg);
+  } else {
+    logger.info(msg);
+  }
 }
 
 module.exports.notFoundHandler = notFoundHandler;
