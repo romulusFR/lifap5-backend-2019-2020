@@ -124,8 +124,7 @@ Pour créer le schéma
 Configuration Node.js
 --------------------
 
- **TBD**
- <https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally>
+Un point à assurer  <https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally>
 
 ```bash
  mkdir ~/.npm-global
@@ -134,10 +133,12 @@ Configuration Node.js
  source ~/.profile
 ```
 
-Lancement de l'application Node.js
+Lancement de l'application Node.JS
 ----------------------------------
 
-**TBD**
+Simplement `npm install` dans le dossier du dépot pour installer toutes les dépendances.
+
+**TBD PM2**
 
 
 Configuration nginx
