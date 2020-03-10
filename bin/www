@@ -1,13 +1,9 @@
 'use strict'; 
 // #!/usr/bin/env node
 
-const {logger} = require('../utils/logger');
+const {logger, http_port, environment} = require('../utils/');
 const app = require('../app');
-require('dotenv').config();
-
-const http_port = process.env.PORT || '3000';
-const env = process.env.NODE_ENV || 'development';
 
 app.listen(http_port, () => {
-  logger.info(`Running on port ${http_port} with env '${env}'`);
+  logger.info(`Running on port ${http_port} with env '${environment}'`);
 });

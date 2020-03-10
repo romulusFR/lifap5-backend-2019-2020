@@ -1,5 +1,7 @@
 'use strict'; 
 
+// common utils and environment variables exported once
+
 const {name, version, environment, http_port} = require('./config');
 const logger = require('./logger');
 

@@ -1,21 +1,22 @@
 'use strict'; 
 
 
-const {request_logger} = require('./utils/logger');
+// const {logger} = require('./utils/');
 const {basic_router} = require('./routes/');
+
 const createError = require('http-errors');
 const express = require('express')
 const favicon = require('serve-favicon');
 const helmet = require('helmet');
 const cors = require('cors');
-require('dotenv').config();
+
 
 const app = express();
 app.use(favicon('./static/favicon.ico'));
 app.use(helmet());
 app.use(cors({origin: '*' }));
 
-app.use(request_logger);
+
 app.use(basic_router);
 
 
