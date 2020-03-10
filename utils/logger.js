@@ -5,12 +5,12 @@
 // https://github.com/bithavoc/express-winston
 // https://github.com/winstonjs/logform
 
+const {name, version} = require('./config');
 const winston = require('winston');
-const winston_middleware = require('express-winston');
-const { LEVEL, MESSAGE, SPLAT } = require('triple-beam');
-const fs = require('fs');
-const path = require('path');
-const {name, version} = require('../package.json');
+const {LEVEL, MESSAGE, SPLAT} = require('triple-beam');
+// const fs = require('fs');
+// const path = require('path');
+
 
 const winston_opts = {
   level: 'info',
@@ -29,21 +29,5 @@ const winston_opts = {
 };
 
 const winston_logger = winston.createLogger(winston_opts);
-const winston_middleware_opts = {
-  winstonInstance: winston_logger,
-  requestWhitelist : ['url', 'method', 'query'],
-  statusLevels: true
-};
 
-const request_opts = Object.assign({}, winston_middleware_opts);
-const error_opts = Object.assign({}, winston_middleware_opts);
-
-// const request_opts = Object.assign({level : 'info'}, winston_middleware_opts);
-// const error_opts = Object.assign({level : 'error'}, winston_middleware_opts);
-
-const request_logger = winston_middleware.logger(request_opts);
-const error_logger = winston_middleware.errorLogger(error_opts);
-
-module.exports.logger = winston_logger;
-module.exports.request_logger = request_logger;
-module.exports.error_logger = error_logger;
+module.exports = winston_logger;
