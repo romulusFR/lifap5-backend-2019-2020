@@ -20,6 +20,7 @@ const path = require('path');
 // Winston : transports
 
 // file loggers
+// pour voir l'état courant : watch -t -d -c -n 1 tail -n 5 ./logs/error.log
 const error_file_name = path.join(__dirname, '../logs', 'error.log');
 const http_file_name = path.join(__dirname, '../logs', 'access.log');
 // const error_stream = fs.createWriteStream(error_file_name, {flags: 'a'});
