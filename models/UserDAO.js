@@ -13,7 +13,7 @@ class UserDAO {
   static async getUserFromApiKey(apiKey) {
     logger.debug(`getUserFromApiKey("${apiKey})`);
     const result = await pool.query(
-      'SELECT user_id, firstname, lastname FROM users WHERE api_key=$1;',
+      'SELECT user_id, firstname, lastname FROM quiz_user WHERE api_key=$1;',
       [apiKey]
     );
     return result.rows[0];
