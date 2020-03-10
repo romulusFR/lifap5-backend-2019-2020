@@ -21,24 +21,31 @@ async function authFromApiKeyHandler(req, res, next) {
   if (!token) {
     // TODO here custom error
     // { name: "NoX-Api-KeyProvided", message: "No x-api-key provided." }
-    return res.status(401).send();
+    logger.info(`authFromApiKeyHandler 401`);
+    const err = new Error(`x-api-key not provided`);
+    err.status = 401;
+    return next(err);
   }
   try {
     const result = await UserDAO.getUserFromApiKey(token);
-    if (result) {
-      req.user = result;
-      return next();
+    if (!result) {
+      // TODO here custom error
+      logger.info(`authFromApiKeyHandler 403`);
+      const err = new Error(`x-api-key "${token}" does not exist`);
+      err.status = 403;
+      return next(err);
     }
-    // TODO here custom error
-    return res.status(403).send();
+    req.user = result;
+    return next();
   } catch (err) {
-    logger.error(`getUserFromApiKey throw ${err}`);
+    logger.error(`authFromApiKeyHandler throw ${err}`);
     logger.error(err.stack);
     return next(err);
   }
 }
 
 function sendUser(req, res, _next) {
+  logger.debug(`sendUser, ${JSON.stringify(req.user)}`);
   return res.status(200).send(req.user);
 }
 
