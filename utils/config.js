@@ -1,6 +1,7 @@
-const { name, version } = require('../package.json');
+const { name, version, description } = require('../package.json');
 require('dotenv').config();
 
+const appname = name || '';
 const env = process.env.NODE_ENV || 'development';
 const httpPort = process.env.NODE_PORT || '3000';
 const pgHost = process.env.PG_HOST || 'localhost';
@@ -10,18 +11,16 @@ const pgPass = process.env.PG_PASS || '';
 const pgDname = process.env.PG_DNAME || 'lifap5';
 const pgSchema = process.env.PG_SCHEMA || 'lifap5';
 
-
-const config = {
-  name,
+module.exports = {
+  appname,
   version,
+  description,
   env,
   httpPort,
   pgHost,
   pgPort,
   pgUser,
   pgPass,
-  pgDname ,
-  pgSchema
+  pgDname,
+  pgSchema,
 };
-
-module.exports = config;

@@ -3,26 +3,37 @@
 const { Router } = require('express');
 const createError = require('http-errors');
 const { logger, config } = require('../utils');
+const { negotiateContentHandler } = require('./genericHandlers');
 
 const rootRouter = Router();
 
+// a router that always returns an error
 rootRouter.get('/error', (_req, _res, next) =>
-  next(new createError.NotImplemented('Not yet'))
+  next(new createError.NotImplemented('Not implemented yet'))
 );
 
 // basic echo service : simply returns the json body
 // curl -X POST -d '{"key1":"value1", "key2":"value2"}' -H "Content-Type: application/json" http://localhost:3000/echo/
 rootRouter.post('/echo', function echoHandler(req, res) {
   logger.debug(`echoHandler(${req.body})`);
-  return res.status(200).send(req.body);
+  return res.send(req.body);
 });
 
-rootRouter.get('/', (_req, res, _next) => {
-  res.send(`
-  <!DOCTYPE html>
-  <html lang="en">
-    <h1>${config.name}@${config.version}</h1>
-  </html>`);
-});
+// curl -H "Accept: application/json" http://localhost:3000/
+const sendIndex = negotiateContentHandler(
+  {
+    htmlView: 'index',
+    htmlArgs: (_req, _res) => ({ description: config.description }),
+  },
+  {
+    jsonArgs: (req, res) => ({
+      appname: res.locals.appname,
+      version: res.locals.version,
+      description: config.description,
+    }),
+  }
+);
+
+rootRouter.get('/', sendIndex);
 
 module.exports = { rootRouter };

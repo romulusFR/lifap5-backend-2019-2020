@@ -11,7 +11,7 @@ const pool = new Pool({
   idleTimeoutMillis: 10000, // default
   max: 20,
   ssl: { rejectUnauthorized: false, },
-  application_name: config.name
+  application_name: config.appname
 });
 
 // config postgres

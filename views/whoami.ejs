@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <%- include('includes/head', { appname, version} ) -%>
+  <body>
+    <%- include('includes/title', { appname, version} ) -%>
+    <p>Bienvenue <%= user.firstname %> <%= user.lastname.toLocaleUpperCase() %> (<%= user.user_id.toLocaleLowerCase() %>)</p>
+  </body>
+</html>
