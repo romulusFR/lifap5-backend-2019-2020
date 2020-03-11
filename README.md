@@ -5,11 +5,12 @@ Ce dépôt est celui du projet 2019-2020 (Printemps) de l'unité d'enseignement 
 
 * le sujet du projet,
 * la spécification de l'API du serveur,
+* le [code du serveur Node.JS](./app.js),
 * la [base de données PostgreSQL](./database/schema.sql)
-* le code du serveur,
+* le [guide d'installation et de déploiement](./DEPLOYMENT.md)
+  * NB: pour le développement local, la partie nginx n'est pas nécessaire
 * les tests,
-* le guide de développement,
-* le guide de déploiement.
+
 
 Le serveur est réalisé en Node.js/Express/PostgreSQL.
 
@@ -19,6 +20,9 @@ TODO
 * [ ] gérer le cache pour les fichiers statiques
 * [ ] negotiation de contenus application/json et text/html
   * voir defaultErrorHandler et rootRouter.get('/')
+* [ ] transport console custom 
+  *  <https://github.com/winstonjs/winston/blob/master/examples/custom-transport.js>
+  *  <https://github.com/winstonjs/winston/blob/master/lib/winston/transports/console.js>
 
 Tooling
 -------
