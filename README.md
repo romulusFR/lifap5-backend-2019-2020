@@ -18,8 +18,10 @@ TODO
 ----
 
 * [X] déploiement "auto" prod et pm2
-* [ ] gérer le cache pour les fichiers statiques
 * [X] negotiation de contenus application/json et text/html
+* [ ] gérer le cache pour les fichiers statiques via nginx
+* [ ] rendre l'application auto déploiante sur le serveur postgres (crée le schéma s'il n'existe pas)
+
 
 Tooling
 -------
