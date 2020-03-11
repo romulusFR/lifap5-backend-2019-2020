@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="utf-8" />
-    <title><%= appname %></title>
-  </head>
+  <%- include('includes/head', { appname, version} ) -%>
   <body>
-    <h1><%= appname %> &#64;  <%= version %></h1>
-    <h2>ERROR <%= status %> (<%= name %>)</h2>
+    <%- include('includes/title', { appname, version} ) -%>
+    <h3>ERROR <%= status %> (<%= name %>)</h3>
     <p><%= message %></p>
     <% if (stack) { %>
       <p><%= stack %>></p>

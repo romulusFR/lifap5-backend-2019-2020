@@ -1,12 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="utf-8" />
-    <title><%= appname %></title>
-  </head>
+  <%- include('includes/head', { appname, version} ) -%>
   <body>
-    <h1><%= appname %></h1>
-    <h2>Version <%= version %></h2>
+    <%- include('includes/title', { appname, version} ) -%>
     <p><%= description %></p>
     <p>Pour plus de détails :
       <ul>
