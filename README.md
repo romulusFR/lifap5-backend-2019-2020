@@ -16,13 +16,10 @@ Le serveur est réalisé en Node.js/Express/PostgreSQL.
 
 TODO
 ----
+
 * [X] déploiement "auto" prod et pm2
 * [ ] gérer le cache pour les fichiers statiques
-* [ ] negotiation de contenus application/json et text/html
-  * voir defaultErrorHandler et rootRouter.get('/')
-* [ ] transport console custom 
-  *  <https://github.com/winstonjs/winston/blob/master/examples/custom-transport.js>
-  *  <https://github.com/winstonjs/winston/blob/master/lib/winston/transports/console.js>
+* [X] negotiation de contenus application/json et text/html
 
 Tooling
 -------
