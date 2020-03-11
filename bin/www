@@ -55,7 +55,7 @@ const terminusOpts = {
 createTerminus(httpServer, terminusOpts);
 
 httpServer.listen(config.httpPort, () => {
-  logger.info(
+  logger.debug(
     `${config.name}@${config.version}[${config.env}] listening on ${config.httpPort}`
   );
 });
