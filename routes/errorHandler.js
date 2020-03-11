@@ -12,13 +12,7 @@ function defaultErrorHandler(err, req, res, next) {
   const { name, message, status = 500 } = err;
   const stack = config.env === 'development' ? err.stack : '';
   res.status(status);
-  res.send(`
-  <!DOCTYPE html>
-  <html lang="en">
-    <h1>ERROR ${status} (${name})</h1>
-    <h2>${name}: ${message}</h2>
-    <p>${stack}</p>
-  </html>`);
+  res.render('error', { stack, name, message, status, config });
 
   const msg = `${status} - ${req.method} ${req.url} - ${req.ip} : ${name} - ${message}`;
   if (status >= 500) {

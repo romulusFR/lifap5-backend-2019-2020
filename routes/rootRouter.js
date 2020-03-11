@@ -17,12 +17,13 @@ rootRouter.post('/echo', function echoHandler(req, res) {
   return res.status(200).send(req.body);
 });
 
+// content negotiation
+// http://expressjs.com/en/api.html#res.format
+// http://expressjs.com/en/api.html#res.render
+// http://expressjs.com/en/guide/using-template-engines.html
+
 rootRouter.get('/', (_req, res, _next) => {
-  res.send(`
-  <!DOCTYPE html>
-  <html lang="en">
-    <h1>${config.name}@${config.version}</h1>
-  </html>`);
+  res.render('index', { config });
 });
 
 module.exports = { rootRouter };
