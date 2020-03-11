@@ -158,6 +158,8 @@ cd /home/ubuntu/lifap5-backend-2019-2020
 sudo -u lifap5 npx pm2 start
 ```
 
+Un alias `alias pm2='sudo -u lifap5 npx pm2'` est crée dans la `~/.bashrc`.
+
 Pour mettre à jour la version sur la prod, il suffit de faire `git pull` pour la branche master et pm2 rechargera automatiquement l'application.
 
 Configuration nginx
