@@ -3,6 +3,7 @@
 const { Router } = require('express');
 const createError = require('http-errors');
 const { logger, config } = require('../utils');
+const { negotiateContentHandler } = require('./genericHandlers');
 
 const rootRouter = Router();
 
@@ -19,22 +20,20 @@ rootRouter.post('/echo', function echoHandler(req, res) {
 });
 
 // curl -H "Accept: application/json" http://localhost:3000/
-rootRouter.get('/', (req, res, _next) => {
-  logger.debug(`rootRouter.get('/') with Accept: ${req.get('Accept')}`);
-  const { description } = config;
-  res.format({
-    html() {
-      res.render('index', { description });
-    },
+const sendIndex = negotiateContentHandler(
+  {
+    htmlView: 'index',
+    htmlArgs: (_req, _res) => ({ description: config.description }),
+  },
+  {
+    jsonArgs: (req, res) => ({
+      appname: res.locals.appname,
+      version: res.locals.version,
+      description: config.description,
+    }),
+  }
+);
 
-    json() {
-      res.send({
-        appname: res.locals.appname,
-        version: res.locals.version,
-        description,
-      });
-    },
-  });
-});
+rootRouter.get('/', sendIndex);
 
 module.exports = { rootRouter };
