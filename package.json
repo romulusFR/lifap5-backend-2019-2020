@@ -1,12 +1,10 @@
 {
   "name": "lifap5-backend-2019-2020",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Backend pour le projet LIFAP5 2020-2020 (qcm)",
   "main": "app.js",
   "scripts": {
-    "start": "npm run start:dev",
-    "start:prod": "NODE_ENV=production node server.js",
-    "start:dev": "DEBUG=lifap5:* npx nodemon server.js",
+    "start": "DEBUG=lifap5:* npx nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -44,6 +42,7 @@
     "http-errors": "^1.7.3",
     "morgan": "^1.9.1",
     "pg": "^7.18.2",
+    "pm2": "^4.2.3",
     "serve-favicon": "^2.5.0",
     "winston": "^3.2.1",
     "ws": "^7.2.3"

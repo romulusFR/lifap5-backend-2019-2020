@@ -138,10 +138,25 @@ Un point à assurer  <https://docs.npmjs.com/resolving-eacces-permissions-errors
 Lancement de l'application Node.JS
 ----------------------------------
 
-Simplement `npm install` dans le dossier du dépot pour installer toutes les dépendances.
+ `npm install` dans le dossier du dépot pour installer toutes les dépendances.
 
-**TBD PM2**
+Pour le lancement, on utilise <https://pm2.keymetrics.io/>
 
+* configuration dans le fichier `ecosystem.config.js`
+* pour lancer en mode cluster et daemon `npx pm2 start`
+* pour suivre
+  * `npx pm2 ls` pour lister les processus
+  * `npx pm2 monit lifap5` pour accéder au dashboard de suivi
+  * `npx pm2 stop lifap5` pour arrêter
+  * `npx pm2 del lifap5` pour supprimer du gestionnaire
+  * `npx pm2 kill` pour tuer le daemon
+
+On préfixera tout par `sudo -u lifap5` pour limiter les droits.
+
+```bash
+cd /home/ubuntu/lifap5-backend-2019-2020
+sudo -u lifap5 npx pm2 start
+```
 
 Configuration nginx
 -------------------
