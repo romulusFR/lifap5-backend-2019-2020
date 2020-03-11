@@ -7,25 +7,25 @@ function notFoundHandler(req, res, next) {
 
 function defaultErrorHandler(err, req, res, next) {
   if (res.headersSent) {
-    next(err)
+    next(err);
   }
-  const { code, message, status = 500} = err;
-  const error = config.env === 'development' ? err : {};
+  const { name, message, status = 500 } = err;
+  const stack = config.env === 'development' ? err.stack : '';
   res.status(status);
   res.send(`
   <!DOCTYPE html>
   <html lang="en">
-    <h1>HTTP-ERROR ${status} (${code})</h1>
-    <h2>Message: ${message}</h2>
-    <p>${error}</p>
+    <h1>ERROR ${status} (${name})</h1>
+    <h2>${name}: ${message}</h2>
+    <p>${stack}</p>
   </html>`);
 
-  const msg = `${status} - ${req.method} ${req.url} - ${req.ip}`;
-  if (res.locals.status >= 500) {
+  const msg = `${status} - ${req.method} ${req.url} - ${req.ip} : ${name} - ${message}`;
+  if (status >= 500) {
     logger.error(msg);
   } else {
     logger.info(msg);
   }
 }
 
-module.exports = { notFoundHandler, defaultErrorHandler};
+module.exports = { notFoundHandler, defaultErrorHandler };
