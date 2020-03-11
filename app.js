@@ -39,6 +39,7 @@ app.use(rootRouter);
 app.use('/user', userRouter);
 
 // error handlers
+// curl -H "Accept: application/json" http://localhost:3000/doesnotexists/
 app.use(notFoundHandler);
 app.use(defaultErrorHandler);
 
