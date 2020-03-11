@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const favicon = require('serve-favicon');
 const helmet = require('helmet');
 const cors = require('cors');
@@ -19,8 +18,8 @@ app.use(helmet());
 app.use(cors({ origin: '*' }));
 app.use(favicon(path.join(__dirname, 'static', 'favicon.ico')));
 
-app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
 
 // logging
 app.use(morgan);
