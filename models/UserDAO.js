@@ -4,14 +4,14 @@ const pool = require('./pool');
 class UserDAO {
   // the list of all users
   static async getAllUsers() {
-    // logger.debug(`getAllUsers()`);
+    logger.silly(`getAllUsers@`);
     const result = await pool.query('SELECT user_id FROM quiz_user;');
     return result.rows;
   }
 
   // query to check an api_key
   static async getUserFromApiKey(apiKey) {
-    // logger.debug(`getUserFromApiKey("${apiKey})`);
+    logger.silly(`getUserFromApiKey@${apiKey}`);
     const result = await pool.query(
       'SELECT user_id, firstname, lastname FROM quiz_user WHERE api_key=$1;',
       [apiKey]
