@@ -22,11 +22,21 @@ function defaultErrorHandler(err, req, res, next) {
     },
 
     json() {
-      res.send({ name, message, status });
+      res.send({
+        appname: res.locals.appname,
+        version: res.locals.version,
+        name,
+        message,
+        status,
+      });
+    },
+
+    default() {
+      res.render('error', { stack, name, message, status });
     },
   });
 
-  const msg = `${status} - ${req.method} ${req.url} - ${req.ip} : ${name} - ${message}`;
+  const msg = `${status} - ${req.method} ${req.url} - ${req.ip} : ${name} - ${message} @ defaultErrorHandler`;
   if (status >= 500) {
     logger.error(msg);
   } else {

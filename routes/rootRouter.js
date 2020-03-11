@@ -6,8 +6,9 @@ const { logger, config } = require('../utils');
 
 const rootRouter = Router();
 
+// a router that always returns an error
 rootRouter.get('/error', (_req, _res, next) =>
-  next(new createError.NotImplemented('Not yet'))
+  next(new createError.NotImplemented('Not implemented yet'))
 );
 
 // basic echo service : simply returns the json body
@@ -22,6 +23,7 @@ rootRouter.post('/echo', function echoHandler(req, res) {
 // http://expressjs.com/en/api.html#res.render
 // http://expressjs.com/en/guide/using-template-engines.html
 
+// curl -H "Accept: application/json" http://localhost:3000/
 rootRouter.get('/', (req, res, _next) => {
   logger.debug(`rootRouter.get('/') with Accept: ${req.get('Accept')}`);
   const { description } = config;
@@ -31,7 +33,11 @@ rootRouter.get('/', (req, res, _next) => {
     },
 
     json() {
-      res.send({ description });
+      res.send({
+        appname: res.locals.appname,
+        version: res.locals.version,
+        description,
+      });
     },
   });
 });
