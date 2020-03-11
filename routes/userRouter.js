@@ -35,7 +35,7 @@ async function authFromApiKeyHandler(req, res, next) {
       );
       return next(err);
     }
-    req.user = result;
+    res.locals.user = result;
     return next();
   } catch (err) {
     logger.debug(`authFromApiKeyHandler throw ${err}`);
@@ -44,14 +44,14 @@ async function authFromApiKeyHandler(req, res, next) {
 }
 
 function sendUser(req, res, _next) {
-  logger.debug(`sendUser, ${JSON.stringify(req.user)}`);
+  logger.debug(`sendUser, ${JSON.stringify(res.locals.user)}`);
   res.format({
     html() {
-      res.render('whoami', { user: req.user });
+      res.render('whoami', res.locals.user);
     },
 
     json() {
-      res.send({ user: req.user });
+      res.send( res.locals.user);
     },
   });
 }
