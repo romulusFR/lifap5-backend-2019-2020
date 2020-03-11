@@ -7,12 +7,13 @@ const app = require('./app');
 const { pool } = require('./models/');
 
 const httpServer = http.createServer(app);
+const prefixMsg = `${config.appname}@${config.version}[${config.env}]`;
 
 // see https://github.com/godaddy/terminus/blob/master/example/postgres/index.js
 // for an example with terminus and pg
 function onSignal() {
   logger.debug(
-    `${config.name}@${config.version}[${config.env}] starting cleanup`
+    `${config.appname}@${config.version}[${config.env}] starting cleanup`
   );
   return Promise.all([pool.end()]);
 }
@@ -24,9 +25,7 @@ async function onHealthCheck() {
     waiting: pool.waitingCount,
   };
   logger.debug(
-    `${config.name}@${config.version}[${
-      config.env
-    }] healthcheck (${JSON.stringify(pgInfo)})`
+    `${prefixMsg} healthcheck (${JSON.stringify(pgInfo)})`
   );
 
   return Promise.all([
@@ -37,8 +36,7 @@ async function onHealthCheck() {
 }
 
 function onShutdown() {
-  logger.debug(
-    `${config.name}@${config.version}[${config.env}]  is shutting down`
+  logger.debug(`${prefixMsg} is shutting down`
   );
 }
 
@@ -56,6 +54,6 @@ createTerminus(httpServer, terminusOpts);
 
 httpServer.listen(config.httpPort, () => {
   logger.debug(
-    `${config.name}@${config.version}[${config.env}] listening on ${config.httpPort}`
+    `${prefixMsg} listening on ${config.httpPort}`
   );
 });

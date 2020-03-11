@@ -2,25 +2,14 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
-    <title><%= config.name %></title>
-    </head>
-    <body>
-  <h1><%= config.name %></h1>
-  <h2>Version <%= config.version %></h2>
-  <p>
-    Pour plus de détails :
-    <ul>
-      <li><a href="https://github.com/romulusFR/lifap5-backend-2019-2020">https://github.com/romulusFR/lifap5-backend-2019-2020</a></li>
-      <li><a href="https://liris.cnrs.fr/~rthion/dokuwiki/doku.php?id=enseignement:lifap5:start">https://liris.cnrs.fr/~rthion/dokuwiki/doku.php?id=enseignement:lifap5:start</a></li>
-    </ul>
-
-  </p>
+    <title><%= appname %></title>
+  </head>
+  <body>
+    <h1><%= appname %> &#64;  <%= version %></h1>
+    <h2>ERROR <%= status %> (<%= name %>)</h2>
+    <p><%= message %></p>
+    <% if (stack) { %>
+      <p><%= stack %>></p>
+    <% } %>
+  </body>
 </html>
-
-  
-  <!DOCTYPE html>
-  <html lang="en">
-    <h1>ERROR ${status} (${name})</h1>
-    <h2>${name}: ${message}</h2>
-    <p>${stack}</p>
-  </html>

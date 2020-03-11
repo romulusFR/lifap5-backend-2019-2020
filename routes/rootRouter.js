@@ -22,8 +22,18 @@ rootRouter.post('/echo', function echoHandler(req, res) {
 // http://expressjs.com/en/api.html#res.render
 // http://expressjs.com/en/guide/using-template-engines.html
 
-rootRouter.get('/', (_req, res, _next) => {
-  res.render('index', { config });
+rootRouter.get('/', (req, res, _next) => {
+  logger.debug(`rootRouter.get('/') with Accept: ${req.get('Accept')}`);
+  const { appname, version, description } = config;
+  res.format({
+    html() {
+      res.render('index', { appname, version, description });
+    },
+
+    json() {
+      res.send({ appname, version, description });
+    },
+  });
 });
 
 module.exports = { rootRouter };

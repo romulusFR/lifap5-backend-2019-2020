@@ -5,14 +5,27 @@ function notFoundHandler(req, res, next) {
   next(createError.NotFound(`${req.url}`));
 }
 
+// curl -I -H'Accept: application/json' http://localhost:3000/doesnotexists/
+// curl -I -H'Accept: application/json' http://localhost:3000/error/
+// curl -I -H'Accept: text/*' http://localhost:3000/doesnotexists/
+// curl -I -H'Accept: text/*' http://localhost:3000/error/
 function defaultErrorHandler(err, req, res, next) {
   if (res.headersSent) {
     next(err);
   }
+  const { appname, version } = config;
   const { name, message, status = 500 } = err;
-  const stack = config.env === 'development' ? err.stack : '';
+  const stack = config.env === 'development' ? err.stack : undefined;
   res.status(status);
-  res.render('error', { stack, name, message, status, config });
+  res.format({
+    html() {
+      res.render('error', { stack, name, message, status, appname, version });
+    },
+
+    json() {
+      res.send({ name, message, status, appname, version });
+    },
+  });
 
   const msg = `${status} - ${req.method} ${req.url} - ${req.ip} : ${name} - ${message}`;
   if (status >= 500) {
