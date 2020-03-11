@@ -10,17 +10,35 @@ const { logger, config } = require('../utils');
 // curl -I -H'Accept: application/json' http://localhost:3000/doesnotexists/
 // curl -I -H'Accept: application/json' http://localhost:3000/error/
 // curl -I -H'Accept: text/*' http://localhost:3000/doesnotexists/
-// curl -I -H'Accept: text/*' http://localhost:3000/error/
+
+/**
+ * An high order function that generates a middlware for content negotiation using res.format
+ * @function
+ * @param {Object} htmlOpts - options for html rendering via res.redner
+ * @param {string} htmlOpts.htmlView - the view to render
+ * @param {function(req, res): Object} htmlOpts.htmlArgs - function that generates the paramaters object to be fed into the renderer
+ * @param {Object} jsonOpts - options for json rendering via res.send
+ * @param {function(req, res): Object} jsonOpts.jsonArgs - function that generates the paramaters to be sent
+ * @returns {function(req, res, next): undefined} - the middleware function
+ */
 function negotiateContentHandler(htmlOpts, jsonOpts) {
-  const { view, args } = htmlOpts;
-  return (_req, res, _next) => {
+  const { htmlView, htmlArgs } = htmlOpts;
+  const { jsonArgs } = jsonOpts;
+  return (req, res, next) => {
     res.format({
       html() {
-        res.render(view, args);
+        res.render(htmlView, htmlArgs(req, res));
       },
 
       json() {
-        res.send(jsonOpts);
+        res.send(jsonArgs(req, res));
+      },
+
+      default() {
+        const err = new createError.NotAcceptable(
+          `Header "Accept: ${req.get('Accept')}" is not acceptable`
+        );
+        next(err);
       },
     });
   };
@@ -32,11 +50,14 @@ function notFoundHandler(req, res, next) {
   next(createError.NotFound(`URL '${req.url}' not found`));
 }
 
-function defaultErrorHandler(err, req, res, _next) {
-  // should NOT happen
-  // if (res.headersSent) {
-  //   next(err);
-  // }
+function defaultErrorHandler(err, req, res, next) {
+  // this should NOT happen
+  if (res.headersSent) {
+    logger.error(
+      `defaultErrorHandler@has to call next(err) because res.headersSent=${res.headersSent}`
+    );
+    next(err);
+  }
 
   const { name, message, status = 500 } = err;
   const stack = config.env === 'development' ? err.stack : undefined;
