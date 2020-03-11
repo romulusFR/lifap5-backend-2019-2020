@@ -8,3 +8,4 @@ Tooling             ;2020-03-10 ;3.0       ; on mets en place eslint et prettier
 Connection BD       ;2020-03-10 ;2.0       ; mise en place de la connection à BD et test avec un premier DAO et sa route
 Refactor erreur     ;2020-03-11 ;2.0       ; gestion d'erreur avec http-errors, transfert avec next(err) et handler final
 Shutdown            ;2020-03-11 ;1.0       ; ajout de healthcheck et graceful shutdown avec @godaddy/terminus
+Production v0.1.0   ;2020-03-11 ;2.0       ; configuration de la production (pm2, sudo lifap5, package.json)

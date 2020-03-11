@@ -16,7 +16,7 @@ Le serveur est réalisé en Node.js/Express/PostgreSQL.
 
 TODO
 ----
-* [ ] déploiement "auto" prod et pm2
+* [X] déploiement "auto" prod et pm2
 * [ ] gérer le cache pour les fichiers statiques
 * [ ] negotiation de contenus application/json et text/html
   * voir defaultErrorHandler et rootRouter.get('/')
