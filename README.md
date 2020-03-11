@@ -6,7 +6,7 @@ Ce dépôt est celui du projet 2019-2020 (Printemps) de l'unité d'enseignement 
 * le sujet du projet,
 * la spécification de l'API du serveur,
 * le [code du serveur Node.JS](./app.js),
-* la [base de données PostgreSQL](./database/schema.sql)
+* la [base de données PostgreSQL](./database/schema.png) ([schéma SQL](./database/schema.sql))
 * le [guide d'installation et de déploiement](./DEPLOYMENT.md)
   * NB: pour le développement local, la partie nginx n'est pas nécessaire
 * les tests,
