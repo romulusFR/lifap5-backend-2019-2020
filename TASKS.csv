@@ -6,4 +6,5 @@ Logging Node.JS     ;2020-03-09 ;2.5       ; choix et 1ere configuration de la l
 Refactor logging    ;2020-03-10 ;3.0       ; on reprend le logging winston avec morgan pour les requêtes HTTP, et configurant plusieurs transports, ajouts de index.js pour le modules
 Tooling             ;2020-03-10 ;3.0       ; on mets en place eslint et prettier avec une config assez durcie et on relance sur tout le code
 Connection BD       ;2020-03-10 ;2.0       ; mise en place de la connection à BD et test avec un premier DAO et sa route
-Refactor erreur     ;2020-03-10 ;2.0       ; gestion d'erreur avec http-errors, transfert avec next(err) et handler final
+Refactor erreur     ;2020-03-11 ;2.0       ; gestion d'erreur avec http-errors, transfert avec next(err) et handler final
+Shutdown            ;2020-03-11 ;1.0       ; ajout de healthcheck et graceful shutdown avec @godaddy/terminus
