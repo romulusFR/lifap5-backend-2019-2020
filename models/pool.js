@@ -10,7 +10,13 @@ const pool = new Pool({
   connectionTimeoutMillis: 2000,
   idleTimeoutMillis: 10000, // default
   max: 20,
+  ssl: { rejectUnauthorized: false, },
+  application_name: config.name
 });
+
+// config postgres
+// ssl_cert_file = '/etc/ssl/certs/ssl-cert-snakeoil.pem'
+// ssl_key_file = '/etc/ssl/private/ssl-cert-snakeoil.key'
 
 pool.on('error', (err, _client) => {
   logger.error(`Unexpected error on client with error: ${err}`);
