@@ -2,9 +2,9 @@
 
 const http = require('http');
 const { createTerminus } = require('@godaddy/terminus');
-const { logger, config } = require('../utils/');
-const app = require('../app');
-const { pool } = require('../models/');
+const { logger, config } = require('./utils/');
+const app = require('./app');
+const { pool } = require('./models/');
 
 const httpServer = http.createServer(app);
 

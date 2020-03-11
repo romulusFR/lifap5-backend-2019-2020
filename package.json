@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "npm run start:dev",
-    "start:prod": "NODE_ENV=production node ./bin/www",
-    "start:dev": "DEBUG=lifap5:* npx nodemon ./bin/www",
+    "start:prod": "NODE_ENV=production node server.js",
+    "start:dev": "DEBUG=lifap5:* npx nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
