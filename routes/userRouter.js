@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const createError = require('http-errors');
+const { isUUID } = require('validator');
 const { logger } = require('../utils');
 const { UserDAO } = require('../models/');
 
@@ -22,6 +23,10 @@ async function authFromApiKeyHandler(req, res, next) {
     const err = new createError.Unauthorized(`x-api-key not provided`);
     return next(err);
   }
+  if (!isUUID(token, 4)) {
+    const err = new createError.BadRequest(`x-api-key is not a valid uuid`);
+    return next(err);
+  }
   try {
     const result = await UserDAO.getUserFromApiKey(token);
     if (!result) {
@@ -38,7 +43,7 @@ async function authFromApiKeyHandler(req, res, next) {
   }
 }
 
-function sendUser(req, res, next) {
+function sendUser(req, res, _next) {
   logger.debug(`sendUser, ${JSON.stringify(req.user)}`);
   res.format({
     html() {
@@ -59,6 +64,9 @@ userRouter.get('/all', [getAllUsers]);
 // curl -H "Accept:application/json" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da" http://localhost:3000/user/whoami
 // curl -H "Accept:text/*" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da" http://localhost:3000/user/whoami
 // curl -H "Accept:nonexistent/nonexistent" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da" http://localhost:3000/user/whoami
+// deals with errors
+// curl -H "Accept:text/*" -H "X-API-KEY:00000000-0000-0000-0000-000000000000" http://localhost:3000/user/whoami
+// curl -H "Accept:text/*" -H "X-API-KEY:invalid" http://localhost:3000/user/whoami
 userRouter.get('/whoami', [authFromApiKeyHandler, sendUser]);
 
 module.exports = { userRouter, authFromApiKeyHandler };
