@@ -14,7 +14,7 @@ rootRouter.get('/error', (_req, _res, next) =>
 // curl -X POST -d '{"key1":"value1", "key2":"value2"}' -H "Content-Type: application/json" http://localhost:3000/echo/
 rootRouter.post('/echo', function echoHandler(req, res) {
   logger.debug(`echoHandler(${req.body})`);
-  return res.status(200).send(req.body);
+  return res.send(req.body);
 });
 
 // content negotiation
@@ -24,14 +24,14 @@ rootRouter.post('/echo', function echoHandler(req, res) {
 
 rootRouter.get('/', (req, res, _next) => {
   logger.debug(`rootRouter.get('/') with Accept: ${req.get('Accept')}`);
-  const { appname, version, description } = config;
+  const { description } = config;
   res.format({
     html() {
-      res.render('index', { appname, version, description });
+      res.render('index', { description });
     },
 
     json() {
-      res.send({ appname, version, description });
+      res.send({ description });
     },
   });
 });

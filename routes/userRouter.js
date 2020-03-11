@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const createError = require('http-errors');
-const { logger, config } = require('../utils');
+const { logger } = require('../utils');
 const { UserDAO } = require('../models/');
 
 const userRouter = Router();
@@ -10,7 +10,7 @@ const userRouter = Router();
 async function getAllUsers(_req, res, next) {
   try {
     const results = await UserDAO.getAllUsers();
-    return res.status(200).send(results);
+    return res.send(results);
   } catch (err) {
     logger.debug(`getAllUsers throw ${err}`);
     // logger.error(err.stack);
@@ -38,22 +38,19 @@ async function authFromApiKeyHandler(req, res, next) {
     return next();
   } catch (err) {
     logger.debug(`authFromApiKeyHandler throw ${err}`);
-    // logger.error(err.stack);
     return next(err);
   }
 }
 
 function sendUser(req, res, _next) {
   logger.debug(`sendUser, ${JSON.stringify(req.user)}`);
-  // res.status(200).send(req.user);
-  const { appname, version } = config;
   res.format({
     html() {
-      res.render('whoami', { appname, version, user: req.user });
+      res.render('whoami', { user: req.user });
     },
 
     json() {
-      res.send({ appname, version, user: req.user });
+      res.send({ user: req.user });
     },
   });
 }

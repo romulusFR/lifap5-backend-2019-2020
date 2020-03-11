@@ -3,7 +3,7 @@ const favicon = require('serve-favicon');
 const helmet = require('helmet');
 const cors = require('cors');
 const path = require('path');
-const { morgan } = require('./utils/');
+const { morgan, config } = require('./utils/');
 const {
   notFoundHandler,
   defaultErrorHandler,
@@ -21,10 +21,16 @@ app.use(cors({ origin: '*' }));
 app.use(favicon(path.join(__dirname, 'static', 'favicon.ico')));
 
 app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
 
-// logging
+// http logging
 app.use(morgan);
+
+// a middleware to store appname and version once and for all
+app.use((req, res, next) => {
+  res.locals.appname = config.appname;
+  res.locals.version = config.version;
+  next();
+});
 
 // router for '/'
 app.use(rootRouter);

@@ -13,17 +13,16 @@ function defaultErrorHandler(err, req, res, next) {
   if (res.headersSent) {
     next(err);
   }
-  const { appname, version } = config;
   const { name, message, status = 500 } = err;
   const stack = config.env === 'development' ? err.stack : undefined;
   res.status(status);
   res.format({
     html() {
-      res.render('error', { stack, name, message, status, appname, version });
+      res.render('error', { stack, name, message, status });
     },
 
     json() {
-      res.send({ name, message, status, appname, version });
+      res.send({ name, message, status });
     },
   });
 
