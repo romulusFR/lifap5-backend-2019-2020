@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS lifap5.quiz;
 DROP TABLE IF EXISTS lifap5.quiz_user;
 
 CREATE TABLE IF NOT EXISTS lifap5.quiz_user (
-  user_id TEXT PRIMARY KEY,
+  user_id TEXT PRIMARY KEY CHECK (char_length(user_id) > 4),
   firstname TEXT NOT NULL,
   lastname TEXT NOT NULL,
   api_key UUID UNIQUE NULL
