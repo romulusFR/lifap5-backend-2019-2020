@@ -1,6 +1,21 @@
 const createError = require('http-errors');
 const { logger, config } = require('../utils');
 
+function negotiateContentHandler(htmlOpts, jsonOpts) {
+  const { view, args } = htmlOpts;
+  return (_req, res, _next) => {
+    res.format({
+      html() {
+        res.render(view, args);
+      },
+
+      json() {
+        res.send(jsonOpts);
+      },
+    });
+  };
+}
+
 function notFoundHandler(req, res, next) {
   next(createError.NotFound(`${req.url}`));
 }
@@ -50,4 +65,8 @@ function defaultErrorHandler(err, req, res, next) {
   }
 }
 
-module.exports = { notFoundHandler, defaultErrorHandler };
+module.exports = {
+  notFoundHandler,
+  defaultErrorHandler,
+  negotiateContentHandler,
+};
