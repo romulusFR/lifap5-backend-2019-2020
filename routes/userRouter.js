@@ -58,8 +58,6 @@ userRouter.get('/all', [getAllUsers]);
 // checks authentification and serves negotiated content
 // curl -H "Accept:application/json" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da" http://localhost:3000/user/whoami
 // curl -H "Accept:text/*" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da" http://localhost:3000/user/whoami
-
-// For default, see code : https://github.com/expressjs/express/blob/master/lib/response.js#L659
 // curl -H "Accept:nonexistent/nonexistent" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da" http://localhost:3000/user/whoami
 userRouter.get('/whoami', [authFromApiKeyHandler, sendUser]);
 

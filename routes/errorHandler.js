@@ -5,6 +5,12 @@ function notFoundHandler(req, res, next) {
   next(createError.NotFound(`${req.url}`));
 }
 
+// content negotiation
+// http://expressjs.com/en/api.html#res.format
+// http://expressjs.com/en/api.html#res.render
+// http://expressjs.com/en/guide/using-template-engines.html
+// https://github.com/expressjs/express/blob/master/lib/response.js#L659
+
 // curl -I -H'Accept: application/json' http://localhost:3000/doesnotexists/
 // curl -I -H'Accept: application/json' http://localhost:3000/error/
 // curl -I -H'Accept: text/*' http://localhost:3000/doesnotexists/

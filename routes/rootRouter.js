@@ -18,11 +18,6 @@ rootRouter.post('/echo', function echoHandler(req, res) {
   return res.send(req.body);
 });
 
-// content negotiation
-// http://expressjs.com/en/api.html#res.format
-// http://expressjs.com/en/api.html#res.render
-// http://expressjs.com/en/guide/using-template-engines.html
-
 // curl -H "Accept: application/json" http://localhost:3000/
 rootRouter.get('/', (req, res, _next) => {
   logger.debug(`rootRouter.get('/') with Accept: ${req.get('Accept')}`);

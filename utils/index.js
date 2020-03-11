@@ -2,7 +2,6 @@
 
 const config = require('./config');
 const { logger, morgan } = require('./logger');
+const negotiateContent = require('./negotiateContent');
 
-module.exports.config = config;
-module.exports.logger = logger;
-module.exports.morgan = morgan;
+module.exports = { config, logger, morgan, negotiateContent };
