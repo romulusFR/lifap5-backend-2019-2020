@@ -22,7 +22,7 @@ const sendIndex = negotiateContentHandler(
   }
 );
 
-function NotImplemented(_req, _res, next) {
+function notImplemented(_req, _res, next) {
   next(new createError.NotImplemented('Not implemented yet'));
 }
 
@@ -42,6 +42,7 @@ rootRouter.get('/', sendIndex);
 rootRouter.post('/echo', echoHandler);
 
 // a router that always returns an error
-rootRouter.get('/not-implemented', NotImplemented);
+// curl -H "Accept: application/json"  http://localhost:3000/not-implemented/
+rootRouter.get('/not-implemented', notImplemented);
 
 module.exports = { rootRouter };
