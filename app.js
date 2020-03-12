@@ -34,16 +34,17 @@ app.use((req, res, next) => {
 });
 
 // router for '/'
-app.use(rootRouter);
-
-// router for user management
-app.use('/users', userRouter);
+app.use('/', rootRouter);
 
 // router for swagger-ui on swagger-jsdoc
 app.use('/api-docs', openApiRouter);
 
+// router for user management
+app.use('/users', userRouter);
+
+
+
 // error handlers
-// curl -H "Accept: application/json" http://localhost:3000/doesnotexists/
 app.use(notFoundHandler);
 app.use(defaultErrorHandler);
 
