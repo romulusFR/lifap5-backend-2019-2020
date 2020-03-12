@@ -1,0 +1,121 @@
+openapi: 3.0.2
+
+info:
+  description: 'A simple rest API '
+  version: "1.0.0-oas3"
+  title: REST API for lifap5-backend-2019-2020
+  contact:
+    email: you@your-company.com
+    name: Romuald THION
+  license:
+    name: CC BY-NC-SA 3.0 FR
+    url: 'https://creativecommons.org/licenses/by-nc-sa/3.0/fr/'
+
+servers:
+  - url: 'http://localhost:3000/'
+  - url: 'https://lifap5.univ-lyon1.fr/'
+
+tags:
+  - name: public
+    description: Everyone one
+  - name: authenticated
+    description: Authentified user (by x-api-key)
+    
+paths:
+  /:
+    get:
+      description: the index page (with content negotiation)
+      tags:
+        - public
+      produces:
+      - application/json
+      - text/html
+      responses:
+        200:
+          description: the index page
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  appname:
+                    type: string
+                  version:
+                    type: string
+                  description:
+                    type: string
+                required:
+                  - appname
+                  - version
+                  - description
+            text/html:
+              description: the main page
+  /healthcheck:
+    get:
+      summary: Checks if server is OK
+      description: |
+        Tests if the PostgreSQL backend is up
+      operationId: onHealthCheck
+      tags:
+        - public
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthCheck'
+
+
+  
+components:
+  schemas:
+    HealthCheck:
+      type: object
+      required:
+        - status
+        - info
+        - details
+      properties:
+        status:
+          type: string
+          enum:
+            - ok
+            - error
+        info:
+          type: array
+          items:
+            $ref: '#/components/schemas/HealthCheckInner'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/HealthCheckInner'
+    HealthCheckInner:
+      type: object
+      required:
+        - total
+        - idle
+        - waiting
+      properties:
+        total:
+          type: integer
+        idle:
+          type: integer
+        waiting:
+          type: integer
+    User:
+      type: object
+      required:
+        - user_id
+        - firstname
+        - lastname
+      properties:
+        user_id:
+          type: string
+          example: test.user
+        firstname:
+          type: string
+          example: test
+        lastname:
+          type: string
+          example: user
