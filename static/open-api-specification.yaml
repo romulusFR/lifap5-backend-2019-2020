@@ -1,11 +1,11 @@
 openapi: 3.0.2
 
 info:
-  description: 'A simple rest API '
-  version: "1.0.0-oas3"
-  title: REST API for lifap5-backend-2019-2020
+  title: REST API for the lifap5-backend-2019-2020
+  description: The yaml description of the API, lively available at http://lifap5.univ-lyon1.fr/
+  version: "0.1.1"
   contact:
-    email: you@your-company.com
+    email: romuald.thion@univ-lyon1.fr
     name: Romuald THION
   license:
     name: CC BY-NC-SA 3.0 FR
@@ -13,7 +13,9 @@ info:
 
 servers:
   - url: 'http://localhost:3000/'
+    description: A local development server
   - url: 'https://lifap5.univ-lyon1.fr/'
+    description: The public production server
 
 tags:
   - name: public
@@ -22,39 +24,74 @@ tags:
     description: Authentified user (by x-api-key)
     
 paths:
+
   /:
     get:
-      description: the index page (with content negotiation)
+      summary: The index page
+      description: The index page
+      operationId: sendIndex
       tags:
         - public
-      produces:
-      - application/json
-      - text/html
       responses:
         200:
-          description: the index page
+          description: The index page (with content negotiation)
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  appname:
-                    type: string
-                  version:
-                    type: string
-                  description:
-                    type: string
-                required:
-                  - appname
-                  - version
-                  - description
+                $ref: '#/components/schemas/IndexInfoObject'
             text/html:
-              description: the main page
+              schema:
+                type: string
+              example: <html>The index page</html>
+
+  /echo:
+    post:
+      description: Echo service that returns the json body, like ping with json
+      operationId: echoHandler
+      tags:
+        - public
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: The content to echo
+              type: object
+            example: {msg: 'test', val:42 }
+      responses:
+        200:
+          description: Echoed input
+          content:
+            application/json:
+              schema:
+                description: The echoed content
+                type: object
+              example: {msg: 'test', val:42 }
+        default:
+          $ref: "#/components/responses/error"
+
+  /not-implemented:
+    get:
+      summary: Always returns a NotImplemented error
+      description: An error page for test purposes
+      operationId: notImplemented
+      tags:
+        - public
+      responses:
+        501:
+          description: The error (with content negotiation)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorObject'
+            text/html:
+              schema:
+                type: string
+              example: <html>An error page</html>
+
   /healthcheck:
     get:
       summary: Checks if server is OK
-      description: |
-        Tests if the PostgreSQL backend is up
+      description: Tests if the PostgreSQL backend is up
       operationId: onHealthCheck
       tags:
         - public
@@ -64,13 +101,46 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HealthCheck'
+                $ref: '#/components/schemas/HealthCheckObject'
 
+  /users/:
+    get:
+      summary: All users
+      description: The list of all users
+      operationId: getAllUsers
+      tags:
+        - public
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  type: string
+              example: [test.user, other.user]
+        default:
+          $ref: "#/components/responses/error"
 
-  
 components:
+
+  responses:
+    error:
+      description: The error (with content negotiation)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+        text/html:
+          schema:
+            type: string
+          example: <html>An error page</html>
+
   schemas:
-    HealthCheck:
+
+    HealthCheckObject:
+      description: The object returned on healthcheck
       type: object
       required:
         - status
@@ -85,25 +155,50 @@ components:
         info:
           type: array
           items:
-            $ref: '#/components/schemas/HealthCheckInner'
+            type: object
+            required:
+              - total
+              - idle
+              - waiting
+            properties:
+              total:
+                type: integer
+              idle:
+                type: integer
+              waiting:
+                type: integer
         details:
           type: array
           items:
-            $ref: '#/components/schemas/HealthCheckInner'
-    HealthCheckInner:
+            type: object
+            required:
+              - total
+              - idle
+              - waiting
+            properties:
+              total:
+                type: integer
+              idle:
+                type: integer
+              waiting:
+                type: integer
+
+    IndexInfoObject:
       type: object
-      required:
-        - total
-        - idle
-        - waiting
       properties:
-        total:
-          type: integer
-        idle:
-          type: integer
-        waiting:
-          type: integer
-    User:
+        appname:
+          type: string
+        version:
+          type: string
+        description:
+          type: string
+      required:
+        - appname
+        - version
+        - description
+
+
+    UserObject:
       type: object
       required:
         - user_id
@@ -119,3 +214,20 @@ components:
         lastname:
           type: string
           example: user
+
+    ErrorObject:
+      type: object
+      properties:
+        appname:
+          type: string
+        version:
+          type: string
+        name:
+          type: string
+        message:
+          type: string
+        status:
+          type: integer
+      required:
+        - name
+        - message
