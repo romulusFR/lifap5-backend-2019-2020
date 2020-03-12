@@ -138,7 +138,7 @@ Un point à assurer  <https://docs.npmjs.com/resolving-eacces-permissions-errors
 Lancement de l'application Node.JS
 ----------------------------------
 
- `npm install` dans le dossier du dépot pour installer toutes les dépendances.
+`npm install --production` dans le dossier du dépot pour installer toutes les dépendances (sauf celles de test)
 
 Pour le lancement, on utilise <https://pm2.keymetrics.io/>
 
