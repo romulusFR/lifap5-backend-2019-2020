@@ -12,10 +12,11 @@ info:
     url: 'https://creativecommons.org/licenses/by-nc-sa/3.0/fr/'
 
 servers:
-  - url: 'http://localhost:3000/'
-    description: A local development server
   - url: 'https://lifap5.univ-lyon1.fr/'
     description: The public production server
+  - url: 'http://localhost:3000/'
+    description: A local development server
+
 
 tags:
   - name: public
@@ -38,7 +39,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/IndexInfoObject'
+                $ref: '#/components/schemas/ObjectIndexInfo'
             text/html:
               schema:
                 type: string
@@ -82,7 +83,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorObject'
+                $ref: '#/components/schemas/ErrorNotImplemented'
             text/html:
               schema:
                 type: string
@@ -107,7 +108,7 @@ paths:
     get:
       summary: All users
       description: The list of all users
-      operationId: getAllUsers
+      operationId: getAllUsersHandler
       tags:
         - public
       responses:
@@ -123,7 +124,66 @@ paths:
         default:
           $ref: "#/components/responses/error"
 
+  /users/whoami:
+    get:
+      summary: Given your own infos
+      description: Basic route to check authentication with x-api-key
+      operationId: whoamiHandler
+      tags:
+        - authenticated
+      security:
+        - XApiKeyAuth: []
+      responses:
+        '200':
+          description: When OK, answers with ID, first name and last name
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectUser'
+            text/html:
+              schema:
+                type: string
+              example: <html>A welcome page</html>
+        '400':
+          description: When x-api-key is not a valid UUID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBadRequest'
+            text/html:
+              schema:
+                type: string
+              example: <html>An error page</html>
+        '401':
+          description: when x-api-key is not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/html:
+              schema:
+                type: string
+              example: <html>An error page</html>
+        '403':
+          description: when given x-api-key is not in the database
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/html:
+              schema:
+                type: string
+              example: <html>An error page</html>
+
 components:
+
+# https://swagger.io/docs/specification/authentication/api-keys/
+  securitySchemes:
+    XApiKeyAuth:        # arbitrary name for the security scheme
+      type: apiKey
+      in: header       # can be "header", "query" or "cookie"
+      name: X-API-KEY  # name of the header, query parameter or cookie
+
 
   responses:
     error:
@@ -139,7 +199,7 @@ components:
 
   schemas:
 
-    HealthCheckObject:
+    ObjectHealthCheck:
       description: The object returned on healthcheck
       type: object
       required:
@@ -183,7 +243,7 @@ components:
               waiting:
                 type: integer
 
-    IndexInfoObject:
+    ObjectIndex:
       type: object
       properties:
         appname:
@@ -198,7 +258,7 @@ components:
         - description
 
 
-    UserObject:
+    ObjectUser:
       type: object
       required:
         - user_id
@@ -215,19 +275,35 @@ components:
           type: string
           example: user
 
-    ErrorObject:
+    Error:
       type: object
       properties:
-        appname:
-          type: string
-        version:
-          type: string
         name:
           type: string
         message:
           type: string
-        status:
-          type: integer
+      required:
+        - name
+        - message
+    ErrorBadRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          enum: [BadRequest]
+        message:
+          type: string
+      required:
+        - name
+        - message
+    ErrorNotImplemented:
+      type: object
+      properties:
+        name:
+          type: string
+          enum: [NotImplemented]
+        message:
+          type: string
       required:
         - name
         - message
