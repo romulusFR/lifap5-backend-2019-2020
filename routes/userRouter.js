@@ -7,7 +7,7 @@ const { negotiateContentHandler } = require('./genericHandlers');
 
 const userRouter = Router();
 
-async function getAllUsers(_req, res, next) {
+async function getAllUsersHandler(_req, res, next) {
   try {
     const results = await UserDAO.getAllUsers();
     return res.send(results);
@@ -44,14 +44,14 @@ async function authFromApiKeyHandler(req, res, next) {
   }
 }
 
-const sendUser = negotiateContentHandler(
+const whoamiHandler = negotiateContentHandler(
   { htmlView: 'whoami', htmlArgs: (req, res) => res.locals.user },
   { jsonArgs: (req, res) => res.locals.user }
 );
 
 // the list of all users
 // curl -X GET -H "Content-Type:application/json" http://localhost:3000/user/all
-userRouter.get('/all', [getAllUsers]);
+userRouter.get('/', [getAllUsersHandler]);
 
 // checks authentification and serves negotiated content
 // curl -H "Accept:application/json" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da" http://localhost:3000/user/whoami
@@ -60,6 +60,6 @@ userRouter.get('/all', [getAllUsers]);
 // deals with errors
 // 403 (ForbiddenError)   curl -H "Accept:text/*" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae314700" http://localhost:3000/user/whoami
 // 400 (Bad Request)      curl -H "Accept:text/*" -H "X-API-KEY:invalid" http://localhost:3000/user/whoami
-userRouter.get('/whoami', [authFromApiKeyHandler, sendUser]);
+userRouter.get('/whoami', [authFromApiKeyHandler, whoamiHandler]);
 
 module.exports = { userRouter, authFromApiKeyHandler };

@@ -12,7 +12,7 @@ const serverVersion = `${config.appname}@${config.version}[${config.env}]`;
 // see https://github.com/godaddy/terminus/blob/master/example/postgres/index.js
 // for an example with terminus and pg
 function onSignal() {
-  logger.debug(
+  logger.silly(
     `onSignal@starting cleanup`
   );
   return Promise.all([pool.end()]);
@@ -24,13 +24,13 @@ async function onHealthCheck() {
     idle: pool.idleCount,
     waiting: pool.waitingCount,
   };
-  logger.debug(
+  logger.silly(
     `onHealthCheck@(${JSON.stringify(pgInfo)})`
   );
 
   return Promise.all([
     pool.query('SELECT 1 AS ok;').then((res) => res.rowCount),
-    Promise.resolve(pgInfo),
+    // Promise.resolve(pgInfo),
   ]);
 }
 

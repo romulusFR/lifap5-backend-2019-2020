@@ -9,6 +9,7 @@ const {
   defaultErrorHandler,
   rootRouter,
   userRouter,
+  openApiRouter,
 } = require('./routes/');
 
 const app = express();
@@ -33,13 +34,17 @@ app.use((req, res, next) => {
 });
 
 // router for '/'
-app.use(rootRouter);
+app.use('/', rootRouter);
 
-// router for '/user'
-app.use('/user', userRouter);
+// router for swagger-ui on swagger-jsdoc
+app.use('/api-docs', openApiRouter);
+
+// router for user management
+app.use('/users', userRouter);
+
+
 
 // error handlers
-// curl -H "Accept: application/json" http://localhost:3000/doesnotexists/
 app.use(notFoundHandler);
 app.use(defaultErrorHandler);
 

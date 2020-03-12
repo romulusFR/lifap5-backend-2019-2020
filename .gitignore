@@ -54,5 +54,5 @@ node_modules/
 server
 
 #newman reports
-newman/newman-run-report-*.json
+#newman/newman-run-report-*.json
 

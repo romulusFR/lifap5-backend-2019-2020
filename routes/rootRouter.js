@@ -1,20 +1,20 @@
-// A default router for examples and tests
+/**
+ * @file router for the index root '/'
+ * @author Romuald THION
+ */
 
 const { Router } = require('express');
 const createError = require('http-errors');
 const { logger, config } = require('../utils');
 const { negotiateContentHandler } = require('./genericHandlers');
 
-const rootRouter = Router();
-
-// curl -H "Accept: application/json" http://localhost:3000/
 const sendIndex = negotiateContentHandler(
   {
     htmlView: 'index',
     htmlArgs: (_req, _res) => ({ description: config.description }),
   },
   {
-    jsonArgs: (req, res) => ({
+    jsonArgs: (_req, res) => ({
       appname: res.locals.appname,
       version: res.locals.version,
       description: config.description,
@@ -22,7 +22,7 @@ const sendIndex = negotiateContentHandler(
   }
 );
 
-function NotImplemented(_req, _res, next) {
+function notImplemented(_req, _res, next) {
   next(new createError.NotImplemented('Not implemented yet'));
 }
 
@@ -31,7 +31,10 @@ function echoHandler(req, res) {
   return res.send(req.body);
 }
 
-// the index page
+const rootRouter = Router();
+
+// 
+// curl -H "Accept: application/json" http://localhost:3000/
 rootRouter.get('/', sendIndex);
 
 // basic echo service : simply returns the json body
@@ -39,7 +42,7 @@ rootRouter.get('/', sendIndex);
 rootRouter.post('/echo', echoHandler);
 
 // a router that always returns an error
-rootRouter.get('/not-implemented', NotImplemented);
-
+// curl -H "Accept: application/json"  http://localhost:3000/not-implemented/
+rootRouter.get('/not-implemented', notImplemented);
 
 module.exports = { rootRouter };

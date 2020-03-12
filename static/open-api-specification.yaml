@@ -1,0 +1,309 @@
+openapi: 3.0.2
+
+info:
+  title: REST API for the lifap5-backend-2019-2020
+  description: The yaml description of the API, lively available at http://lifap5.univ-lyon1.fr/
+  version: "0.1.1"
+  contact:
+    email: romuald.thion@univ-lyon1.fr
+    name: Romuald THION
+  license:
+    name: CC BY-NC-SA 3.0 FR
+    url: 'https://creativecommons.org/licenses/by-nc-sa/3.0/fr/'
+
+servers:
+  - url: 'https://lifap5.univ-lyon1.fr/'
+    description: The public production server
+  - url: 'http://localhost:3000/'
+    description: A local development server
+
+
+tags:
+  - name: public
+    description: Everyone one
+  - name: authenticated
+    description: Authentified user (by x-api-key)
+    
+paths:
+
+  /:
+    get:
+      summary: The index page
+      description: The index page
+      operationId: sendIndex
+      tags:
+        - public
+      responses:
+        200:
+          description: The index page (with content negotiation)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectIndexInfo'
+            text/html:
+              schema:
+                type: string
+              example: <html>The index page</html>
+
+  /echo:
+    post:
+      description: Echo service that returns the json body, like ping with json
+      operationId: echoHandler
+      tags:
+        - public
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: The content to echo
+              type: object
+            example: {msg: 'test', val:42 }
+      responses:
+        200:
+          description: Echoed input
+          content:
+            application/json:
+              schema:
+                description: The echoed content
+                type: object
+              example: {msg: 'test', val:42 }
+        default:
+          $ref: "#/components/responses/error"
+
+  /not-implemented:
+    get:
+      summary: Always returns a NotImplemented error
+      description: An error page for test purposes
+      operationId: notImplemented
+      tags:
+        - public
+      responses:
+        501:
+          description: The error (with content negotiation)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotImplemented'
+            text/html:
+              schema:
+                type: string
+              example: <html>An error page</html>
+
+  /healthcheck:
+    get:
+      summary: Checks if server is OK
+      description: Tests if the PostgreSQL backend is up
+      operationId: onHealthCheck
+      tags:
+        - public
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthCheckObject'
+
+  /users/:
+    get:
+      summary: All users
+      description: The list of all users
+      operationId: getAllUsersHandler
+      tags:
+        - public
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  type: string
+              example: [test.user, other.user]
+        default:
+          $ref: "#/components/responses/error"
+
+  /users/whoami:
+    get:
+      summary: Given your own infos
+      description: Basic route to check authentication with x-api-key
+      operationId: whoamiHandler
+      tags:
+        - authenticated
+      security:
+        - XApiKeyAuth: []
+      responses:
+        '200':
+          description: When OK, answers with ID, first name and last name
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectUser'
+            text/html:
+              schema:
+                type: string
+              example: <html>A welcome page</html>
+        '400':
+          description: When x-api-key is not a valid UUID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBadRequest'
+            text/html:
+              schema:
+                type: string
+              example: <html>An error page</html>
+        '401':
+          description: when x-api-key is not provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/html:
+              schema:
+                type: string
+              example: <html>An error page</html>
+        '403':
+          description: when given x-api-key is not in the database
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/html:
+              schema:
+                type: string
+              example: <html>An error page</html>
+
+components:
+
+# https://swagger.io/docs/specification/authentication/api-keys/
+  securitySchemes:
+    XApiKeyAuth:        # arbitrary name for the security scheme
+      type: apiKey
+      in: header       # can be "header", "query" or "cookie"
+      name: X-API-KEY  # name of the header, query parameter or cookie
+
+
+  responses:
+    error:
+      description: The error (with content negotiation)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+        text/html:
+          schema:
+            type: string
+          example: <html>An error page</html>
+
+  schemas:
+
+    ObjectHealthCheck:
+      description: The object returned on healthcheck
+      type: object
+      required:
+        - status
+        - info
+        - details
+      properties:
+        status:
+          type: string
+          enum:
+            - ok
+            - error
+        info:
+          type: array
+          items:
+            type: object
+            required:
+              - total
+              - idle
+              - waiting
+            properties:
+              total:
+                type: integer
+              idle:
+                type: integer
+              waiting:
+                type: integer
+        details:
+          type: array
+          items:
+            type: object
+            required:
+              - total
+              - idle
+              - waiting
+            properties:
+              total:
+                type: integer
+              idle:
+                type: integer
+              waiting:
+                type: integer
+
+    ObjectIndex:
+      type: object
+      properties:
+        appname:
+          type: string
+        version:
+          type: string
+        description:
+          type: string
+      required:
+        - appname
+        - version
+        - description
+
+
+    ObjectUser:
+      type: object
+      required:
+        - user_id
+        - firstname
+        - lastname
+      properties:
+        user_id:
+          type: string
+          example: test.user
+        firstname:
+          type: string
+          example: test
+        lastname:
+          type: string
+          example: user
+
+    Error:
+      type: object
+      properties:
+        name:
+          type: string
+        message:
+          type: string
+      required:
+        - name
+        - message
+    ErrorBadRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          enum: [BadRequest]
+        message:
+          type: string
+      required:
+        - name
+        - message
+    ErrorNotImplemented:
+      type: object
+      properties:
+        name:
+          type: string
+          enum: [NotImplemented]
+        message:
+          type: string
+      required:
+        - name
+        - message

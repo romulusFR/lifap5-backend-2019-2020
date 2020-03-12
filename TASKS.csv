@@ -11,4 +11,5 @@ Shutdown               ;2020-03-11 ;1.0       ; ajout de healthcheck et graceful
 Production v0.1.0      ;2020-03-11 ;2.0       ; configuration de la production (pm2, sudo lifap5, package.json)
 Content negotiation v1 ;2020-03-11 ;2.0       ; pour : index, erreur et whoami. Le reste de l'API sera surtout en json
 Content negotiation v2 ;2020-03-11 ;2.0       ; finalisation avec negotiateContentHandler, refactoring des handlers/middleware
-Test postman/newan     ;2020-03-11 ;1.0       ; on reprend la battery de test de l'année passée
+Test postman/newman    ;2020-03-11 ;1.0       ; on reprend la battery de test de l'année passée
+Tests, openapi         ;2020-03-12 ;2.0       ; après étude, vue le manque de synchro postman<-> openapi, on va aller sur swagger-jsdoc, swagger-ui, jest et supertest
