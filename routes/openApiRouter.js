@@ -4,9 +4,8 @@
  */
 
 const { Router } = require('express');
-const swaggerUi = require('swagger-ui-express');
+const swaggerUI = require('swagger-ui-express');
 const YAML = require('yamljs');
-
 
 // /!\ STOP swagger-jsdoc /!\
 
@@ -24,14 +23,17 @@ const YAML = require('yamljs');
 // options to swagger-ui-express
 // https://github.com/scottie1984/swagger-ui-express
 // https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md
-const swaggerUIOptions = { explorer: true };
+const swaggerUIOptions = {
+  explorer: true,
+  swaggerOptions: { validatorUrl: null },
+};
 const swaggerDocument = YAML.load('./static/open-api-specification.yaml');
 
 // the router
 const openApiRouter = Router();
 openApiRouter.use('/', [
-  swaggerUi.serve,
-  swaggerUi.setup(swaggerDocument, swaggerUIOptions),
+  swaggerUI.serve,
+  swaggerUI.setup(swaggerDocument, swaggerUIOptions),
 ]);
 
 module.exports = { openApiRouter };
