@@ -119,6 +119,7 @@ Pour créer le schéma puis peupler
 
 ```bash
  psql -U lifap5 -h localhost -f ./database/schema.sql
+ psql -U lifap5 -h localhost -f ./database/views.sql
  psql -U lifap5 -h localhost -f ./database/sample-users.sql
  psql -U lifap5 -h localhost -f ./database/sample.sql
 ```
