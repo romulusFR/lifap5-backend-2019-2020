@@ -8,7 +8,7 @@ const pool = require('./pool');
 
 /**
  * @class UserDAO
- * @toto Checks if it is a User model or not...
+ * @todo Checks if it is a User model or not...
  */
 class UserDAO {
   // the list of all users
