@@ -1,3 +1,8 @@
+/**
+ * @file The postgres connection ppoler to execute queries
+ * @author Romuald THION
+ */
+
 const { Pool } = require('pg');
 const { config, logger } = require('../utils');
 
@@ -10,8 +15,8 @@ const pool = new Pool({
   connectionTimeoutMillis: 2000,
   idleTimeoutMillis: 10000, // default
   max: 20,
-  ssl: { rejectUnauthorized: false, },
-  application_name: config.appname
+  ssl: { rejectUnauthorized: false },
+  application_name: config.appname,
 });
 
 // config postgres

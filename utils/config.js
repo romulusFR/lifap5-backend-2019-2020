@@ -1,3 +1,8 @@
+/**
+ * @file wrapper over dotenv configuration and package.json to get configuration paramaters and general information
+ * @author Romuald THION
+ */
+
 const { name, version, description } = require('../package.json');
 require('dotenv').config();
 

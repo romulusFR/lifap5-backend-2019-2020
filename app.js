@@ -1,3 +1,8 @@
+/**
+ * @file The main express application, to be loaded by server.js
+ * @author Romuald THION
+ */
+
 const express = require('express');
 const favicon = require('serve-favicon');
 const helmet = require('helmet');

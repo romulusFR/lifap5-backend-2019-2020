@@ -1,5 +1,5 @@
 /**
- * @file router for the '/api-docs' roue, bound to swagger-ui-express
+ * @file router for the '/api-docs' route, bound to swagger-ui-express
  * @author Romuald THION
  */
 

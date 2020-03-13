@@ -1,6 +1,15 @@
+/**
+ * @file The user data access object (DAO)
+ * @author Romuald THION
+ */
+
 const { logger } = require('../utils');
 const pool = require('./pool');
 
+/**
+ * @class UserDAO
+ * @toto Checks if it is a User model or not...
+ */
 class UserDAO {
   // the list of all users
   static async getAllUsers() {

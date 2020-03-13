@@ -1,3 +1,8 @@
+/**
+ * @file Express router under '/users'
+ * @author Romuald THION
+ */
+
 const { Router } = require('express');
 const createError = require('http-errors');
 const { isUUID } = require('validator');

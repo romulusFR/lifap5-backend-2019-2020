@@ -1,5 +1,5 @@
 /**
- * @file router for the index root '/'
+ * @file Express router under '/'
  * @author Romuald THION
  */
 
@@ -33,7 +33,7 @@ function echoHandler(req, res) {
 
 const rootRouter = Router();
 
-// 
+//
 // curl -H "Accept: application/json" http://localhost:3000/
 rootRouter.get('/', sendIndex);
 

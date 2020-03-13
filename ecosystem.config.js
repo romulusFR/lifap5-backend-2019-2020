@@ -1,3 +1,8 @@
+/**
+ * @file Configuration for the pm2 process manager
+ * @author Romuald THION
+ */
+
 module.exports = {
   apps: [
     {

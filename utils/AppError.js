@@ -1,3 +1,8 @@
+/**
+ * @file A custom error class with status, actually not used because http-errors does the job quite well
+ * @author Romuald THION
+ */
+
 // https://javascript.info/custom-errors
 // https://nodejs.org/api/errors.html
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error

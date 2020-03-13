@@ -1,3 +1,8 @@
+/**
+ * @file Generic handlers to be used directly by the express app in app.js using app.use()
+ * @author Romuald THION
+ */
+
 const createError = require('http-errors');
 const { logger, config } = require('../utils');
 

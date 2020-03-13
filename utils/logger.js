@@ -1,9 +1,12 @@
-// Main configurations for winston and morgan
-// https://github.com/winstonjs/winston
-// https://github.com/bithavoc/express-winston pas utilisé
-// https://github.com/winstonjs/winston-transport
-// https://github.com/winstonjs/logform
-// https://github.com/expressjs/morgan
+/**
+ * @file common utils (logge) and environment variables exported once
+ * https://github.com/winstonjs/winston
+ * https://github.com/winstonjs/winston-transport
+ * https://github.com/winstonjs/logform
+ * https://github.com/expressjs/morgan
+ * https://github.com/bithavoc/express-winston pas utilisé
+ * @author Romuald THION
+ */
 
 // const {LEVEL, MESSAGE, SPLAT} = require('triple-beam');
 
