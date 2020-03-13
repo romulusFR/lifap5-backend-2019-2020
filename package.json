@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "DEBUG=lifap5:* npx nodemon server.js",
-    "test": "npx newman --environment ./newman/lifap5-backend-env-2019-2020-DEV.postman_environment.json run ./newman/lifap5-backend-2019-2020.postman_collection.json --reporters cli"
+    "test": "echo not yet",
+    "doc": "jsdoc -c .jsdoc.json"
   },
   "repository": {
     "type": "git",

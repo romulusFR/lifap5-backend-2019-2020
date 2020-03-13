@@ -1,0 +1,16 @@
+{
+  "plugins": [],
+  "recurseDepth": 10,
+  "sourceType": "module",
+  "source": {
+    "include": ["."],
+    "exclude": ["ecosystem.config.js", "node_modules/"],
+    "includePattern": ".+\\.js$",
+    "excludePattern": "(^|\\/|\\\\)_"
+  },
+  "opts": {
+    "encoding": "utf8",
+    "destination": "./jsdoc/",
+    "recurse": true
+  }
+}
