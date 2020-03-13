@@ -13,7 +13,8 @@ SELECT quiz.*,
        COALESCE(NULLIF(array_agg(question_id), '{NULL}'), '{}')::integer[] as questions_ids
 FROM quiz LEFT OUTER JOIN question
   USING (quiz_id)
-GROUP BY quiz.quiz_id;
+GROUP BY quiz.quiz_id
+ORDER BY quiz.quiz_id;
 `;
 
 /**
