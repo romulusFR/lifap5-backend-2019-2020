@@ -13,7 +13,7 @@
 const winston = require('winston');
 const morgan = require('morgan');
 const path = require('path');
-const { env } = require('./config');
+const { env, debugLvl } = require('./config');
 
 // https://github.com/winstonjs/winston#logging
 // const levels = { error: 0, warn: 1, info: 2, http: 3, verbose: 4, debug: 5, silly: 6};
@@ -53,7 +53,7 @@ const winstonTransports = [
 if (env === 'development') {
   winstonTransports.push(
     new winston.transports.Console({
-      level: 'debug',
+      level: debugLvl, // 'debug',
       handleExceptions: true,
       format: winston.format.combine(
         winston.format.timestamp(),
