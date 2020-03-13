@@ -8,15 +8,19 @@ const {
   defaultErrorHandler,
   negotiateContentHandler,
 } = require('./genericHandlers');
+
+const { openApiRouter } = require('./openApiRouter');
 const { rootRouter } = require('./rootRouter');
 const { userRouter } = require('./userRouter');
-const { openApiRouter } = require('./openApiRouter');
+const { quizRouter } = require('./quizRouter');
+
 
 module.exports = {
   notFoundHandler,
   defaultErrorHandler,
   negotiateContentHandler,
+  openApiRouter,
   rootRouter,
   userRouter,
-  openApiRouter,
+  quizRouter,
 };
