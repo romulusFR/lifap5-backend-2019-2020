@@ -9,6 +9,7 @@ const pool = require('./pool');
 /**
  * @class UserDAO
  * @todo Checks if it is a User model or not...
+ * @todo Add order by clause to ensure unique order
  */
 class UserDAO {
   // the list of all users
