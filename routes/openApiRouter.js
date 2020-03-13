@@ -10,9 +10,9 @@ const swaggerUI = require('swagger-ui-express');
 // https://github.com/scottie1984/swagger-ui-express
 // https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md
 const swaggerUIOptions = {
-  explorer: true,
+  explorer: false,
   swaggerUrl: '/open-api-specification.yaml',
-  swaggerOptions: { validatorUrl: null },
+  swaggerOptions: { }, // validatorUrl: null  to disable
 };
 
 // the router
