@@ -19,10 +19,13 @@ servers:
 
 
 tags:
+  - name: users
+    description: User related features
   - name: public
-    description: Everyone one
+    description: Everyone one, without authentication
   - name: authenticated
     description: Authentified user (by x-api-key)
+
     
 paths:
 
@@ -67,8 +70,8 @@ paths:
                 description: The echoed content
                 type: object
               example: {msg: 'test', val:42 }
-        default:
-          $ref: "#/components/responses/error"
+        # default:
+        #   $ref: "#/components/responses/error"
 
   /not-implemented:
     get:
@@ -107,10 +110,11 @@ paths:
   /users/:
     get:
       summary: All users
-      description: The list of all users
+      description: The list of all users, with pagination
       operationId: getAllUsersHandler
       tags:
         - public
+        - users
       responses:
         '200':
           description: OK
@@ -121,8 +125,6 @@ paths:
                 items:
                   type: string
               example: [test.user, other.user]
-        default:
-          $ref: "#/components/responses/error"
 
   /users/whoami:
     get:
@@ -131,6 +133,7 @@ paths:
       operationId: whoamiHandler
       tags:
         - authenticated
+        - users
       security:
         - XApiKeyAuth: []
       responses:
@@ -183,7 +186,6 @@ components:
       type: apiKey
       in: header       # can be "header", "query" or "cookie"
       name: X-API-KEY  # name of the header, query parameter or cookie
-
 
   responses:
     error:
