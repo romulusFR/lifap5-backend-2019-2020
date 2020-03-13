@@ -10,6 +10,8 @@ VALUES  (0, 'QCM LIFAP5 #1', 'Des questions de JS et lambda calcul', 'romuald.th
         (1, 'QCM LIFAP5 #2', 'Des questions de JS et lambda calcul', 'romuald.thion'),
         (2, 'QCM LIFAP5 #3', 'Des questions de JS et lambda calcul', 'emmanuel.coquery');
 
+SELECT setval('lifap5.quiz_quiz_id_seq', 2);
+
 INSERT INTO lifap5.question(quiz_id, question_id, content, optional, weight)
 OVERRIDING SYSTEM VALUE
 VALUES  (0, 0, 'Qui a inventé le lambda calcul ?', false, 2),
@@ -17,13 +19,16 @@ VALUES  (0, 0, 'Qui a inventé le lambda calcul ?', false, 2),
 
 INSERT INTO lifap5.question(quiz_id, question_id, content)
 OVERRIDING SYSTEM VALUE
-VALUES  (1, 0, 'En quel année le standard ES2015 a-t''il été proposé ?');
+VALUES  (1, 2, 'En quel année le standard ES2015 a-t''il été proposé ?');
+
+SELECT setval('lifap5.question_question_id_seq', 2);
 
 INSERT INTO lifap5.proposition(quiz_id, question_id, proposition_id, content, correct)
 OVERRIDING SYSTEM VALUE
 VALUES  (0, 0, 0, 'Alan Turing', false),
         (0, 0, 1, 'Alonzo Church', true);
-
+        
+SELECT setval('lifap5.proposition_proposition_id_seq', 1);
 
 -- TEST
 -- select quiz_id, title, owner_id,
