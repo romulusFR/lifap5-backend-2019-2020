@@ -102,7 +102,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HealthCheckObject'
+                $ref: '#/components/schemas/ObjectHealthCheck'
 
   /users/:
     get:
@@ -159,7 +159,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorUnauthorized'
             text/html:
               schema:
                 type: string
@@ -169,7 +169,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorForbidden'
             text/html:
               schema:
                 type: string
@@ -285,6 +285,7 @@ components:
       required:
         - name
         - message
+
     ErrorBadRequest:
       type: object
       properties:
@@ -296,12 +297,37 @@ components:
       required:
         - name
         - message
+
     ErrorNotImplemented:
       type: object
       properties:
         name:
           type: string
           enum: [NotImplemented]
+        message:
+          type: string
+      required:
+        - name
+        - message
+
+    ErrorUnauthorized:
+      type: object
+      properties:
+        name:
+          type: string
+          enum: [Unauthorized]
+        message:
+          type: string
+      required:
+        - name
+        - message
+
+    ErrorForbidden:
+      type: object
+      properties:
+        name:
+          type: string
+          enum: [Forbidden]
         message:
           type: string
       required:
