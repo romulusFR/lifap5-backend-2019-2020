@@ -13,17 +13,23 @@ const {
 } = require('./routes/');
 
 const app = express();
-app.set('trust proxy', 'loopback');
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// security
+app.set('trust proxy', 'loopback');
 app.use(helmet());
 app.use(cors({ origin: '*' }));
-app.use(favicon(path.join(__dirname, 'static', 'favicon.ico')));
 
+// static content
+app.use(favicon(path.join(__dirname, 'static', 'favicon.ico')));
+app.use('/', express.static(path.join(__dirname, 'static')))
+
+// body-parser
 app.use(express.json());
 
-// http logging
+// http logging, after static content
 app.use(morgan);
 
 // a middleware to store appname and version once and for all
