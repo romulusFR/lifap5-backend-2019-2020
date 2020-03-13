@@ -1,7 +1,7 @@
-TRUNCATE lifap5.answer CASCADE;
-TRUNCATE lifap5.proposition CASCADE;
-TRUNCATE lifap5.question CASCADE;
-TRUNCATE lifap5.quiz CASCADE;
+TRUNCATE lifap5.answer RESTART IDENTITY CASCADE;
+TRUNCATE lifap5.proposition RESTART IDENTITY CASCADE;
+TRUNCATE lifap5.question RESTART IDENTITY  CASCADE;
+TRUNCATE lifap5.quiz RESTART IDENTITY  CASCADE;
 
 -- OVERRIDING SYSTEM VALUE permet d'assurer qu'on contrôle l'ID (pour les tests)
 INSERT INTO lifap5.quiz(quiz_id, title, description, owner_id)
@@ -27,7 +27,7 @@ INSERT INTO lifap5.proposition(quiz_id, question_id, proposition_id, content, co
 OVERRIDING SYSTEM VALUE
 VALUES  (0, 0, 0, 'Alan Turing', false),
         (0, 0, 1, 'Alonzo Church', true);
-        
+
 SELECT setval('lifap5.proposition_proposition_id_seq', 1);
 
 -- TEST
