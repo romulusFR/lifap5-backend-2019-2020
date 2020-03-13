@@ -12,7 +12,7 @@ const swaggerUI = require('swagger-ui-express');
 const swaggerUIOptions = {
   explorer: false,
   swaggerUrl: '/open-api-specification.yaml',
-  swaggerOptions: { }, // validatorUrl: null  to disable
+  swaggerOptions: { defaultModelsExpandDepth:-1 }, // validatorUrl: null  to disable
 };
 
 // the router
