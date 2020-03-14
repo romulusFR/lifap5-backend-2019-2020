@@ -91,13 +91,58 @@ module.exports = function quizzesRouter(_app) {
     }
   }
 
+  /**
+   *  @todo implements
+   */
+  function checksQuizOwnership(_req, res, next) {
+    const user = res.locals.user.user_id;
+    const owner = res.locals.quiz.owner_id
+    logger.silly(`checkQuizIdExists@${user} VS ${owner}`);
+    if (user !== owner)
+      return next(createError.Unauthorized(`Quiz #${res.locals.quiz.quiz_id} is not owned by ${user} (owner is ${owner})`));
+    return next();
+  }
+
+  /**
+   *  @todo implements
+   */
+  async function checksQuizByIdHandler(_req, res, next, quiz_id) {
+    logger.silly(`checksQuizByIdHandler@${quiz_id}`);
+    try {
+    const quiz = await QuizDAO.getQuizById(quiz_id);
+    if(!quiz)
+      return next(createError.NotFound(`Quiz #${quiz_id} does not exist`));
+    res.locals.quiz = quiz;
+    return next();
+    } catch (err) {
+      logger.debug(`delQuizHandler throw ${err}`);
+      // logger.error(err.stack);
+      return next(err);
+    }
+  }
+
+  // when parameter :quiz_id is used, checks if it exists
+  router.param('quiz_id', checksQuizByIdHandler);
+
   router.get('/', [getAllQuizzesHandler]);
   // curl -X POST -H  "Content-Type: application/json" -H "Accept:application/json" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da"
-  router.post('/', [authFromApiKeyHandler, postQuizHandler]);
-  // curl -X PUT -H  "Content-Type: application/json" -H "Accept:application/json" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da"
-  router.put('/:quiz_id', [authFromApiKeyHandler, putQuizHandler]);
 
-  router.delete('/:quiz_id', [authFromApiKeyHandler, delQuizHandler]);
+  router.post('/', [authFromApiKeyHandler, postQuizHandler]);
+
+  router.get('/:quiz_id', [(_req, res, _next) => res.send(res.locals.quiz)]);
+
+  // curl -X PUT -H  "Content-Type: application/json" -H "Accept:application/json" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da"
+  router.put('/:quiz_id', [
+    authFromApiKeyHandler,
+    checksQuizOwnership,
+    putQuizHandler,
+  ]);
+
+  router.delete('/:quiz_id', [
+    authFromApiKeyHandler,
+    checksQuizOwnership,
+    delQuizHandler,
+  ]);
 
   return router;
 };

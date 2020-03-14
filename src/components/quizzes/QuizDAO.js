@@ -57,6 +57,13 @@ class QuizDAO {
     return result.rows;
   }
 
+  static async getQuizById(quiz_id) {
+    logger.silly(`getQuizById@${quiz_id}`);
+    const query = 'SELECT * FROM v_quiz_detailed WHERE quiz_id = $1';
+    const result = await pool.query(query, [quiz_id]);
+    return result.rows[0];
+  }
+
   static async postQuiz(quiz) {
     logger.silly(`postQuiz@${JSON.stringify(quiz)}`);
     const { title, description, owner_id, open = false } = quiz;
