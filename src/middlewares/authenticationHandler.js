@@ -3,9 +3,24 @@
  * @author Romuald THION
  */
 
+// X-API-KEY
+// test.user   944c5fdd-af88-47c3-a7d2-5ea3ae3147da
+// other.user  64decee2-acca-4a86-8e60-a46c4ccbca97
+
 const { isUUID } = require('validator');
 const createError = require('http-errors');
-const { logger } = require('../config');
+const { logger, pool } = require('../config');
+
+
+// query to check an api_key
+async function getUserFromApiKey(apiKey) {
+  logger.silly(`getUserFromApiKey@${apiKey}`);
+  const result = await pool.query(
+    'SELECT user_id, firstname, lastname FROM quiz_user WHERE api_key=$1;',
+    [apiKey]
+  );
+  return result.rows[0];
+}
 
 async function authFromApiKeyHandler(req, res, next) {
   const token = req.headers['x-api-key'];
@@ -18,7 +33,7 @@ async function authFromApiKeyHandler(req, res, next) {
     return next(err);
   }
   try {
-    const result = await UserDAO.getUserFromApiKey(token);
+    const result = await getUserFromApiKey(token);
     if (!result) {
       const err = new createError.Forbidden(
         `x-api-key "${token}" does not exist`

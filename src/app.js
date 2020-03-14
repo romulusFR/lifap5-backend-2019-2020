@@ -46,17 +46,17 @@ app.use((req, res, next) => {
   next();
 });
 
-// // router for '/'
-// app.use('/', indexRouter);
+// router for '/'
+app.use('/', indexRouter);
 
-// // router for swagger-ui on swagger-jsdoc
-// app.use('/api-docs', apiDocsRouter);
+// router for swagger-ui on swagger-jsdoc
+app.use('/api-docs', apiDocsRouter);
 
-// // router for user management
-// app.use('/users', usersRouter);
+// router for user management
+app.use('/users', usersRouter);
 
-// // router for quiz management
-// app.use('/quizzes', quizzesRouter);
+// router for quiz management
+app.use('/quizzes', quizzesRouter);
 
 // error handlers
 app.use(notFoundHandler);
