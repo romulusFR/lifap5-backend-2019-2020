@@ -22,10 +22,10 @@ const swaggerUIOptions = {
 };
 
 // the router
-const openApiRouter = Router();
-openApiRouter.use('/', [
+const apiDocsRouter = Router();
+apiDocsRouter.use('/', [
   swaggerUI.serve,
   swaggerUI.setup(null, swaggerUIOptions),
 ]);
 
-module.exports = { openApiRouter };
+module.exports = { apiDocsRouter };

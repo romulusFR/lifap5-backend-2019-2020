@@ -4,8 +4,7 @@
  */
 
 const createError = require('http-errors');
-const { logger } = require('../utils');
-const pool = require('./pool');
+const { logger, pool } = require('../../config');
 
 const postQuizQuery = `
 INSERT INTO quiz(title, description, owner_id, open)
@@ -80,15 +79,24 @@ class QuizDAO {
     logger.silly(`putQuiz@${query.values}`);
     const result = await pool.query(query);
     if (result.rowCount) return result.rows[0];
-    throw createError.Unauthorized(`User ${JSON.stringify(quiz.owner_id)} cannot UPDATE quiz #${quiz.quiz_id}`);
+    throw createError.Unauthorized(
+      `User ${JSON.stringify(quiz.owner_id)} cannot UPDATE quiz #${
+        quiz.quiz_id
+      }`
+    );
   }
 
   static async delQuiz(quiz_id, owner_id) {
     logger.silly(`delQuiz@${JSON.stringify(quiz_id)}, ${owner_id}`);
-    const result = await pool.query('DELETE FROM quiz WHERE quiz_id = $1 AND owner_id = $2;', [quiz_id, owner_id]);
+    const result = await pool.query(
+      'DELETE FROM quiz WHERE quiz_id = $1 AND owner_id = $2;',
+      [quiz_id, owner_id]
+    );
     if (result.rowCount) return result.rows[0];
-    throw createError.Unauthorized(`User ${JSON.stringify(owner_id)} cannot DELETE quiz #${quiz_id}`);
+    throw createError.Unauthorized(
+      `User ${JSON.stringify(owner_id)} cannot DELETE quiz #${quiz_id}`
+    );
   }
 }
 
-module.exports = QuizDAO;
+module.exports = { QuizDAO };

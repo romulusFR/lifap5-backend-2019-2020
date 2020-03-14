@@ -4,7 +4,8 @@
  */
 
 const { Pool } = require('pg');
-const { config, logger } = require('../utils');
+const config  = require('./config');
+const { logger }  = require('./logger');
 
 const pool = new Pool({
   user: config.pgUser,
@@ -16,6 +17,7 @@ const pool = new Pool({
   idleTimeoutMillis: 10000, // default
   max: 20,
   ssl: { rejectUnauthorized: false },
+  // eslint-disable-next-line camelcase
   application_name: config.appname,
 });
 
@@ -28,4 +30,4 @@ pool.on('error', (err, _client) => {
   throw err;
 });
 
-module.exports = pool;
+module.exports = { pool };

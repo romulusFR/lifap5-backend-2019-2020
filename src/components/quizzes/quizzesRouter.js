@@ -5,12 +5,12 @@
 
 const { Router } = require('express');
 const createError = require('http-errors');
-const { logger } = require('../utils');
-const { QuizDAO } = require('../models');
-const { authFromApiKeyHandler } = require('./userRouter');
+const { logger } = require('../../config');
+const { QuizDAO } = require('./QuizDAO');
+const { authFromApiKeyHandler } = require('../../middlewares');
 // const { negotiateContentHandler } = require('./genericHandlers');
 
-const quizRouter = Router();
+const quizzesRouter = Router();
 
 async function getAllQuizzesHandler(_req, res, next) {
   try {
@@ -79,12 +79,12 @@ async function delQuizHandler(req, res, next) {
   }
 }
 
-quizRouter.get('/', [getAllQuizzesHandler]);
+quizzesRouter.get('/', [getAllQuizzesHandler]);
 // curl -X POST -H  "Content-Type: application/json" -H "Accept:application/json" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da"
-quizRouter.post('/', [authFromApiKeyHandler, postQuizHandler]);
+quizzesRouter.post('/', [authFromApiKeyHandler, postQuizHandler]);
 // curl -X PUT -H  "Content-Type: application/json" -H "Accept:application/json" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da"
-quizRouter.put('/:quiz_id', [authFromApiKeyHandler, putQuizHandler]);
+quizzesRouter.put('/:quiz_id', [authFromApiKeyHandler, putQuizHandler]);
 
-quizRouter.delete('/:quiz_id', [authFromApiKeyHandler, delQuizHandler]);
+quizzesRouter.delete('/:quiz_id', [authFromApiKeyHandler, delQuizHandler]);
 
-module.exports = { quizRouter };
+module.exports = { quizzesRouter };

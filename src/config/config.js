@@ -3,7 +3,7 @@
  * @author Romuald THION
  */
 
-const { name, version, description } = require('../package.json');
+const { name, version, description } = require('../../package.json');
 require('dotenv').config();
 
 const appname = name || '';

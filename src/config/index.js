@@ -5,5 +5,6 @@
 
 const config = require('./config');
 const { logger, morgan } = require('./logger');
+const { pool } = require('./pool');
 
-module.exports = { config, logger, morgan };
+module.exports = { config, logger, morgan, pool };

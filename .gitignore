@@ -5,11 +5,13 @@ server/
 
 # JSDoc (generated)
 jsdoc/
+docs/
 
 # Generic
 *~
 .env*
 *.bak
+backup/
 
 # Logs
 logs

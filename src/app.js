@@ -8,15 +8,16 @@ const favicon = require('serve-favicon');
 const helmet = require('helmet');
 const cors = require('cors');
 const path = require('path');
-const { morgan, config } = require('./utils/');
+const { morgan, config } = require('./config/');
+
+const { notFoundHandler, defaultErrorHandler } = require('./middlewares/');
+
 const {
-  notFoundHandler,
-  defaultErrorHandler,
-  rootRouter,
-  userRouter,
-  openApiRouter,
-  quizRouter,
-} = require('./routes/');
+  apiDocsRouter,
+  indexRouter,
+  quizzesRouter,
+  usersRouter,
+} = require('./components/');
 
 const app = express();
 
@@ -29,8 +30,8 @@ app.use(helmet());
 app.use(cors({ origin: '*' }));
 
 // static content
-app.use(favicon(path.join(__dirname, 'static', 'favicon.ico')));
-app.use('/', express.static(path.join(__dirname, 'static')))
+app.use(favicon(path.join(__dirname, '../static', 'favicon.ico')));
+app.use('/', express.static(path.join(__dirname, '../static')));
 
 // body-parser
 app.use(express.json());
@@ -46,17 +47,16 @@ app.use((req, res, next) => {
 });
 
 // router for '/'
-app.use('/', rootRouter);
+app.use('/', indexRouter);
 
 // router for swagger-ui on swagger-jsdoc
-app.use('/api-docs', openApiRouter);
+app.use('/api-docs', apiDocsRouter);
 
 // router for user management
-app.use('/users', userRouter);
+app.use('/users', usersRouter);
 
 // router for quiz management
-app.use('/quizzes', quizRouter);
-
+app.use('/quizzes', quizzesRouter);
 
 // error handlers
 app.use(notFoundHandler);
