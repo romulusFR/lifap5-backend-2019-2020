@@ -332,33 +332,12 @@ components:
         info:
           type: array
           items:
-            type: object
-            required:
-              - total
-              - idle
-              - waiting
-            properties:
-              total:
-                type: integer
-              idle:
-                type: integer
-              waiting:
-                type: integer
+            type: integer
+            example: 1
         details:
-          type: array
           items:
-            type: object
-            required:
-              - total
-              - idle
-              - waiting
-            properties:
-              total:
-                type: integer
-              idle:
-                type: integer
-              waiting:
-                type: integer
+            type: integer
+            example: 1
 
     ObjectIndex:
       type: object
