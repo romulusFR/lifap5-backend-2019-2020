@@ -17,15 +17,14 @@ const swaggerUIOptions = {
     defaultModelExpandDepth: 0,
     displayRequestDuration: true,
     docExpansion: 'none',
-     // validatorUrl: null  to disable
+    // validatorUrl: null  to disable
   },
 };
 
-// the router
-const apiDocsRouter = Router();
-apiDocsRouter.use('/', [
-  swaggerUI.serve,
-  swaggerUI.setup(null, swaggerUIOptions),
-]);
+module.exports = function apiDocsRouter(_app) {
+  // the router
+  const router = Router();
+  router.use('/', [swaggerUI.serve, swaggerUI.setup(null, swaggerUIOptions)]);
 
-module.exports = { apiDocsRouter };
+  return router;
+};

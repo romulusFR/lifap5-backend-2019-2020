@@ -21,6 +21,11 @@ const {
 
 const app = express();
 
+// store appname and version once and for all
+app.locals.appname = config.appname;
+app.locals.version = config.version;
+app.locals.description = config.description;
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -39,24 +44,17 @@ app.use(express.json());
 // http logging, after static content
 app.use(morgan);
 
-// a middleware to store appname and version once and for all
-app.use((req, res, next) => {
-  res.locals.appname = config.appname;
-  res.locals.version = config.version;
-  next();
-});
-
 // router for '/'
-app.use('/', indexRouter);
+app.use('/', indexRouter(app));
 
 // router for swagger-ui on swagger-jsdoc
-app.use('/api-docs', apiDocsRouter);
+app.use('/api-docs', apiDocsRouter(app));
 
 // router for user management
-app.use('/users', usersRouter);
+app.use('/users', usersRouter(app));
 
 // router for quiz management
-app.use('/quizzes', quizzesRouter);
+app.use('/quizzes', quizzesRouter(app));
 
 // error handlers
 app.use(notFoundHandler);
