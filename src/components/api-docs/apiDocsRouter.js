@@ -16,7 +16,8 @@ const swaggerUIOptions = {
     defaultModelsExpandDepth: -1,
     defaultModelExpandDepth: 0,
     displayRequestDuration: true,
-    docExpansion: 'none',
+    docExpansion: 'list', // none
+    filter: true,
     // validatorUrl: null  to disable
   },
 };
