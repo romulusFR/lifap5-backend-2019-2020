@@ -26,6 +26,7 @@
     "SharedArrayBuffer": "readonly"
   },
   "rules": {
+    "camelcase": ["error", { "allow": ["_id$"] }],
     "filenames/match-exported": "error",
     "import/order": "error",
     "no-var": ["error"],
