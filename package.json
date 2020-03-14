@@ -4,8 +4,8 @@
   "description": "Backend pour le projet LIFAP5 2019-2020 (gestion de qcm)",
   "main": "app.js",
   "scripts": {
-    "start": "DEBUG=lifap5:* npx nodemon ./src/server.js",
-    "test": "jest",
+    "start": "DEBUG=lifap5:* nodemon ./src/server.js",
+    "test": "NODE_ENV=test jest",
     "doc": "jsdoc -c .jsdoc.json"
   },
   "repository": {
