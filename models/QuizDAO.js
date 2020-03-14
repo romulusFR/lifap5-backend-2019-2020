@@ -19,7 +19,7 @@ RETURNING quiz_id;
 function generatePutQuizQuery(quiz) {
   if (!quiz.quiz_id)
     throw createError.BadRequest(`Invalid content: quiz_id is missing`);
-  if(!quiz.owner_id)
+  if (!quiz.owner_id)
     throw createError.BadRequest(`Invalid content: owner_id is missing`);
 
   // keep keys which are updatable and which are defined
@@ -31,17 +31,19 @@ function generatePutQuizQuery(quiz) {
     throw createError.BadRequest(`Invalid content: nothing to update`);
 
   // generate SET attr = $val clauses
-  const templateText = keys.map((key, idx) => `SET ${key} = $${idx}`);
+  const templateText = keys.map((key, idx) => `${key} = $${idx + 1}`);
   // whole query with placeholders
   const text = `
-  UPDATE quiz
+  UPDATE quiz SET
   ${templateText.join(', ')}
-  WHERE quiz_id = $${keys.length} AND owner_id = $${keys.length + 1}
+  WHERE quiz_id = $${keys.length + 1} AND owner_id = $${keys.length + 2}
   RETURNING *;
   `;
 
   // values for placeholders in order
-  const values = keys.map((key) => quiz[`${key}`]).concat([quiz.quiz_id, quiz.owner_id]);
+  const values = keys
+    .map((key) => quiz[`${key}`])
+    .concat([quiz.quiz_id, quiz.owner_id]);
   return { text, values };
 }
 
@@ -58,25 +60,30 @@ class QuizDAO {
 
   static async postQuiz(quiz) {
     logger.silly(`postQuiz@${JSON.stringify(quiz)}`);
-    const { title, description, owner, open = false } = quiz;
+    // eslint-disable-next-line camelcase
+    const { title, description, owner_id, open = false } = quiz;
     const result = await pool.query(postQuizQuery, [
       title,
       description,
-      owner,
+      // eslint-disable-next-line camelcase
+      owner_id,
       open,
     ]);
-    if (result.rowCount) return result.rows[0].quiz_id;
-    throw createError.BadRequest(`Invalid content: title "${quiz.title}" probably already exists (no insertion)`);
+    if (result.rowCount) return result.rows[0];
+    throw createError.BadRequest(
+      `Invalid content: title "${quiz.title}" probably already exists (no insertion)`
+    );
   }
 
   static async putQuiz(quiz) {
     logger.silly(`putQuiz@${JSON.stringify(quiz)}`);
-    const result = await pool.query(generatePutQuizQuery(quiz));
+    const query = generatePutQuizQuery(quiz);
+    logger.silly(`putQuiz@${query.text}`);
+    logger.silly(`putQuiz@${query.values}`);
+    const result = await pool.query(query);
     if (result.rowCount) return result.rows[0];
-    throw createError.BadRequest(`Invalid content ${JSON.stringify(quiz)}`);
+    throw createError.Unauthorized(`User ${JSON.stringify(quiz.owner_id)} cannot update quiz #${quiz.quiz_id}`);
   }
-
-
 }
 
 module.exports = QuizDAO;

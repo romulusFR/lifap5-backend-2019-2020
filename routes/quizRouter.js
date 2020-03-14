@@ -25,11 +25,13 @@ async function getAllQuizzesHandler(_req, res, next) {
 async function postQuizHandler(req, res, next) {
   try {
     const { title, description, open } = req.body;
-    const quiz = { title, description, open, owner: res.locals.user.user_id };
+    const quiz = { title, description, open, owner_id: res.locals.user.user_id };
     if (!title)
       return next(createError.BadRequest(`Invalid content: title is missing`));
     if (!description)
-      return next(createError.BadRequest(`Invalid content: description is missing`));
+      return next(
+        createError.BadRequest(`Invalid content: description is missing`)
+      );
     const quizId = await QuizDAO.postQuiz(quiz);
     logger.silly(
       `QuizDAO.postQuiz(${JSON.stringify(quiz)})=${JSON.stringify(quizId)}`
@@ -52,7 +54,7 @@ async function putQuizHandler(req, res, next) {
       title,
       description,
       open,
-      owner: res.locals.user.user_id,
+      owner_id: res.locals.user.user_id,
     };
     const updatedQuiz = await QuizDAO.putQuiz(quiz);
     logger.silly(`QuizDAO.putQuizHandler(${quiz})=${updatedQuiz}`);
