@@ -16,10 +16,10 @@ module.exports = function usersRouter(_app) {
 
   async function getAllUsersHandler(_req, res, next) {
     try {
-      const results = await UserDAO.getAllUsers();
+      const results = await UserDAO.selectAllUsers();
       return res.send(results);
     } catch (err) {
-      logger.debug(`getAllUsers throw ${err}`);
+      logger.debug(`getAllUsersHandler throw ${err}`);
       // logger.error(err.stack);
       return next(err);
     }

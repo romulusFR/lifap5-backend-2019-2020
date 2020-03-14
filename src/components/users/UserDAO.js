@@ -12,8 +12,8 @@ const { logger, pool } = require('../../config');
  */
 class UserDAO {
   // the list of all users
-  static async getAllUsers() {
-    logger.silly(`getAllUsers@`);
+  static async selectAllUsers() {
+    logger.silly(`selectAllUsers@`);
     const result = await pool.query('SELECT user_id FROM quiz_user;');
     return result.rows;
   }
