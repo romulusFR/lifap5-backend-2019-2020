@@ -51,4 +51,4 @@ async function authFromApiKeyHandler(req, res, next) {
   }
 }
 
-module.exports = { authFromApiKeyHandler };
+module.exports = authFromApiKeyHandler ;

@@ -3,9 +3,10 @@
  * @author Romuald THION
  */
 
-const { notFoundHandler, defaultErrorHandler } = require('./errorHandlers');
-const { negotiateContentHandler } = require('./negotiateContentHandler');
-const { authFromApiKeyHandler } = require('./authenticationHandler');
+const notFoundHandler = require('./notFoundHandler');
+const defaultErrorHandler = require('./defaultErrorHandler');
+const negotiateContentHandler = require('./negotiateContentHandler');
+const authFromApiKeyHandler = require('./authFromApiKeyHandler');
 
 module.exports = {
   notFoundHandler,

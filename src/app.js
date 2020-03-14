@@ -57,7 +57,7 @@ app.use('/users', usersRouter(app));
 app.use('/quizzes', quizzesRouter(app));
 
 // error handlers
-app.use(notFoundHandler);
-app.use(defaultErrorHandler);
+app.use(notFoundHandler(app));
+app.use(defaultErrorHandler(app));
 
 module.exports = app;

@@ -48,4 +48,4 @@ function negotiateContentHandler(htmlOpts, jsonOpts) {
   };
 }
 
-module.exports = { negotiateContentHandler };
+module.exports = negotiateContentHandler;
