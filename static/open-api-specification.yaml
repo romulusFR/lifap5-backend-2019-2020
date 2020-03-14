@@ -129,8 +129,13 @@ paths:
               schema: 
                 type: array
                 items:
-                  type: string
-              example: [test.user, other.user]
+                  type: object
+                  properties:
+                    user_id: 
+                      type: string
+              example: 
+                - user_id: test.user
+                - user_id: other.user
 
   /users/whoami:
     get:
