@@ -9,7 +9,7 @@ const { UserDAO } = require('./UserDAO');
 const {
   negotiateContentHandler,
   authFromApiKeyHandler,
-} = require('../../middlewares/');
+} = require('../../middlewares');
 
 module.exports = function usersRouter(_app) {
   const router = Router();
