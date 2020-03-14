@@ -203,8 +203,8 @@ paths:
                   type: object
                   $ref: '#/components/schemas/ObjectQuiz'
     post:
-      summary: Create a new quiz
-      description: Create a quiz, in the database. quiz_id is auto generated, title and description are mandatory
+      summary: Creates a new quiz
+      description: Creates a quiz, in the database. quiz_id is auto generated, title and description are mandatory
       operationId: postQuizHandler
       tags:
         - authenticated
@@ -221,7 +221,6 @@ paths:
             example:
               title: "QCM de test"
               description: "Un QCM supplémentaire"
-              open: false
       responses:
         '201':
           description: Content created, returns the quiz's id 
@@ -235,6 +234,23 @@ paths:
                     example: 42
 
   /quizzes/{quiz_id}:
+    get:
+      summary: Get one quiz
+      description: Retreive the given quizz if it exists
+      operationId: getOneQuizHandler
+      tags:
+        - public
+        - quizzes
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                type: object
+                $ref: '#/components/schemas/ObjectQuiz'
+      parameters:
+        - $ref: '#/components/parameters/quizIdParam'
     put:
       summary: Update an existing quiz
       description: attributes created_at, quiz_id and owner_id cannot be modified, owner_id must be current user
@@ -252,8 +268,8 @@ paths:
             schema:
               $ref: '#/components/schemas/ObjectQuiz'
             example:
-              title: "Titre a mettre à jour"
-              description: "Un QCM supplémentaire - descritiption modifiée"
+              title: "QCM de test - màj"
+              description: "Un QCM supplémentaire - màj"
               open: true
       responses:
         '200':
@@ -278,13 +294,16 @@ paths:
           description: Content deleted
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/ObjectQuiz'
+              schema: 
+                type: object
+                properties:
+                  quiz_id:
+                    type: integer
+                    example: 42
       parameters:
         - $ref: '#/components/parameters/quizIdParam'
 
 components:
-
   parameters:
     quizIdParam:
       name: quiz_id
@@ -315,7 +334,6 @@ components:
           example: <html>An error page</html>
 
   schemas:
-
     ObjectHealthCheck:
       description: The object returned on healthcheck
       type: object
@@ -352,7 +370,6 @@ components:
         - appname
         - version
         - description
-
 
     ObjectUser:
       type: object
@@ -411,17 +428,6 @@ components:
           type: integer
           example: 4
 
-    Error:
-      type: object
-      properties:
-        name:
-          type: string
-        message:
-          type: string
-      required:
-        - name
-        - message
-
     ErrorBadRequest:
       type: object
       properties:
@@ -433,19 +439,6 @@ components:
       required:
         - name
         - message
-
-    ErrorNotImplemented:
-      type: object
-      properties:
-        name:
-          type: string
-          enum: [NotImplemented]
-        message:
-          type: string
-      required:
-        - name
-        - message
-
     ErrorUnauthorized:
       type: object
       properties:
@@ -457,13 +450,46 @@ components:
       required:
         - name
         - message
-
     ErrorForbidden:
       type: object
       properties:
         name:
           type: string
           enum: [Forbidden]
+        message:
+          type: string
+      required:
+        - name
+        - message
+    ErrorNotFound:
+      type: object
+      properties:
+        name:
+          type: string
+          enum: [NotFound]
+        message:
+          type: string
+      required:
+        - name
+        - message
+    ErrorInternalServer:
+      type: object
+      description: Default error, caught by the default error handler
+      properties:
+        name:
+          type: string
+          enum: [InternalServer]
+        message:
+          type: string
+      required:
+        - name
+        - message
+    ErrorNotImplemented:
+      type: object
+      properties:
+        name:
+          type: string
+          enum: [NotImplemented]
         message:
           type: string
       required:
