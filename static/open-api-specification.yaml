@@ -43,7 +43,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ObjectIndexInfo'
+                $ref: '#/components/schemas/ObjectIndex'
             text/html:
               schema:
                 type: string
