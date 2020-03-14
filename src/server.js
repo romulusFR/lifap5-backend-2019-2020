@@ -2,9 +2,8 @@
 
 const http = require('http');
 const { createTerminus } = require('@godaddy/terminus');
-const { logger, config } = require('./utils/');
+const { logger, config, pool } = require('./config/');
 const app = require('./app');
-const { pool } = require('./models/');
 
 const httpServer = http.createServer(app);
 const serverVersion = `${config.appname}@${config.version}[${config.env}]`;

@@ -3,8 +3,7 @@
  * @author Romuald THION
  */
 
-const { logger } = require('../utils');
-const pool = require('./pool');
+const { logger, pool } = require('../../config');
 
 /**
  * @class UserDAO

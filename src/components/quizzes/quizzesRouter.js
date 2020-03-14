@@ -5,9 +5,9 @@
 
 const { Router } = require('express');
 const createError = require('http-errors');
-const { logger } = require('../utils');
-const { QuizDAO } = require('../models');
-const { authFromApiKeyHandler } = require('./userRouter');
+const { logger } = require('../../config');
+const { QuizDAO } = require('./QuizDAO');
+const { authFromApiKeyHandler } = require('../../middlewares');
 // const { negotiateContentHandler } = require('./genericHandlers');
 
 const quizRouter = Router();

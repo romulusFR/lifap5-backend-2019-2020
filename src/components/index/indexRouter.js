@@ -5,8 +5,8 @@
 
 const { Router } = require('express');
 const createError = require('http-errors');
-const { logger, config } = require('../utils');
-const { negotiateContentHandler } = require('./genericHandlers');
+const { logger, config } = require('../../config');
+const { negotiateContentHandler } = require('../../middlewares/');
 
 const sendIndex = negotiateContentHandler(
   {
