@@ -82,27 +82,23 @@ class QuizDAO {
   static async putQuiz(quiz) {
     logger.silly(`putQuiz@${JSON.stringify(quiz)}`);
     const query = generatePutQuizQuery(quiz);
-    logger.silly(`putQuiz@${query.text}`);
-    logger.silly(`putQuiz@${query.values}`);
+    // logger.silly(`putQuiz@${query.text}`);
+    // logger.silly(`putQuiz@${query.values}`);
     const result = await pool.query(query);
+    
     if (result.rowCount) return result.rows[0];
-    throw createError.Unauthorized(
-      `User ${JSON.stringify(quiz.owner_id)} cannot UPDATE quiz #${
-        quiz.quiz_id
-      }`
-    );
+    throw createError.NotFound(`Cannot UPDATE quiz #${quiz.quiz_id}`);
   }
 
-  static async delQuiz(quiz_id, owner_id) {
-    logger.silly(`delQuiz@${JSON.stringify(quiz_id)}, ${owner_id}`);
+  static async delQuiz(quiz_id, user_id) {
+    logger.silly(`delQuiz@${JSON.stringify(quiz_id)}, ${user_id}`);
     const result = await pool.query(
-      'DELETE FROM quiz WHERE quiz_id = $1 AND owner_id = $2;',
-      [quiz_id, owner_id]
+      'DELETE FROM quiz WHERE quiz_id = $1 AND owner_id = $2 RETURNING quiz_id;',
+      [quiz_id, user_id]
     );
+
     if (result.rowCount) return result.rows[0];
-    throw createError.Unauthorized(
-      `User ${JSON.stringify(owner_id)} cannot DELETE quiz #${quiz_id}`
-    );
+    throw createError.NotFound(`Cannot DELETE quiz #${quiz_id}`);
   }
 }
 
