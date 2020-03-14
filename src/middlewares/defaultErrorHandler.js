@@ -40,7 +40,6 @@ module.exports = function defaultErrorHandler(app) {
       },
     });
 
-    logger.silly(`defaultErrorHandler@${res.locals.appname}:${res.locals.version}`);
     const msg = `defaultErrorHandler@${status} - ${req.method} ${req.url} - ${req.ip} : ${name} - ${message}`;
     if (status >= 500) {
       logger.error(msg);
