@@ -1,10 +1,10 @@
 CREATE SCHEMA IF NOT EXISTS lifap5;
 
-DROP TABLE IF EXISTS lifap5.answer;
-DROP TABLE IF EXISTS lifap5.proposition;
-DROP TABLE IF EXISTS lifap5.question;
-DROP TABLE IF EXISTS lifap5.quiz;
-DROP TABLE IF EXISTS lifap5.quiz_user;
+DROP TABLE IF EXISTS lifap5.answer CASCADE;
+DROP TABLE IF EXISTS lifap5.proposition CASCADE;
+DROP TABLE IF EXISTS lifap5.question CASCADE;
+DROP TABLE IF EXISTS lifap5.quiz CASCADE;
+DROP TABLE IF EXISTS lifap5.quiz_user CASCADE;
 
 CREATE TABLE IF NOT EXISTS lifap5.quiz_user (
   user_id TEXT PRIMARY KEY CHECK (char_length(user_id) > 4),
@@ -24,7 +24,8 @@ CREATE TABLE IF NOT EXISTS lifap5.quiz (
 
 CREATE TABLE IF NOT EXISTS lifap5.question (
   PRIMARY KEY (quiz_id, question_id),
-  quiz_id INTEGER REFERENCES lifap5.quiz,
+  quiz_id INTEGER REFERENCES lifap5.quiz
+    ON DELETE CASCADE ON UPDATE CASCADE,
   question_id INTEGER GENERATED ALWAYS AS IDENTITY,
   content TEXT NOT NULL,
   optional BOOLEAN NOT NULL DEFAULT FALSE,
@@ -33,7 +34,8 @@ CREATE TABLE IF NOT EXISTS lifap5.question (
 
 CREATE TABLE IF NOT EXISTS lifap5.proposition (
   PRIMARY KEY (quiz_id, question_id, proposition_id),
-  FOREIGN KEY (quiz_id, question_id) REFERENCES lifap5.question,
+  FOREIGN KEY (quiz_id, question_id) REFERENCES lifap5.question
+    ON DELETE CASCADE ON UPDATE CASCADE,
   quiz_id INTEGER,
   question_id INTEGER,
   proposition_id INTEGER GENERATED ALWAYS AS IDENTITY,
@@ -43,7 +45,8 @@ CREATE TABLE IF NOT EXISTS lifap5.proposition (
 
 CREATE TABLE IF NOT EXISTS lifap5.answer (
   PRIMARY KEY (quiz_id, question_id, user_id),
-  FOREIGN KEY (quiz_id, question_id, proposition_id) REFERENCES lifap5.proposition,
+  FOREIGN KEY (quiz_id, question_id, proposition_id) REFERENCES lifap5.proposition
+    ON DELETE CASCADE ON UPDATE CASCADE,
   quiz_id INTEGER,
   question_id INTEGER,
   user_id TEXT REFERENCES lifap5.quiz_user,

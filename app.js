@@ -15,6 +15,7 @@ const {
   rootRouter,
   userRouter,
   openApiRouter,
+  quizRouter,
 } = require('./routes/');
 
 const app = express();
@@ -53,6 +54,8 @@ app.use('/api-docs', openApiRouter);
 // router for user management
 app.use('/users', userRouter);
 
+// router for quiz management
+app.use('/quizzes', quizRouter);
 
 
 // error handlers

@@ -41,6 +41,7 @@ async function authFromApiKeyHandler(req, res, next) {
       );
       return next(err);
     }
+    logger.silly(`authFromApiKeyHandler@sets res.locals.user = ${JSON.stringify(result)}`);
     res.locals.user = result;
     return next();
   } catch (err) {

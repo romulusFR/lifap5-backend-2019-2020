@@ -12,7 +12,13 @@ const swaggerUI = require('swagger-ui-express');
 const swaggerUIOptions = {
   explorer: false,
   swaggerUrl: '/open-api-specification.yaml',
-  swaggerOptions: { defaultModelsExpandDepth:-1 }, // validatorUrl: null  to disable
+  swaggerOptions: {
+    defaultModelsExpandDepth: -1,
+    defaultModelExpandDepth: 0,
+    displayRequestDuration: true,
+    docExpansion: 'none',
+     // validatorUrl: null  to disable
+  },
 };
 
 // the router
@@ -21,6 +27,5 @@ openApiRouter.use('/', [
   swaggerUI.serve,
   swaggerUI.setup(null, swaggerUIOptions),
 ]);
-
 
 module.exports = { openApiRouter };
