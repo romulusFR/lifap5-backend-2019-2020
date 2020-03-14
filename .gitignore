@@ -5,6 +5,7 @@ server/
 
 # JSDoc (generated)
 jsdoc/
+docs/
 
 # Generic
 *~

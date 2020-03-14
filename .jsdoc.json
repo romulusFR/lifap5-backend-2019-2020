@@ -3,14 +3,14 @@
   "recurseDepth": 10,
   "sourceType": "module",
   "source": {
-    "include": ["."],
+    "include": ["./src"],
     "exclude": ["ecosystem.config.js", "node_modules/"],
     "includePattern": ".+\\.js$",
     "excludePattern": "(^|\\/|\\\\)_"
   },
   "opts": {
     "encoding": "utf8",
-    "destination": "./jsdoc/",
+    "destination": "./docs/",
     "recurse": true
   }
 }
