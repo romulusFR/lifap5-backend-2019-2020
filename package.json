@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "DEBUG=lifap5:* npx nodemon ./src/server.js",
-    "test": "echo not yet",
+    "test": "jest",
     "doc": "jsdoc -c .jsdoc.json"
   },
   "repository": {
