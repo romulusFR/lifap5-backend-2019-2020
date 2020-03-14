@@ -219,7 +219,7 @@ paths:
               open: false
       responses:
         '201':
-          description: Content created, returns the quiz'id 
+          description: Content created, returns the quiz's id 
           content:
             application/json:
               schema: 
@@ -229,6 +229,7 @@ paths:
                     type: integer
                     example: 42
 
+  /quizzes/{quiz_id}:
     put:
       summary: Update an existing quiz
       description: attributes created_at, quiz_id and owner_id cannot be modified
@@ -239,7 +240,7 @@ paths:
       security:
         - XApiKeyAuth: []
       requestBody:
-        description: The quiz_id and the fields to update
+        description: The the fields to update
         required: true
         content:
           application/json:
@@ -256,6 +257,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ObjectQuiz'
+    parameters:
+    - name: quiz_id
+      in: path
+      description: ID of the quiz to update
+      required: true
+      schema:
+        type: integer
+      style: simple
+
 
 components:
 

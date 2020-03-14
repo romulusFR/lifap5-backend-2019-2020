@@ -48,13 +48,13 @@ async function postQuizHandler(req, res, next) {
 async function putQuizHandler(req, res, next) {
   try {
     // eslint-disable-next-line camelcase
-    const { quiz_id, title, description, open } = req.body;
+    const { title, description, open } = req.body;
     const quiz = {
-      quiz_id,
+      quiz_id:req.params.quiz_id,
+      owner_id: res.locals.user.user_id,
       title,
       description,
       open,
-      owner_id: res.locals.user.user_id,
     };
     const updatedQuiz = await QuizDAO.putQuiz(quiz);
     logger.silly(`QuizDAO.putQuizHandler(${quiz})=${updatedQuiz}`);
@@ -71,6 +71,6 @@ quizRouter.get('/', [getAllQuizzesHandler]);
 // curl -X POST -H  "Content-Type: application/json" -H "Accept:application/json" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da"
 quizRouter.post('/', [authFromApiKeyHandler, postQuizHandler]);
 // curl -X PUT -H  "Content-Type: application/json" -H "Accept:application/json" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da"
-quizRouter.put('/', [authFromApiKeyHandler, putQuizHandler]);
+quizRouter.put('/:quiz_id', [authFromApiKeyHandler, putQuizHandler]);
 
 module.exports = { quizRouter };
