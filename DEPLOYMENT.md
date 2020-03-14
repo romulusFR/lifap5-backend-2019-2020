@@ -124,6 +124,19 @@ Pour créer le schéma puis peupler
  psql -U lifap5 -h localhost -f ./database/sample.sql
 ```
 
+Pour tester
+
+
+
+```sql
+select quiz_id, title, owner_id,
+       question_id, question.content, optional, weight,
+       proposition_id, proposition.content, correct
+from quiz left join question using (quiz_id)
+          left join proposition using(quiz_id, question_id)
+order by quiz_id, question_id, proposition_id;
+```
+
 Configuration Node.JS
 ---------------------
 
