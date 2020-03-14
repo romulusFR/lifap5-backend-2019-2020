@@ -6,10 +6,12 @@
 const { Router } = require('express');
 const { logger } = require('../../config');
 const { UserDAO } = require('./UserDAO');
-const { negotiateContentHandler, authFromApiKeyHandler } = require('../../middlewares/');
+const {
+  negotiateContentHandler,
+  authFromApiKeyHandler,
+} = require('../../middlewares/');
 
-module.exports = function usersRouter(_app){ 
-
+module.exports = function usersRouter(_app) {
   const router = Router();
 
   async function getAllUsersHandler(_req, res, next) {
@@ -41,5 +43,5 @@ module.exports = function usersRouter(_app){
   // 400 (Bad Request)      curl -H "Accept:text/*" -H "X-API-KEY:invalid" http://localhost:3000/user/whoami
   router.get('/whoami', [authFromApiKeyHandler, whoamiHandler]);
 
-    return router;
+  return router;
 };

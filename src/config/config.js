@@ -19,7 +19,6 @@ const pgPass = process.env.PG_PASS || '';
 const pgDname = process.env.PG_DNAME || 'lifap5';
 const pgSchema = process.env.PG_SCHEMA || 'lifap5';
 
-
 module.exports = {
   appname,
   version,
