@@ -3,6 +3,9 @@ server
 server/
 .env
 
+# clident
+client/
+
 # JSDoc (generated)
 jsdoc/
 docs/
@@ -55,3 +58,4 @@ node_modules/
 
 # Output of 'npm pack'
 *.tgz
+
