@@ -15,4 +15,9 @@ Test postman/newman    ;2020-03-11 ;1.0       ; on reprend la battery de test de
 Tests, openapi         ;2020-03-12 ;2.0       ; après étude, vue le manque de synchro postman<-> openapi, on va aller sur swagger-jsdoc, swagger-ui, jest et supertest
 Refactor BD, partie I  ;2020-03-13 ;1.0       ; reprise de la BD avec une vue, pb sur les séquences et requêtes pour DAO
 Route /quizzes         ;2020-03-13 ;4.0       ; un bon morceau du métier : les routes /quizzes/
-Route /quizzes         ;2020-03-14 ;1.0       ; réorganisation complète des fichier, refactor en composants, 
+Doc OAS3               ;2020-03-13 ;1.0       ; à peu près complète et à jour
+Refactor géant         ;2020-03-14 ;1.0       ; réorganisation complète des fichier, refactor en composants, 
+Route /quizzes         ;2020-03-13 ;2.0       ; fin des routes /quizzes/
+Refactor quizzes       ;2020-03-13 ;2.0       ; pour gestion des paramètres route.param, alléger les DAO, gérer les erreurs
+Doc OAS3               ;2020-03-13 ;1.0       ; à peu près complète et à jour
+Refactor BD            ;2020-03-13 ;1.0       ; simplification du métier, gestion pb des uuid v4 VS v5
