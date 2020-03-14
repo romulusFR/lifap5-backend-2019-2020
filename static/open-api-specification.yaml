@@ -199,7 +199,7 @@ paths:
                   $ref: '#/components/schemas/ObjectQuiz'
     post:
       summary: Create a new quiz
-      description: Create a quiz, in the database. quiz_id is auto generated
+      description: Create a quiz, in the database. quiz_id is auto generated, title and description are mandatory
       operationId: postQuizHandler
       tags:
         - authenticated
@@ -223,9 +223,39 @@ paths:
           content:
             application/json:
               schema: 
-                type: integer
-                example: 42
+                type: object
+                properties:
+                  quiz_id:
+                    type: integer
+                    example: 42
 
+    put:
+      summary: Update an existing quiz
+      description: attributes created_at, quiz_id and owner_id cannot be modified
+      operationId: putQuizHandler
+      tags:
+        - authenticated
+        - quizzes
+      security:
+        - XApiKeyAuth: []
+      requestBody:
+        description: The quiz_id and the fields to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectQuiz'
+            example:
+              quiz_id: 1
+              description: "Un QCM supplémentaire - descritiption modifiée"
+              open: true
+      responses:
+        '200':
+          description: Content updated, returns the whole quizz
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectQuiz'
 
 components:
 
