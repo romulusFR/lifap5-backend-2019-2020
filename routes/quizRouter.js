@@ -47,7 +47,6 @@ async function postQuizHandler(req, res, next) {
 
 async function putQuizHandler(req, res, next) {
   try {
-    // eslint-disable-next-line camelcase
     const { title, description, open } = req.body;
     const quiz = {
       quiz_id:req.params.quiz_id,
@@ -67,10 +66,25 @@ async function putQuizHandler(req, res, next) {
   }
 }
 
+async function delQuizHandler(req, res, next) {
+  try {
+    const deletedQuiz = await QuizDAO.delQuiz(req.params.quiz_id, res.locals.user.user_id);
+    logger.silly(`QuizDAO.delQuiz(${req.params.quiz_id}, ${res.locals.user.user_id})=${deletedQuiz}`);
+    res.send(deletedQuiz);
+    return deletedQuiz;
+  } catch (err) {
+    logger.debug(`delQuizHandler throw ${err}`);
+    // logger.error(err.stack);
+    return next(err);
+  }
+}
+
 quizRouter.get('/', [getAllQuizzesHandler]);
 // curl -X POST -H  "Content-Type: application/json" -H "Accept:application/json" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da"
 quizRouter.post('/', [authFromApiKeyHandler, postQuizHandler]);
 // curl -X PUT -H  "Content-Type: application/json" -H "Accept:application/json" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da"
 quizRouter.put('/:quiz_id', [authFromApiKeyHandler, putQuizHandler]);
+
+quizRouter.delete('/:quiz_id', [authFromApiKeyHandler, delQuizHandler]);
 
 module.exports = { quizRouter };

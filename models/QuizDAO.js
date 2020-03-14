@@ -60,18 +60,16 @@ class QuizDAO {
 
   static async postQuiz(quiz) {
     logger.silly(`postQuiz@${JSON.stringify(quiz)}`);
-    // eslint-disable-next-line camelcase
     const { title, description, owner_id, open = false } = quiz;
     const result = await pool.query(postQuizQuery, [
       title,
       description,
-      // eslint-disable-next-line camelcase
       owner_id,
       open,
     ]);
     if (result.rowCount) return result.rows[0];
     throw createError.BadRequest(
-      `Invalid content: title "${quiz.title}" probably already exists (no insertion)`
+      `Invalid content: title "${quiz.title}" probably already exists (no INSERT)`
     );
   }
 
@@ -82,7 +80,14 @@ class QuizDAO {
     logger.silly(`putQuiz@${query.values}`);
     const result = await pool.query(query);
     if (result.rowCount) return result.rows[0];
-    throw createError.Unauthorized(`User ${JSON.stringify(quiz.owner_id)} cannot update quiz #${quiz.quiz_id}`);
+    throw createError.Unauthorized(`User ${JSON.stringify(quiz.owner_id)} cannot UPDATE quiz #${quiz.quiz_id}`);
+  }
+
+  static async delQuiz(quiz_id, owner_id) {
+    logger.silly(`delQuiz@${JSON.stringify(quiz_id)}, ${owner_id}`);
+    const result = await pool.query('DELETE FROM quiz WHERE quiz_id = $1 AND owner_id = $2;', [quiz_id, owner_id]);
+    if (result.rowCount) return result.rows[0];
+    throw createError.Unauthorized(`User ${JSON.stringify(owner_id)} cannot DELETE quiz #${quiz_id}`);
   }
 }
 

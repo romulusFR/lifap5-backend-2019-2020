@@ -232,7 +232,7 @@ paths:
   /quizzes/{quiz_id}:
     put:
       summary: Update an existing quiz
-      description: attributes created_at, quiz_id and owner_id cannot be modified
+      description: attributes created_at, quiz_id and owner_id cannot be modified, owner_id must be current user
       operationId: putQuizHandler
       tags:
         - authenticated
@@ -247,7 +247,7 @@ paths:
             schema:
               $ref: '#/components/schemas/ObjectQuiz'
             example:
-              quiz_id: 1
+              title: "Titre a mettre à jour"
               description: "Un QCM supplémentaire - descritiption modifiée"
               open: true
       responses:
@@ -257,17 +257,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ObjectQuiz'
-    parameters:
-    - name: quiz_id
+      parameters:
+        - $ref: '#/components/parameters/quizIdParam'
+    delete:
+      summary: Delete an existing quiz
+      description: owner_id must be current user
+      operationId: delQuizHandler
+      tags:
+        - authenticated
+        - quizzes
+      security:
+        - XApiKeyAuth: []
+      responses:
+        '200':
+          description: Content deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectQuiz'
+      parameters:
+        - $ref: '#/components/parameters/quizIdParam'
+
+components:
+
+  parameters:
+    quizIdParam:
+      name: quiz_id
       in: path
-      description: ID of the quiz to update
+      description: ID of a quiz
       required: true
       schema:
         type: integer
       style: simple
-
-
-components:
 
 # https://swagger.io/docs/specification/authentication/api-keys/
   securitySchemes:
