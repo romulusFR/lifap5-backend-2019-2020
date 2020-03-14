@@ -83,19 +83,19 @@ sudo -u postgres cp /etc/postgresql/12/main/pg_hba.conf \
 sudo -u postgres cp /etc/postgresql/12/main/postgresql.conf \
                     /etc/postgresql/12/main/postgresql.conf.back
 
-cd ~/lifap5-backend-2019-2020/database
+cd ~/lifap5-backend-2019-2020/system/postgresql
 sudo -u postgres cp pg_hba.conf /etc/postgresql/12/main/pg_hba.conf
 sudo -u postgres cp postgresql.conf /etc/postgresql/12/main/postgresql.conf
 
 sudo service postgresql restart
 ```
 
-Exécuter le script [`database/init-db.sh`](database/init-db.sh) en tant que `postgres`.
+Exécuter le script [`system/postgresql/init-db.sh`](system/postgresql/init-db.sh) en tant que `postgres`.
  
 ```bash
  # /!\ avec l'utilisateur postgres /!\
  sudo -u postgres -s
- cd ~/lifap5-backend-2019-2020/database
+ cd ~/lifap5-backend-2019-2020/system/postgresql
  init-db.sh
  # saisir le mot de passe 2 fois
  exit
@@ -124,8 +124,8 @@ Pour créer le schéma puis peupler
  psql -U lifap5 -h localhost -f ./database/sample.sql
 ```
 
-Configuration Node.js
---------------------
+Configuration Node.JS
+---------------------
 
 Un point à assurer  <https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally>
 
@@ -191,10 +191,10 @@ On va maitenant durcir la configuration TLS et configurer les redirections vers 
 
 ```bash
 sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
-cd /home/ubuntu/lifap5-backend-2019-2020/nginx
+cd /home/ubuntu/lifap5-backend-2019-2020/system/nginx
+
 sudo cp ssl-params.conf /etc/nginx/snippets/
 sudo cp nginx.conf /etc/nginx/
-
 sudo cp proxy-params.conf /etc/nginx/snippets/
 sudo cp default.conf /etc/nginx/sites-available/default
 
