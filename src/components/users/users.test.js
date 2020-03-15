@@ -9,19 +9,22 @@ afterAll((done) => {
 });
 
 describe('GET /users/', () => {
-  it("should give the list of all user_id's", async (done) => {
-    const res = await request(app).get('/users/');
+  it("should give the list of all user_id's", async () => {
+    const res = await request(app)
+      .get('/users/')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/);
+
     expect(res.statusCode).toEqual(200);
     expect(Array.isArray(res.body)).toBe(true);
     expect(res.body.length).toBeGreaterThanOrEqual(4);
     expect(res.body).toContainEqual({ user_id: 'test.user' });
     expect(res.body).toContainEqual({ user_id: 'other.user' });
-    done();
   });
 });
 
 describe('GET /users/whoami', () => {
-  it('should answer 200 when x-api-key is set with an exiting user', async (done) => {
+  it('should answer 200 when x-api-key is set with an exiting user', async () => {
     const res = await request(app)
       .get('/users/whoami')
       .set('Accept', 'application/json')
@@ -34,11 +37,9 @@ describe('GET /users/whoami', () => {
       firstname: 'Test',
       lastname: 'User',
     });
-
-    done();
   });
 
-  it('should answer 400 when x-api-key is not UUIDv4', async (done) => {
+  it('should answer 400 when x-api-key is not UUIDv4', async () => {
     const res = await request(app)
       .get('/users/whoami')
       .set('Accept', 'application/json')
@@ -51,10 +52,9 @@ describe('GET /users/whoami', () => {
       message: expect.any(String),
       status: 400,
     });
-    done();
   });
 
-  it('should answer 401 when no x-api-key is not set', async (done) => {
+  it('should answer 401 when no x-api-key is not set', async () => {
     const res = await request(app)
       .get('/users/whoami')
       .set('Accept', 'application/json')
@@ -66,10 +66,9 @@ describe('GET /users/whoami', () => {
       message: expect.any(String),
       status: 401,
     });
-    done();
   });
 
-  it('should answer 403 when x-api-key is not in the database', async (done) => {
+  it('should answer 403 when x-api-key is not in the database', async () => {
     const res = await request(app)
       .get('/users/whoami')
       .set('Accept', 'application/json')
@@ -82,6 +81,5 @@ describe('GET /users/whoami', () => {
       message: expect.any(String),
       status: 403,
     });
-    done();
   });
 });
