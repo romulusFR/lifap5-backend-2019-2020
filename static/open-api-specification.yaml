@@ -116,11 +116,18 @@ paths:
   /users/:
     get:
       summary: All users
-      description: The list of all users (TODO with pagination)
+      description: The list of all users with pagination, at most pageLimit items (default 50)
       operationId: getAllUsersHandler
       tags:
         - public
         - users
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: The number of pages to skip, so (page-1)*pageLimit items are skipped
       responses:
         '200':
           description: OK

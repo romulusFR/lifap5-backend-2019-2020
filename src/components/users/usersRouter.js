@@ -4,6 +4,8 @@
  */
 
 const { Router } = require('express');
+const createError = require('http-errors');
+const { isInt } = require('validator');
 const { logger } = require('../../config');
 const { UserDAO } = require('./UserDAO');
 const {
@@ -11,12 +13,18 @@ const {
   authFromApiKeyHandler,
 } = require('../../middlewares');
 
-module.exports = function usersRouter(_app) {
+module.exports = function usersRouter(app) {
   const router = Router();
 
-  async function getAllUsersHandler(_req, res, next) {
+  async function getAllUsersHandler(req, res, next) {
+    const page = req.query.page || 1;
+    if (!isInt(page, { min: 1 })) {
+      const err = new createError.BadRequest(`In query "?page=${page}", page must be greater or equal than 1`);
+      return next(err);
+    }
+
     try {
-      const results = await UserDAO.selectAllUsers();
+      const results = await UserDAO.selectAllUsers(page, app.locals.pageLimit);
       return res.send(results);
     } catch (err) {
       logger.debug(`getAllUsersHandler throw ${err}`);
