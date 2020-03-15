@@ -5,6 +5,7 @@
 // https://www.albertgao.xyz/2017/05/24/how-to-test-expressjs-with-jest-and-supertest/
 
 module.exports = {
+  colors: true,
   verbose: true,
   watchman: false, // peut être mis à true, corrigé avec watchman 4.9.0
   testEnvironment: 'node',
