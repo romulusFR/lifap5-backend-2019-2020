@@ -18,8 +18,20 @@ describe('GET /users/', () => {
     expect(res.statusCode).toEqual(200);
     expect(Array.isArray(res.body)).toBe(true);
     expect(res.body.length).toBeGreaterThanOrEqual(4);
+    expect(res.body.length).toBeLessThanOrEqual(app.locals.pageLimit);
     expect(res.body).toContainEqual({ user_id: 'test.user' });
     expect(res.body).toContainEqual({ user_id: 'other.user' });
+  });
+
+  it("should deal correctly with explicit pagination when out of bounds", async () => {
+    const res = await request(app)
+      .get('/users/?page=999')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/);
+
+    expect(res.statusCode).toEqual(200);
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body).toEqual([]);
   });
 });
 
