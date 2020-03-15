@@ -8,16 +8,16 @@ const favicon = require('serve-favicon');
 const helmet = require('helmet');
 const cors = require('cors');
 const path = require('path');
-const { morgan, config } = require('./config/');
+const { morgan, config } = require('./config');
 
-const { notFoundHandler, defaultErrorHandler } = require('./middlewares/');
+const { notFoundHandler, defaultErrorHandler } = require('./middlewares');
 
 const {
   apiDocsRouter,
   indexRouter,
   quizzesRouter,
   usersRouter,
-} = require('./components/');
+} = require('./components');
 
 const app = express();
 
@@ -29,9 +29,11 @@ app.locals.description = config.description;
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// security
-app.set('trust proxy', 'loopback');
-app.use(helmet());
+// security, disabled in non production
+if (config.env === 'production') {
+  app.set('trust proxy', 'loopback');
+  app.use(helmet());
+}
 app.use(cors({ origin: '*' }));
 
 // static content
