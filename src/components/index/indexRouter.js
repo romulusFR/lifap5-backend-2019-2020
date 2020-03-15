@@ -6,7 +6,7 @@
 const { Router } = require('express');
 const createError = require('http-errors');
 const { logger, config } = require('../../config');
-const { negotiateContentHandler } = require('../../middlewares/');
+const { negotiateContentHandler } = require('../../middlewares');
 
 module.exports = function indexRouter(app) {
   const indexHandler = negotiateContentHandler(
