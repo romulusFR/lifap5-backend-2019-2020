@@ -6,6 +6,7 @@
   "scripts": {
     "start": "DEBUG=lifap5:* nodemon ./src/server.js",
     "test": "NODE_ENV=test jest",
+    "test:watch": "NODE_ENV=test jest --watch",
     "doc": "jsdoc -c .jsdoc.json"
   },
   "repository": {
