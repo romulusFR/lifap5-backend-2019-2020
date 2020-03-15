@@ -204,6 +204,13 @@ paths:
       tags:
         - public
         - quizzes
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: The number of pages to skip, so (page-1)*pageLimit items are skipped
       responses:
         '200':
           description: OK

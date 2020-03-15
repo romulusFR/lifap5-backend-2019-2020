@@ -5,104 +5,111 @@
 
 const { Router } = require('express');
 const createError = require('http-errors');
+const { isInt } = require('validator');
 const { logger } = require('../../config');
 const { QuizDAO } = require('./QuizDAO');
 const { authFromApiKeyHandler } = require('../../middlewares');
 
-async function getAllQuizzesHandler(_req, res, next) {
-  try {
-    const results = await QuizDAO.getAllQuizzes();
-    return res.send(results);
-  } catch (err) {
-    logger.debug(`getAllQuizzesHandler throw ${err}`);
-    return next(err);
+module.exports = function quizzesRouter(app) {
+
+  async function getAllQuizzesHandler(req, res, next) {
+    const page = req.query.page || 1;
+    if (!isInt(`${page}`, { min: 1 })) {
+      const err = new createError.BadRequest(`In query "?page=${page}", page must be greater or equal than 1`);
+      return next(err);
+    }
+    try {
+      const results = await QuizDAO.getAllQuizzes(page, app.locals.pageLimit);
+      return res.send(results);
+    } catch (err) {
+      logger.debug(`getAllQuizzesHandler throw ${err}`);
+      return next(err);
+    }
   }
-}
-
-function getOneQuizHandler(_req, res, _next) {
-  return res.send(res.locals.quiz);
-}
-
-async function postQuizHandler(req, res, next) {
-  try {
-    const { title, description, open = false } = req.body;
-    // authFromApiKeyHandler ensures that owner_id is defined
-    const owner_id = res.locals.user.user_id;
-    const quiz = { title, description, open, owner_id };
-    if (!title)
-      return next(createError.BadRequest(`Invalid content: title is missing`));
-    if (!description)
-      return next(
-        createError.BadRequest(`Invalid content: description is missing`)
+  
+  function getOneQuizHandler(_req, res, _next) {
+    return res.send(res.locals.quiz);
+  }
+  
+  async function postQuizHandler(req, res, next) {
+    try {
+      const { title, description, open = false } = req.body;
+      // authFromApiKeyHandler ensures that owner_id is defined
+      const owner_id = res.locals.user.user_id;
+      const quiz = { title, description, open, owner_id };
+      if (!title)
+        return next(createError.BadRequest(`Invalid content: title is missing`));
+      if (!description)
+        return next(
+          createError.BadRequest(`Invalid content: description is missing`)
+        );
+      const quizId = await QuizDAO.postQuiz(quiz);
+      logger.silly(
+        `QuizDAO.postQuiz(${JSON.stringify(quiz)})=${JSON.stringify(quizId)}`
       );
-    const quizId = await QuizDAO.postQuiz(quiz);
-    logger.silly(
-      `QuizDAO.postQuiz(${JSON.stringify(quiz)})=${JSON.stringify(quizId)}`
-    );
-    return res.status(201).send(quizId);
-  } catch (err) {
-    logger.debug(`postQuizHandler throw ${err}`);
-    return next(err);
+      return res.status(201).send(quizId);
+    } catch (err) {
+      logger.debug(`postQuizHandler throw ${err}`);
+      return next(err);
+    }
   }
-}
-
-async function putQuizHandler(req, res, next) {
-  try {
-    const { quiz } = res.locals;
-    const { title, description, open } = req.body;
-    Object.assign(quiz, { title, description, open });
-
-    const updatedQuiz = await QuizDAO.putQuiz(quiz);
-    logger.silly(`QuizDAO.putQuizHandler(${quiz})=${updatedQuiz}`);
-    return res.send(updatedQuiz);
-  } catch (err) {
-    logger.debug(`putQuizHandler throw ${err}`);
-    return next(err);
+  
+  async function putQuizHandler(req, res, next) {
+    try {
+      const { quiz } = res.locals;
+      const { title, description, open } = req.body;
+      Object.assign(quiz, { title, description, open });
+  
+      const updatedQuiz = await QuizDAO.putQuiz(quiz);
+      logger.silly(`QuizDAO.putQuizHandler(${quiz})=${updatedQuiz}`);
+      return res.send(updatedQuiz);
+    } catch (err) {
+      logger.debug(`putQuizHandler throw ${err}`);
+      return next(err);
+    }
   }
-}
-
-async function delQuizHandler(req, res, next) {
-  const { quiz_id } = res.locals.quiz;
-  const { user_id } = res.locals.user;
-  try {
-    const deletedQuiz = await QuizDAO.delQuiz(quiz_id, user_id);
-    logger.silly(`QuizDAO.delQuiz(${quiz_id}, ${user_id})=${deletedQuiz}`);
-    res.send(deletedQuiz);
-    return deletedQuiz;
-  } catch (err) {
-    logger.debug(`delQuizHandler throw ${err}`);
-    return next(err);
+  
+  async function delQuizHandler(req, res, next) {
+    const { quiz_id } = res.locals.quiz;
+    const { user_id } = res.locals.user;
+    try {
+      const deletedQuiz = await QuizDAO.delQuiz(quiz_id, user_id);
+      logger.silly(`QuizDAO.delQuiz(${quiz_id}, ${user_id})=${deletedQuiz}`);
+      res.send(deletedQuiz);
+      return deletedQuiz;
+    } catch (err) {
+      logger.debug(`delQuizHandler throw ${err}`);
+      return next(err);
+    }
   }
-}
-
-function checksQuizOwnership(_req, res, next) {
-  const user = res.locals.user.user_id;
-  const owner = res.locals.quiz.owner_id;
-  logger.silly(`checkQuizIdExists@${user} VS ${owner}`);
-  if (user !== owner)
-    return next(
-      createError.Unauthorized(
-        `Quiz #${res.locals.quiz.quiz_id} is not owned by ${user} (owner is ${owner})`
-      )
-    );
-  return next();
-}
-
-async function checksQuizByIdHandler(_req, res, next, quiz_id) {
-  logger.silly(`checksQuizByIdHandler@${quiz_id}`);
-  try {
-    const quiz = await QuizDAO.getQuizById(quiz_id);
-    if (!quiz)
-      return next(createError.NotFound(`Quiz #${quiz_id} does not exist`));
-    res.locals.quiz = quiz;
+  
+  function checksQuizOwnership(_req, res, next) {
+    const user = res.locals.user.user_id;
+    const owner = res.locals.quiz.owner_id;
+    logger.silly(`checkQuizIdExists@${user} VS ${owner}`);
+    if (user !== owner)
+      return next(
+        createError.Unauthorized(
+          `Quiz #${res.locals.quiz.quiz_id} is not owned by ${user} (owner is ${owner})`
+        )
+      );
     return next();
-  } catch (err) {
-    logger.debug(`delQuizHandler throw ${err}`);
-    return next(err);
   }
-}
+  
+  async function checksQuizByIdHandler(_req, res, next, quiz_id) {
+    logger.silly(`checksQuizByIdHandler@${quiz_id}`);
+    try {
+      const quiz = await QuizDAO.getQuizById(quiz_id);
+      if (!quiz)
+        return next(createError.NotFound(`Quiz #${quiz_id} does not exist`));
+      res.locals.quiz = quiz;
+      return next();
+    } catch (err) {
+      logger.debug(`delQuizHandler throw ${err}`);
+      return next(err);
+    }
+  }
 
-module.exports = function quizzesRouter(_app) {
   const router = Router();
 
   // when parameter :quiz_id is used, checks if it exists
