@@ -116,11 +116,18 @@ paths:
   /users/:
     get:
       summary: All users
-      description: The list of all users (TODO with pagination)
+      description: The list of all users with pagination, at most pageLimit items (default 50)
       operationId: getAllUsersHandler
       tags:
         - public
         - users
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: The number of pages to skip, so (page-1)*pageLimit items are skipped
       responses:
         '200':
           description: OK
@@ -129,8 +136,13 @@ paths:
               schema: 
                 type: array
                 items:
-                  type: string
-              example: [test.user, other.user]
+                  type: object
+                  properties:
+                    user_id: 
+                      type: string
+              example: 
+                - user_id: test.user
+                - user_id: other.user
 
   /users/whoami:
     get:
@@ -192,6 +204,13 @@ paths:
       tags:
         - public
         - quizzes
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: The number of pages to skip, so (page-1)*pageLimit items are skipped
       responses:
         '200':
           description: OK

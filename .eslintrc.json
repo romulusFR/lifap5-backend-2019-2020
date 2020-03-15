@@ -2,7 +2,8 @@
   "env": {
     "commonjs": true,
     "es2020": true,
-    "node": true
+    "node": true,
+    "jest": true
   },
   "extends": [
     "eslint:recommended",
@@ -26,7 +27,7 @@
     "SharedArrayBuffer": "readonly"
   },
   "rules": {
-    "camelcase": ["error", { "allow": ["_id$"] }],
+    "camelcase": ["error", { "allow": ["_id$", "application_name"] }],
     "filenames/match-exported": "error",
     "import/order": "error",
     "no-var": ["error"],

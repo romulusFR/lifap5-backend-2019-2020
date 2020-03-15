@@ -46,14 +46,32 @@ function generatePutQuizQuery(quiz) {
   return { text, values };
 }
 
+
+/**
+ *
+ * @todo : the OFFSET/FETCH method sucks, see
+ *         https://www.citusdata.com/blog/2016/03/30/five-ways-to-paginate/
+ * @param {*} page
+ * @param {*} pageLimit
+ */
+const selectAllQuizzesQuery = (page, pageLimit) => `
+SELECT *
+FROM v_quiz_detailed
+ORDER BY quiz_id
+OFFSET ${(page - 1) * pageLimit} ROWS
+FETCH FIRST ${pageLimit} ROWS ONLY;
+`;
+
+
+
 /**
  * @class QuizDAO
  */
 class QuizDAO {
   // the list of all quizzes. The queried views contains extra information
-  static async getAllQuizzes() {
+  static async getAllQuizzes(page, pageLimit) {
     logger.silly(`getAllQuizzes@`);
-    const result = await pool.query('SELECT * FROM v_quiz_detailed;');
+    const result = await pool.query(selectAllQuizzesQuery(page, pageLimit));
     return result.rows;
   }
 
