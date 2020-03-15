@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /**
  * @file Configuration for the pm2 process manager
  * @author Romuald THION
@@ -7,7 +8,7 @@ module.exports = {
   apps: [
     {
       name: "lifap5",
-      script: "server.js",
+      script: "src/server.js",
       instances: 2,
       autorestart: true,
       watch: true,
