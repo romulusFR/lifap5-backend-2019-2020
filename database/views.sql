@@ -28,6 +28,16 @@ CREATE OR REPLACE VIEW lifap5.v_quiz_detailed AS(
 --        2 | 2020-03-14 21:56:57.124856+01 | QCM LIFAP5 #3 | Des questions ... | emmanuel.coquery | f    |                0 |            0 | []
 
 
+
+CREATE OR REPLACE VIEW lifap5.v_question_info AS(
+  SELECT  question.*,
+          count(p.proposition_id) as propositions_number,
+          count(p.proposition_id) FILTER (WHERE correct) as correct_propositions_number
+  FROM  question LEFT OUTER JOIN proposition p USING (quiz_id, question_id)
+  GROUP BY quiz_id, question_id
+);
+
+
 -- tool : transforms [NULL] into []
 CREATE OR REPLACE FUNCTION lifap5.jsonb_array_with_null_keys(jsonb)
 RETURNS jsonb AS 
@@ -35,6 +45,9 @@ $$
   SELECT COALESCE(NULLIF(jsonb_strip_nulls($1), '[{}]'), '[]');
 $$
 LANGUAGE SQL IMMUTABLE;
+
+
+
 
 -- detailed questions, with aggregate into json array on propositions
 CREATE OR REPLACE VIEW lifap5.v_question_detailed AS(
@@ -58,6 +71,7 @@ CREATE OR REPLACE VIEW lifap5.v_question_detailed AS(
   FROM  question LEFT OUTER JOIN proposition p USING (quiz_id, question_id)
                  LEFT OUTER JOIN detailed_answer a USING (quiz_id, question_id, proposition_id)
   GROUP BY quiz_id, question_id
+  ORDER BY quiz_id, question_id
 );
 
 -- select quiz_id, question_id, jsonb_pretty(propositions) from v_question_detailed ;

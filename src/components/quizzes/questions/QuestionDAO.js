@@ -8,7 +8,7 @@ const { logger, pool } = require('../../../config');
 class QuestionDAO {
   static async getAllQuestions(quiz_id) {
     logger.silly(`getAllQuestions@`);
-    const query = 'SELECT * FROM v_question_detailed WHERE quiz_id = $1';
+    const query = 'SELECT * FROM v_question_info WHERE quiz_id = $1';
     const result = await pool.query(query, [quiz_id]);
     return result.rows;
   }
