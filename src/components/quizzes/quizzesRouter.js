@@ -1,5 +1,5 @@
 /**
- * @file Express router under '/users'
+ * @file Express router under '/quizzes'
  * @author Romuald THION
  */
 

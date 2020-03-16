@@ -1,3 +1,8 @@
+/**
+ * @file End-to end (a.k.a., functional, blackbox, functional) tests for '/quizzes' routes
+ * @author Romuald THION
+ */
+
 /* eslint-disable node/no-unpublished-require */
 const request = require('supertest');
 
