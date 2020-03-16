@@ -8,7 +8,8 @@ module.exports = {
   apps: [
     {
       name: "lifap5",
-      script: "src/server.js",
+      cwd: "src",
+      script: "server.js",
       instances: 2,
       autorestart: true,
       watch: true,
