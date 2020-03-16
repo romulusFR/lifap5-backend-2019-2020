@@ -3,12 +3,15 @@
  * @author Romuald THION
  */
 
+const path = require('path');
+
 const {
   name: appname = 'App',
   version = 'O.O.O',
   description = 'No description',
 } = require('../../package.json');
-require('dotenv').config();
+
+require('dotenv').config({path: path.join(__dirname, "../../.env")});
 
 const pageLimit = Number.parseInt(process.env.PAGE_LIMIT, 10) || 20;
 
