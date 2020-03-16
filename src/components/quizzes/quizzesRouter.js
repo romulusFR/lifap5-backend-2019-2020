@@ -9,13 +9,15 @@ const { isInt } = require('validator');
 const { logger } = require('../../config');
 const { QuizDAO } = require('./QuizDAO');
 const { authFromApiKeyHandler } = require('../../middlewares');
+const questionsRouter = require('./questions/questionsRouter');
 
 module.exports = function quizzesRouter(app) {
-
   async function getAllQuizzesHandler(req, res, next) {
     const page = req.query.page || 1;
     if (!isInt(`${page}`, { min: 1 })) {
-      const err = new createError.BadRequest(`In query "?page=${page}", page must be greater or equal than 1`);
+      const err = new createError.BadRequest(
+        `In query "?page=${page}", page must be greater or equal than 1`
+      );
       return next(err);
     }
     try {
@@ -26,11 +28,11 @@ module.exports = function quizzesRouter(app) {
       return next(err);
     }
   }
-  
+
   function getOneQuizHandler(_req, res, _next) {
     return res.send(res.locals.quiz);
   }
-  
+
   async function postQuizHandler(req, res, next) {
     try {
       const { title, description, open = false } = req.body;
@@ -38,7 +40,9 @@ module.exports = function quizzesRouter(app) {
       const owner_id = res.locals.user.user_id;
       const quiz = { title, description, open, owner_id };
       if (!title)
-        return next(createError.BadRequest(`Invalid content: title is missing`));
+        return next(
+          createError.BadRequest(`Invalid content: title is missing`)
+        );
       if (!description)
         return next(
           createError.BadRequest(`Invalid content: description is missing`)
@@ -53,13 +57,13 @@ module.exports = function quizzesRouter(app) {
       return next(err);
     }
   }
-  
+
   async function putQuizHandler(req, res, next) {
     try {
       const { quiz } = res.locals;
       const { title, description, open } = req.body;
       Object.assign(quiz, { title, description, open });
-  
+
       const updatedQuiz = await QuizDAO.putQuiz(quiz);
       logger.silly(`QuizDAO.putQuizHandler(${quiz})=${updatedQuiz}`);
       return res.send(updatedQuiz);
@@ -68,7 +72,7 @@ module.exports = function quizzesRouter(app) {
       return next(err);
     }
   }
-  
+
   async function delQuizHandler(req, res, next) {
     const { quiz_id } = res.locals.quiz;
     const { user_id } = res.locals.user;
@@ -82,7 +86,7 @@ module.exports = function quizzesRouter(app) {
       return next(err);
     }
   }
-  
+
   function checksQuizOwnership(_req, res, next) {
     const user = res.locals.user.user_id;
     const owner = res.locals.quiz.owner_id;
@@ -95,7 +99,7 @@ module.exports = function quizzesRouter(app) {
       );
     return next();
   }
-  
+
   async function checksQuizByIdHandler(_req, res, next, quiz_id) {
     logger.silly(`checksQuizByIdHandler@${quiz_id}`);
     try {
@@ -143,6 +147,8 @@ module.exports = function quizzesRouter(app) {
     checksQuizOwnership,
     delQuizHandler,
   ]);
+
+  router.use('/:quiz_id/questions', questionsRouter(app));
 
   return router;
 };
