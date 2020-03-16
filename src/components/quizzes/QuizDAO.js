@@ -13,39 +13,14 @@ ON CONFLICT (title) DO NOTHING
 RETURNING quiz_id;
 `;
 
-// generatePutQuizQuery({quiz_id : 2, owner_id : 'test.user', open:false});
-
-function generatePutQuizQuery(quiz) {
-  if (!quiz.quiz_id)
-    throw createError.BadRequest(`Invalid content: quiz_id is missing`);
-  if (!quiz.owner_id)
-    throw createError.BadRequest(`Invalid content: owner_id is missing`);
-
-  // keep keys which are updatable and which are defined
-  const updatableAttributes = ['title', 'description', 'open'];
-  const keys = Object.keys(quiz).filter(
-    (key) => updatableAttributes.includes(key) && quiz[`${key}`] !== undefined
-  );
-  if (keys.length === 0)
-    throw createError.BadRequest(`Invalid content: nothing to update`);
-
-  // generate SET attr = $val clauses
-  const templateText = keys.map((key, idx) => `${key} = $${idx + 1}`);
-  // whole query with placeholders
-  const text = `
-  UPDATE quiz SET
-  ${templateText.join(', ')}
-  WHERE quiz_id = $${keys.length + 1} AND owner_id = $${keys.length + 2}
-  RETURNING *;
-  `;
-
-  // values for placeholders in order
-  const values = keys
-    .map((key) => quiz[`${key}`])
-    .concat([quiz.quiz_id, quiz.owner_id]);
-  return { text, values };
-}
-
+const generatePutQuizQuery = `
+UPDATE quiz SET
+  title = $1,
+  description = $2,
+  open = $3
+WHERE quiz_id = $4 AND owner_id = $5
+RETURNING *;
+`;
 
 /**
  *
@@ -99,10 +74,10 @@ class QuizDAO {
 
   static async putQuiz(quiz) {
     logger.silly(`putQuiz@${JSON.stringify(quiz)}`);
-    const query = generatePutQuizQuery(quiz);
+    const args = [quiz.title, quiz.description, quiz.open, quiz.quiz_id, quiz.owner_id];
     // logger.silly(`putQuiz@${query.text}`);
     // logger.silly(`putQuiz@${query.values}`);
-    const result = await pool.query(query);
+    const result = await pool.query(generatePutQuizQuery, args);
     
     if (result.rowCount) return result.rows[0];
     throw createError.NotFound(`Cannot UPDATE quiz #${quiz.quiz_id}`);
