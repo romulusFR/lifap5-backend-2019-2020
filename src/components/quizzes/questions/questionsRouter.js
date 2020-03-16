@@ -22,15 +22,19 @@ module.exports = function questionsRouter(_app) {
     }
   }
 
+  function getOneQuestionHandler(_req, res, _next) {
+    return res.send(res.locals.question);
+  }
 
   async function checksQuestionByIdHandler(_req, res, next, question_id) {
     logger.silly(`checksQuestionByIdHandler@${question_id}`);
+    const {quiz_id} = res.locals.quiz;
     try {
-      const question = await QuestionDAO.getQuestionById(question_id);
+      const question = await QuestionDAO.getQuestionById(quiz_id, question_id);
       if (!question)
         return next(
           createError.NotFound(
-            `Question #${question_id} for quiz ${res.locals.quiz.quiz_id} does not exist`
+            `Question #${question_id} for quiz ${quiz_id} does not exist`
           )
         );
       res.locals.question = question;
@@ -47,7 +51,7 @@ module.exports = function questionsRouter(_app) {
   // 
   router.get('/', [getAllQuestionsHandler]);
 
-  router.get('/:question_id', [checksQuestionByIdHandler]);
+  router.get('/:question_id', [getOneQuestionHandler]);
 
   return router;
 };
