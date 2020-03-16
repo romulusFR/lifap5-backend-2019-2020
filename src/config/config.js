@@ -4,12 +4,13 @@
  */
 
 const path = require('path');
+const pjson = require('../../package');
 require('dotenv').config({ path: path.join(__dirname, '../../.env') });
 
 // from package.json
-const appname = process.env.npm_package_name || 'App';
-const version = process.env.npm_package_version || 'O.O.O';
-const description = process.env.npm_package_description || 'No description';
+const appname = pjson.name || 'App';
+const version = pjson.version || 'O.O.O';
+const description = pjson.description || 'No description';
 
 // environment and debug
 const env = process.env.NODE_ENV || 'development';
