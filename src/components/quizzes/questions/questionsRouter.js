@@ -12,8 +12,9 @@ module.exports = function questionsRouter(_app) {
   const router = Router();
 
   async function getAllQuestionsHandler(req, res, next) {
+    logger.silly(`getAllQuestionsHandler@${res.locals.quiz.quiz_id}`);
     try {
-      const results = await QuestionDAO.getAllQuestions(res.locals.quiz_id);
+      const results = await QuestionDAO.getAllQuestions(res.locals.quiz.quiz_id);
       return res.send(results);
     } catch (err) {
       logger.debug(`getAllQuestionsHandler throw ${err}`);

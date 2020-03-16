@@ -52,3 +52,10 @@ CREATE TABLE IF NOT EXISTS lifap5.answer (
   proposition_id INTEGER NOT NULL,
   answered_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+
+CREATE TYPE lifap5.proposition_item AS (
+    proposition_id  integer,
+    content         text,
+    correct         boolean
+);
