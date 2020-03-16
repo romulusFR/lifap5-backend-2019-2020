@@ -21,11 +21,11 @@ CREATE OR REPLACE VIEW lifap5.v_quiz_detailed AS(
 );
 
 -- select * from v_quiz_detailed;
---  quiz_id |          created_at           |     title     |             description              |     owner_id     | open | questions_number | total_weight | questions_ids 
--- ---------+-------------------------------+---------------+--------------------------------------+------------------+------+------------------+--------------+---------------
---        0 | 2020-03-14 21:56:57.124856+01 | QCM LIFAP5 #1 | Des questions de JS et lambda calcul | romuald.thion    | f    |                2 |            4 | [0, 1]
---        1 | 2020-03-14 21:56:57.124856+01 | QCM LIFAP5 #2 | Des questions de JS et lambda calcul | romuald.thion    | f    |                1 |            1 | [2]
---        2 | 2020-03-14 21:56:57.124856+01 | QCM LIFAP5 #3 | Des questions de JS et lambda calcul | emmanuel.coquery | f    |                0 |            0 | []
+--  quiz_id |          created_at           |     title     |    description    |     owner_id     | open | questions_number | total_weight | questions_ids 
+-- ---------+-------------------------------+---------------+-------------------+------------------+------+------------------+--------------+---------------
+--        0 | 2020-03-14 21:56:57.124856+01 | QCM LIFAP5 #1 | Des questions ... | romuald.thion    | f    |                2 |            4 | [0, 1]
+--        1 | 2020-03-14 21:56:57.124856+01 | QCM LIFAP5 #2 | Des questions ... | romuald.thion    | f    |                1 |            1 | [2]
+--        2 | 2020-03-14 21:56:57.124856+01 | QCM LIFAP5 #3 | Des questions ... | emmanuel.coquery | f    |                0 |            0 | []
 
 
 -- tool : transforms [NULL] into []
@@ -39,8 +39,11 @@ LANGUAGE SQL IMMUTABLE;
 -- detailed questions, with aggregate into json array on propositions
 CREATE OR REPLACE VIEW lifap5.v_question_detailed AS(
   WITH detailed_answer AS(
-    SELECT quiz_id, question_id, proposition_id,
-          jsonb_array_with_null_keys(jsonb_agg(jsonb_build_object('user_id', a.user_id, 'answered_at', a.answered_at))) as answers
+    SELECT  quiz_id, question_id, proposition_id,
+            jsonb_agg(jsonb_build_object(
+              'user_id', a.user_id,
+              'answered_at', a.answered_at
+            )) as answers
     FROM answer a
     GROUP BY quiz_id, question_id, proposition_id)
 
