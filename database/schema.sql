@@ -1,5 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS lifap5;
 
+-- drop everything
 DROP TABLE IF EXISTS lifap5.answer CASCADE;
 DROP TABLE IF EXISTS lifap5.proposition CASCADE;
 DROP TABLE IF EXISTS lifap5.question CASCADE;
@@ -51,11 +52,4 @@ CREATE TABLE IF NOT EXISTS lifap5.answer (
   user_id TEXT REFERENCES lifap5.quiz_user,
   proposition_id INTEGER NOT NULL,
   answered_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
-
-CREATE TYPE lifap5.proposition_item AS (
-    proposition_id  integer,
-    content         text,
-    correct         boolean
 );
