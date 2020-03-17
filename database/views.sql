@@ -1,15 +1,7 @@
-
--- tool : transforms [NULL] into []
-CREATE OR REPLACE FUNCTION lifap5.jsonb_array_of_nulls(jsonb)
-RETURNS jsonb AS 
-$$
-  SELECT COALESCE(NULLIF($1, '[null]'), '[]');
-$$
-LANGUAGE SQL IMMUTABLE;
-
--- detailed quizzes, with aggregate on questions
+-- extended quizzes, with aggregation on questions to provide a summary
 DROP VIEW lifap5.v_quiz_ext;
 CREATE OR REPLACE VIEW lifap5.v_quiz_ext AS(
+
   WITH questions_array AS(
     SELECT quiz_id,
            count(question_id)::integer  as questions_number,
@@ -36,8 +28,8 @@ CREATE OR REPLACE VIEW lifap5.v_quiz_ext AS(
 --        2 | 2020-03-14 21:56:57.124856+01 | QCM LIFAP5 #3 | Des questions ... | emmanuel.coquery | f    |                0 |            0 | []
 
 
-
-CREATE OR REPLACE VIEW lifap5.v_question_info AS(
+-- extended questions, with aggregation on propositions to provide a summary
+CREATE OR REPLACE VIEW lifap5.v_question_ext AS(
   SELECT  question.*,
           count(p.proposition_id) as propositions_number,
           count(p.proposition_id) FILTER (WHERE correct) as correct_propositions_number
@@ -56,17 +48,17 @@ LANGUAGE SQL IMMUTABLE;
 
 
 
-
--- detailed questions, with aggregate into json array on propositions
+-- detailed questions, with fully detailed propositions in nested json objects
 CREATE OR REPLACE VIEW lifap5.v_question_detailed AS(
-  WITH detailed_answer AS(
+  WITH answers_array AS(
     SELECT  quiz_id, question_id, proposition_id,
             jsonb_agg(jsonb_build_object(
               'user_id', a.user_id,
               'answered_at', a.answered_at
             )) as answers
     FROM answer a
-    GROUP BY quiz_id, question_id, proposition_id)
+    GROUP BY quiz_id, question_id, proposition_id
+    )
 
   SELECT  question.*,
           jsonb_array_with_null_keys(jsonb_agg(
@@ -77,7 +69,7 @@ CREATE OR REPLACE VIEW lifap5.v_question_detailed AS(
             'answers', a.answers
              ))) as propositions
   FROM  question LEFT OUTER JOIN proposition p USING (quiz_id, question_id)
-                 LEFT OUTER JOIN detailed_answer a USING (quiz_id, question_id, proposition_id)
+                 LEFT OUTER JOIN answers_array a USING (quiz_id, question_id, proposition_id)
   GROUP BY quiz_id, question_id
   ORDER BY quiz_id, question_id
 );
@@ -108,25 +100,3 @@ CREATE OR REPLACE VIEW lifap5.v_question_detailed AS(
 --        1 |           2 | [                                                                +
 --          |             | ]
 -- (3 rows)
-
-
--- -------------------------------- BACKUP ----------------------------------------------------
-
-
--- detailed questions, with aggregate into json array on propositions
--- CREATE OR REPLACE VIEW lifap5.v_question_detailed AS(
---   SELECT  question.*,
---           (jsonb_agg(jsonb_build_object('proposition_id', p.proposition_id, 'content', p.content, 'correct', p.correct))) as propositions
---   FROM  question LEFT OUTER JOIN proposition p USING (quiz_id, question_id)
---   GROUP BY quiz_id, question_id
--- );
-
-
--- CREATE OR REPLACE VIEW lifap5.v_question_detailed AS(
---   SELECT  question.*,
---           jsonb_array_with_null_keys(jsonb_agg(jsonb_build_object('proposition_id', p.proposition_id, 'content', p.content, 'correct', p.correct))) as propositions,
---           jsonb_array_with_null_keys(jsonb_agg(jsonb_build_object('proposition_id', a.proposition_id, 'user_id', a.user_id, 'answered_at', a.answered_at))) as answers
---   FROM  question LEFT OUTER JOIN proposition p USING (quiz_id, question_id)
---                  LEFT OUTER JOIN answer a USING (quiz_id, question_id)
---   GROUP BY quiz_id, question_id
--- );
