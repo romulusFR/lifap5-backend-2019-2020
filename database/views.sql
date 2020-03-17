@@ -13,7 +13,7 @@ CREATE OR REPLACE VIEW lifap5.v_quiz_ext AS(
 
   SELECT  quiz.*,
           COALESCE(q.questions_number, 0) as questions_number,
-          COALESCE(q.total_weight, 0) as total_weight, 
+          -- COALESCE(q.total_weight, 0) as total_weight, 
           COALESCE(q.questions_ids,'[]') as questions_ids
   FROM quiz LEFT OUTER JOIN questions_array q
     USING (quiz_id)
