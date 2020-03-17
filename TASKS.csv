@@ -24,3 +24,6 @@ Refactor BD            ;2020-03-14 ;1.0       ; simplification du métier, gesti
 MàJ OAS                ;2020-03-14 ;1.0       ; refactor avec components, exemples, bon codes d'erreurs
 Pagination             ;2020-03-15 ;1.0       ; pas terrible mais OK
 Tests                  ;2020-03-15 ;4.0       ; création des tests jest/supertest pour les routes existantes
+System                 ;2020-03-16 ;2.0       ; Nettoyage paramètres de configuration, pour que PM2/nodemon et dotenv fonctionnent
+Route /**/questions    ;2020-03-16 ;2.0       ; Nested router sous /quizz (pas encore très clair sur le métier)
+Refactor BD            ;2020-03-16 ;2.0       ; Transformation en JSON depuis postgres, reprise des vues
