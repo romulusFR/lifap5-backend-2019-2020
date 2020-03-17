@@ -12,7 +12,7 @@ const serverVersion = `${config.appname}@${config.version}[${config.env}]`;
 // for an example with terminus and pg
 function onSignal() {
   logger.silly(
-    `onSignal@starting cleanup`
+    `onSignal@starting cleanup, ending node-postgres's pool`
   );
   return Promise.all([pool.end()]);
 }
@@ -49,6 +49,24 @@ const terminusOpts = {
 };
 
 createTerminus(httpServer, terminusOpts);
+
+// https://github.com/goldbergyoni/nodebestpractices/blob/master/sections/errorhandling/catchunhandledpromiserejection.md
+
+// catch promises without catch, cf. UnhandledPromiseRejectionWarning
+process.on('unhandledRejection', (reason, promise) => {
+  // https://nodejs.org/api/process.html#process_event_unhandledrejection
+  logger.error(`Unhandled Rejection at ${JSON.stringify(promise)} with error: "${reason}"`);
+  throw reason;
+});
+
+process.on('uncaughtException', async (error) => {
+  // https://nodejs.org/api/process.html#process_event_uncaughtexception
+  logger.error(`Uncaught Exception: ${error}, killing process`);
+  await onSignal();
+  // eslint-disable-next-line no-process-exit
+  process.exit(1);
+});
+
 
 httpServer.listen(config.httpPort, () => {
   logger.debug(
