@@ -7,7 +7,7 @@ const { Router } = require('express');
 const createError = require('http-errors');
 const { isInt } = require('validator');
 const { logger } = require('../../config');
-const { QuizDAO } = require('./QuizDAO');
+const QuizDAO = require('./QuizDAO');
 const { authFromApiKeyHandler } = require('../../middlewares');
 const questionsRouter = require('./questions/questionsRouter');
 
@@ -21,7 +21,7 @@ module.exports = function quizzesRouter(app) {
       return next(err);
     }
     try {
-      const results = await QuizDAO.getAllQuizzes(page, app.locals.pageLimit);
+      const results = await QuizDAO.selectAll(page, app.locals.pageLimit);
       return res.send(results);
     } catch (err) {
       logger.debug(`getAllQuizzesHandler throw ${err}`);
@@ -47,7 +47,7 @@ module.exports = function quizzesRouter(app) {
         return next(
           createError.BadRequest(`Invalid content: description is missing`)
         );
-      const quizId = await QuizDAO.postQuiz(quiz);
+      const quizId = await QuizDAO.insert(quiz);
       logger.silly(
         `QuizDAO.postQuiz(${JSON.stringify(quiz)})=${JSON.stringify(quizId)}`
       );
@@ -64,7 +64,7 @@ module.exports = function quizzesRouter(app) {
       const { title, description, open } = req.body;
       Object.assign(quiz, { title, description, open });
 
-      const updatedQuiz = await QuizDAO.putQuiz(quiz);
+      const updatedQuiz = await QuizDAO.update(quiz);
       logger.silly(`QuizDAO.putQuizHandler(${quiz})=${updatedQuiz}`);
       return res.send(updatedQuiz);
     } catch (err) {
@@ -77,7 +77,7 @@ module.exports = function quizzesRouter(app) {
     const { quiz_id } = res.locals.quiz;
     const { user_id } = res.locals.user;
     try {
-      const deletedQuiz = await QuizDAO.delQuiz(quiz_id, user_id);
+      const deletedQuiz = await QuizDAO.del(quiz_id, user_id);
       logger.silly(`QuizDAO.delQuiz(${quiz_id}, ${user_id})=${deletedQuiz}`);
       res.send(deletedQuiz);
       return deletedQuiz;
@@ -103,7 +103,7 @@ module.exports = function quizzesRouter(app) {
   async function checksQuizByIdHandler(_req, res, next, quiz_id) {
     logger.silly(`checksQuizByIdHandler@${quiz_id}`);
     try {
-      const quiz = await QuizDAO.getQuizById(quiz_id);
+      const quiz = await QuizDAO.selectById(quiz_id);
       if (!quiz)
         return next(createError.NotFound(`Quiz #${quiz_id} does not exist`));
       res.locals.quiz = quiz;

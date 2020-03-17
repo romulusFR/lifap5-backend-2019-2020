@@ -8,19 +8,27 @@ $$
 LANGUAGE SQL IMMUTABLE;
 
 -- detailed quizzes, with aggregate on questions
-DROP VIEW lifap5.v_quiz_detailed;
-CREATE OR REPLACE VIEW lifap5.v_quiz_detailed AS(
-  SELECT quiz.*,
-        count(question_id)::integer as questions_number,
-        COALESCE(SUM(weight)::integer, 0) as total_weight,
-        jsonb_array_of_nulls(jsonb_agg(to_jsonb(question_id))) as questions_ids
-  FROM quiz LEFT OUTER JOIN question
+DROP VIEW lifap5.v_quiz_ext;
+CREATE OR REPLACE VIEW lifap5.v_quiz_ext AS(
+  WITH questions_array AS(
+    SELECT quiz_id,
+           count(question_id)::integer  as questions_number,
+           SUM(weight)::integer as total_weight,
+           jsonb_agg(to_jsonb(question_id)) as questions_ids
+    FROM question
+    GROUP BY quiz_id
+  )
+
+  SELECT  quiz.*,
+          COALESCE(q.questions_number, 0) as questions_number,
+          COALESCE(q.total_weight, 0) as total_weight, 
+          COALESCE(q.questions_ids,'[]') as questions_ids
+  FROM quiz LEFT OUTER JOIN questions_array q
     USING (quiz_id)
-  GROUP BY quiz.quiz_id
   ORDER BY quiz.quiz_id
 );
 
--- select * from v_quiz_detailed;
+-- select * from v_quiz_ext;
 --  quiz_id |          created_at           |     title     |    description    |     owner_id     | open | questions_number | total_weight | questions_ids 
 -- ---------+-------------------------------+---------------+-------------------+------------------+------+------------------+--------------+---------------
 --        0 | 2020-03-14 21:56:57.124856+01 | QCM LIFAP5 #1 | Des questions ... | romuald.thion    | f    |                2 |            4 | [0, 1]
