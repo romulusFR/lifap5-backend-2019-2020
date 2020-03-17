@@ -5,8 +5,9 @@
 
 const { Router } = require('express');
 const createError = require('http-errors');
-const { QuestionDAO } = require('./QuestionDAO');
 const { logger } = require('../../../config');
+const QuestionDAO = require('./QuestionDAO');
+
 
 module.exports = function questionsRouter(_app) {
   const router = Router();
@@ -14,7 +15,7 @@ module.exports = function questionsRouter(_app) {
   async function getAllQuestionsHandler(req, res, next) {
     logger.silly(`getAllQuestionsHandler@${res.locals.quiz.quiz_id}`);
     try {
-      const results = await QuestionDAO.getAllQuestions(res.locals.quiz.quiz_id);
+      const results = await QuestionDAO.selectAll(res.locals.quiz.quiz_id);
       return res.send(results);
     } catch (err) {
       logger.debug(`getAllQuestionsHandler throw ${err}`);
@@ -30,7 +31,7 @@ module.exports = function questionsRouter(_app) {
     logger.silly(`checksQuestionByIdHandler@${question_id}`);
     const {quiz_id} = res.locals.quiz;
     try {
-      const question = await QuestionDAO.getQuestionById(quiz_id, question_id);
+      const question = await QuestionDAO.selectById(quiz_id, question_id);
       if (!question)
         return next(
           createError.NotFound(
