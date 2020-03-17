@@ -7,8 +7,9 @@ const { Router } = require('express');
 const createError = require('http-errors');
 const { isInt } = require('validator');
 const { logger } = require('../../config');
-const QuizDAO = require('./QuizDAO');
 const { authFromApiKeyHandler } = require('../../middlewares');
+
+const QuizDAO = require('./QuizDAO');
 const questionsRouter = require('./questions/questionsRouter');
 
 module.exports = function quizzesRouter(app) {
