@@ -8,7 +8,7 @@ const createError = require('http-errors');
 const { isInt } = require('validator');
 const { logger } = require('../../config');
 const { authFromApiKeyHandler } = require('../../middlewares');
-
+const {checksQuizOwnership } = require('./quizzesMiddlewares');
 const QuizDAO = require('./QuizDAO');
 const questionsRouter = require('./questions/questionsRouter');
 
@@ -88,18 +88,6 @@ module.exports = function quizzesRouter(app) {
     }
   }
 
-  function checksQuizOwnership(_req, res, next) {
-    const user = res.locals.user.user_id;
-    const owner = res.locals.quiz.owner_id;
-    logger.silly(`checkQuizIdExists@${user} VS ${owner}`);
-    if (user !== owner)
-      return next(
-        createError.Unauthorized(
-          `Quiz #${res.locals.quiz.quiz_id} is not owned by ${user} (owner is ${owner})`
-        )
-      );
-    return next();
-  }
 
   async function checksQuizByIdHandler(_req, res, next, quiz_id) {
     logger.silly(`checksQuizByIdHandler@${quiz_id}`);
@@ -114,6 +102,7 @@ module.exports = function quizzesRouter(app) {
       return next(err);
     }
   }
+  
 
   const router = Router();
 
