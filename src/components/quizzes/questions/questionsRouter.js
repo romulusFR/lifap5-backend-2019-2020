@@ -6,8 +6,9 @@
 const { Router } = require('express');
 const createError = require('http-errors');
 const { logger } = require('../../../config');
+const { authFromApiKeyHandler } = require('../../../middlewares');
+const { checksQuizOwnership } = require('../quizzesMiddlewares');
 const QuestionDAO = require('./QuestionDAO');
-
 
 module.exports = function questionsRouter(_app) {
   const router = Router();
@@ -29,7 +30,7 @@ module.exports = function questionsRouter(_app) {
 
   async function checksQuestionByIdHandler(_req, res, next, question_id) {
     logger.silly(`checksQuestionByIdHandler@${question_id}`);
-    const {quiz_id} = res.locals.quiz;
+    const { quiz_id } = res.locals.quiz;
     try {
       const question = await QuestionDAO.selectById(quiz_id, question_id);
       if (!question)
@@ -46,13 +47,72 @@ module.exports = function questionsRouter(_app) {
     }
   }
 
+  async function postQuestionHandler(req, res, next) {
+    try {
+      const { question_id, content } = req.body;
+      const { quiz_id } = res.locals.quiz;
+      if (!parseInt(question_id, 10))
+        return next(
+          createError.BadRequest(
+            `Invalid content: question_id is or not an integer`
+          )
+        );
+      if (!content)
+        return next(
+          createError.BadRequest(`Invalid content: content is missing`)
+        );
+      const question = { quiz_id, question_id, content };
+      const questionId = await QuestionDAO.insert(question);
+      logger.silly(
+        `QuestionDAO.insert(${JSON.stringify(question)})=${JSON.stringify(
+          questionId
+        )}`
+      );
+      return res.status(201).send(questionId);
+    } catch (err) {
+      logger.debug(`postQuestionHandler throw ${err}`);
+      return next(err);
+    }
+  }
+
+  async function delQuestionHandler(req, res, next) {
+    const { quiz_id } = res.locals.quiz;
+    const { user_id } = res.locals.user;
+    const { question_id } = res.locals.question;
+    try {
+      const deletedQuiz = await QuestionDAO.del(quiz_id, question_id, user_id);
+      logger.silly(`QuestionDAO.del(${quiz_id}, ${question_id}, ${user_id})=${deletedQuiz}`);
+      res.send(deletedQuiz);
+      return deletedQuiz;
+    } catch (err) {
+      logger.debug(`delQuestionHandler throw ${err}`);
+      return next(err);
+    }
+  }
+
   // when parameter :question_id is used, checks if it exists
   router.param('question_id', checksQuestionByIdHandler);
 
-  // 
+  //
   router.get('/', [getAllQuestionsHandler]);
 
   router.get('/:question_id', [getOneQuestionHandler]);
+
+  // curl -X POST "http://localhost:3000/quizzes/" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json" -d "{\"title\":\"QCM de test\",\"description\":\"Un QCM supplémentaire\",\"open\":false}"
+  // curl -X POST "http://localhost:3000/quizzes/36/questions" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json" -d "{\"question_id\":42,\"content\":\"Qui a pissé sur le chien ?\"}"
+  router.post('/', [
+    authFromApiKeyHandler,
+    checksQuizOwnership,
+    postQuestionHandler,
+  ]);
+
+  // curl -X DELETE "http://localhost:3000/quizzes/36/questions/42" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json"
+  router.delete('/:question_id', [
+    authFromApiKeyHandler,
+    checksQuizOwnership,
+    delQuestionHandler,
+  ]);
+
 
   return router;
 };

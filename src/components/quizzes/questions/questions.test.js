@@ -27,7 +27,7 @@ describe('GET /quizzes/:quiz_id/questions', () => {
 });
 
 describe('GET /quizzes/:quiz_id/questions/:question_id', () => {
-  it('should give the list of all questions of a quiz', async () => {
+  it('should detail aquestion of a quiz', async () => {
     const res = await request(app)
       .get('/quizzes/0/questions/0')
       .set('Accept', 'application/json')
@@ -60,3 +60,61 @@ describe('GET /quizzes/:quiz_id/questions/:question_id', () => {
     expect(res.body).toMatchObject(gold);
   });
 });
+
+describe('POST/DEL /quizzes/:quiz_id/questions/', () => {
+  let createdQuizId;
+  it('should create a fresh quizz', async () => {
+    const quizToCreate = {
+      title: `Quiz test #${Math.floor(Math.random() * 1000000)}`,
+      description: 'Description of test quiz',
+      open: true,
+    };
+
+    const quizz = await request(app)
+      .post('/quizzes/')
+      .set('Accept', 'application/json')
+      .set('X-API-KEY', '944c5fdd-af88-47c3-a7d2-5ea3ae3147da')
+      .send(quizToCreate); // sends a JSON post body
+
+    createdQuizId = quizz.body.quiz_id;
+  });
+
+  let createdQuestionId;
+  it('should create a fresh question', async () => {
+    const questionToCreate = {
+      question_id: Math.floor(Math.random() * 1000000),
+      content: 'What is the question?',
+    };
+
+    const res = await request(app)
+      .post(`/quizzes/${createdQuizId}/questions`)
+      .set('Accept', 'application/json')
+      .set('X-API-KEY', '944c5fdd-af88-47c3-a7d2-5ea3ae3147da')
+      .send(questionToCreate)
+      .expect('Content-Type', /json/);
+
+    expect(res.statusCode).toEqual(201);
+    expect(res.body).toMatchObject({
+      quiz_id: createdQuizId,
+      question_id: expect.any(Number),
+    });
+
+    createdQuestionId = res.body.question_id;
+  }); // it quizz
+
+  describe('DEL /quizzes/:quiz_id/questions/:question_id', () => {
+    it('should delete the fresh question', async () => {
+      const res = await request(app)
+        .delete(`/quizzes/${createdQuizId}/questions/${createdQuestionId}`)
+        .set('Accept', 'application/json')
+        .set('X-API-KEY', '944c5fdd-af88-47c3-a7d2-5ea3ae3147da')
+        .expect('Content-Type', /json/);
+
+      expect(res.statusCode).toEqual(200);
+      expect(res.body).toMatchObject({
+        quiz_id: createdQuizId,
+        question_id: createdQuestionId,
+      });
+    }); // it DEL
+  }); // describe DEL
+}); // describe outer POST/DEL
