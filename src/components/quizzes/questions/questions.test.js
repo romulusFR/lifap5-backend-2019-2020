@@ -36,7 +36,6 @@ describe('GET /quizzes/:quiz_id/questions/:question_id', () => {
     const gold = {
       quiz_id: 0,
       question_id: 0,
-      weight: 2,
       propositions: [
         {
           content: 'Alan Turing',
