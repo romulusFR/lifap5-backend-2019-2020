@@ -1,11 +1,11 @@
 -- extended quizzes, with aggregation on questions to provide a summary
-DROP VIEW lifap5.v_quiz_ext;
+DROP VIEW IF EXISTS lifap5.v_quiz_ext;
 CREATE OR REPLACE VIEW lifap5.v_quiz_ext AS(
 
   WITH questions_array AS(
     SELECT quiz_id,
            count(question_id)::integer  as questions_number,
-           SUM(weight)::integer as total_weight,
+           -- SUM(weight)::integer as total_weight,
            jsonb_agg(to_jsonb(question_id)) as questions_ids
     FROM question
     GROUP BY quiz_id
@@ -29,10 +29,11 @@ CREATE OR REPLACE VIEW lifap5.v_quiz_ext AS(
 
 
 -- extended questions, with aggregation on propositions to provide a summary
+DROP VIEW IF EXISTS lifap5.v_question_ext;
 CREATE OR REPLACE VIEW lifap5.v_question_ext AS(
   SELECT  question.*,
-          count(p.proposition_id) as propositions_number,
-          count(p.proposition_id) FILTER (WHERE correct) as correct_propositions_number
+          count(p.proposition_id)::integer as propositions_number,
+          count(p.proposition_id) FILTER (WHERE correct)::integer as correct_propositions_number
   FROM  question LEFT OUTER JOIN proposition p USING (quiz_id, question_id)
   GROUP BY quiz_id, question_id
 );
