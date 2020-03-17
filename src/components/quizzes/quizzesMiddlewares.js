@@ -7,7 +7,7 @@ function checksQuizOwnership(_req, res, next) {
   logger.silly(`checkQuizIdExists@${user} VS ${owner}`);
   if (user !== owner)
     return next(
-      createError.Unauthorized(
+      createError.Forbidden(
         `Quiz #${res.locals.quiz.quiz_id} is not owned by ${user} (owner is ${owner})`
       )
     );
