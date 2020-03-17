@@ -25,6 +25,7 @@ const app = express();
 app.locals.appname = config.appname;
 app.locals.version = config.version;
 app.locals.description = config.description;
+app.locals.env = config.env;
 app.locals.pageLimit = config.pageLimit;
 
 app.set('views', path.join(__dirname, 'views'));
