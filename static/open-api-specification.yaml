@@ -330,7 +330,7 @@ paths:
       description: All questions of a given quizz (if it exists) with extra information
       operationId: getAllQuestionsHandler
       tags:
-        - public
+        - authenticated
         - questions
       responses:
         '200':
@@ -345,7 +345,7 @@ paths:
       summary: Add a question to a quizz
       operationId: postQuestionHandler
       tags:
-        - public
+        - authenticated
         - questions
       security:
         - XApiKeyAuth: []
@@ -404,7 +404,7 @@ paths:
       summary: Delete a question of a quizz
       operationId: delQuestionHandler
       tags:
-        - public
+        - authenticated
         - questions
       security:
         - XApiKeyAuth: []
