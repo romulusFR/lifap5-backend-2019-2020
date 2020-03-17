@@ -8,7 +8,7 @@ const createError = require('http-errors');
 const { isInt } = require('validator');
 const { logger } = require('../../config');
 const { authFromApiKeyHandler } = require('../../middlewares');
-const {checksQuizOwnership } = require('./quizzesMiddlewares');
+const { checksQuizOwnership } = require('./quizzesMiddlewares');
 const QuizDAO = require('./QuizDAO');
 const questionsRouter = require('./questions/questionsRouter');
 
@@ -50,7 +50,7 @@ module.exports = function quizzesRouter(app) {
         );
       const quizId = await QuizDAO.insert(quiz);
       logger.silly(
-        `QuizDAO.postQuiz(${JSON.stringify(quiz)})=${JSON.stringify(quizId)}`
+        `QuizDAO.insert(${JSON.stringify(quiz)})=${JSON.stringify(quizId)}`
       );
       return res.status(201).send(quizId);
     } catch (err) {
@@ -88,7 +88,6 @@ module.exports = function quizzesRouter(app) {
     }
   }
 
-
   async function checksQuizByIdHandler(_req, res, next, quiz_id) {
     logger.silly(`checksQuizByIdHandler@${quiz_id}`);
     try {
@@ -102,7 +101,6 @@ module.exports = function quizzesRouter(app) {
       return next(err);
     }
   }
-  
 
   const router = Router();
 
