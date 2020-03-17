@@ -51,10 +51,10 @@ module.exports = function questionsRouter(_app) {
     try {
       const { question_id, content } = req.body;
       const { quiz_id } = res.locals.quiz;
-      if (!parseInt(question_id, 10))
+      if (Number.isNaN(parseInt(question_id, 10)))
         return next(
           createError.BadRequest(
-            `Invalid content: question_id is or not an integer`
+            `Invalid content: question_id is not an integer`
           )
         );
       if (!content)
