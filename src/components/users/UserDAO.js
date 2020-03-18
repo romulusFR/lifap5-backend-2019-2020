@@ -25,22 +25,32 @@ async function selectAllUsers(currentPage = 1, pageSize) {
   logger.silly(`selectAllUsers@${currentPage}, ${pageSize}`);
 
   // NB : THIS DO NOT USE TRANSACTION YET
+  let client;
+  try {
+    // to have a transaction
+    client = await pool.connect();
 
+    const pagesInfoQuery = 'SELECT COUNT(*)::integer AS nb FROM quiz_user;';
+    const pagesInfo = await client.query(pagesInfoQuery);
+    const nbResults = pagesInfo.rows[0].nb;
 
-  
-  const pagesInfoQuery = 'SELECT COUNT(*)::integer AS nb FROM quiz_user;';
-  const pagesInfo = await pool.query(pagesInfoQuery);
+    const result = await client.query(
+      selectAllUsersQuery(currentPage, pageSize)
+    );
 
-  const nbResults = pagesInfo.rows[0].nb;
-  const result = await pool.query(selectAllUsersQuery(currentPage, pageSize));
+    client.release();
 
-  return {
-    currentPage,
-    pageSize,
-    nbResults,
-    nbPages: Math.ceil(nbResults / pageSize),
-    results: result.rows,
-  };
+    return {
+      currentPage,
+      pageSize,
+      nbResults,
+      nbPages: Math.ceil(nbResults / pageSize),
+      results: result.rows,
+    };
+  } catch (err) {
+    client.release();
+    throw err;
+  }
 }
 
 module.exports = { selectAllUsers };
