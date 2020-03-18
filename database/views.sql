@@ -1,3 +1,5 @@
+-- SEE https://www.postgresql.org/docs/12/functions-json.html FOR DOC ABOUT JSONB FUNCTIONS
+
 -- ---------------------------------------- EXTENDED QUIZZES ----------------------------------------
 -- extended quizzes, with aggregation on questions to provide a summary
 DROP VIEW IF EXISTS lifap5.v_quiz_ext;
