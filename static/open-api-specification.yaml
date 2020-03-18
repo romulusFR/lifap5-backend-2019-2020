@@ -194,7 +194,7 @@ paths:
   /quizzes/:
     get:
       summary: All quizzes
-      description: The list of all quizzes (TODO with pagination)
+      description: The list of all quizzes  with pagination, at most pageLimit items (default 50)
       operationId: getAllQuizzesHandler
       tags:
         - public
@@ -211,11 +211,9 @@ paths:
           description: OK
           content:
             application/json:
-              schema: 
-                type: array
-                items:
-                  type: object
-                  $ref: '#/components/schemas/ObjectQuiz'
+              schema:
+                $ref: '#/components/schemas/ObjectPaginatedQuizzes'
+
     post:
       summary: Creates a new quiz
       description: Creates a quiz, in the database. quiz_id is auto generated, title and description are mandatory
@@ -527,6 +525,18 @@ components:
             - user_id: test.user
             - user_id: other.user
 
+    ObjectPaginatedQuizzes:
+      allOf:
+      - $ref: '#/components/schemas/ObjectPaginatedList'
+      required:
+        - results
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectQuiz'
+
+
     ObjectUser:
       type: object
       required:
@@ -638,6 +648,9 @@ components:
         proposition_id:
           type: integer
           example: 0
+
+
+
 
     ErrorBadRequest:
       type: object

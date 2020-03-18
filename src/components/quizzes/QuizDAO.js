@@ -4,25 +4,31 @@
  */
 
 const createError = require('http-errors');
-const { logger, pool } = require('../../config');
+const { logger, pool, PaginatedResult } = require('../../config');
 
 /**
  * @todo : the OFFSET/FETCH method sucks, see
  *         https://www.citusdata.com/blog/2016/03/30/five-ways-to-paginate/
  */
 // the list of all quizzes. The queried views contains extra information
-async function selectAll(page, pageLimit) {
-  logger.silly(`QuizDAO.selectAll@${page}, ${pageLimit})`);
+async function selectAll(currentPage, pageSize) {
+  logger.silly(`QuizDAO.selectAll@${currentPage}, ${pageSize})`);
 
   const query = `
     SELECT *
     FROM v_quiz_ext
     ORDER BY quiz_id
-    OFFSET ${(page - 1) * pageLimit} ROWS
-    FETCH FIRST ${pageLimit} ROWS ONLY;`;
+    OFFSET ${(currentPage - 1) * pageSize} ROWS
+    FETCH FIRST ${pageSize} ROWS ONLY;`;
+  // const result = await pool.query(query);
+
+  const pagesInfoQuery = 'SELECT COUNT(*)::integer AS nb FROM v_quiz_ext;';
+  const pagesInfo = await pool.query(pagesInfoQuery);
+  const totalResults = pagesInfo.rows[0].nb;
+
   const result = await pool.query(query);
 
-  return result.rows;
+  return new PaginatedResult(currentPage, totalResults, pageSize, result.rows);
 }
 
 async function selectById(quiz_id) {

@@ -22,7 +22,10 @@ module.exports = function quizzesRouter(app) {
       return next(err);
     }
     try {
-      const results = await QuizDAO.selectAll(page, app.locals.pageLimit);
+      const results = await QuizDAO.selectAll(
+        Number.parseInt(page, 10),
+        app.locals.pageLimit
+      );
       return res.send(results);
     } catch (err) {
       logger.debug(`getAllQuizzesHandler throw ${err}`);
