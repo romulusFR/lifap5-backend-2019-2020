@@ -443,9 +443,59 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ObjectQuestionDetail'
+                type: object
+                properties:
+                  quiz_id:
+                    type: integer
+                    example : 0
+                  question_id:
+                    type: integer
+                    example : 0
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      summary: Update a question of a quizz and its propositions
+      operationId: putQuestionHandler
+      tags:
+        - authenticated
+        - questions
+      security:
+        - XApiKeyAuth: []
+      requestBody:
+        description: The question to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectQuestionDetail'
+            example:
+              sentence: 'Qui a encore pas inventé le lambda calcul ?'
+              propositions: 
+                - content: 'encore Alan Turing'
+                  proposition_id: 0
+                  correct : true
+                - content: 'encore Alonzo Church'
+                  proposition_id: 1
+                  correct : false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quiz_id:
+                    type: integer
+                    example : 0
+                  question_id:
+                    type: integer
+                    example : 0
         401:
           $ref: '#/components/responses/Unauthorized'
         403:

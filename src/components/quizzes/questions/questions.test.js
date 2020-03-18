@@ -97,7 +97,18 @@ describe('POST/DEL /quizzes/:quiz_id/questions/', () => {
     const questionToCreate = {
       question_id: Math.floor(Math.random() * 1000000),
       sentence: 'What is the question?',
-      propositions : []
+      propositions : [
+        {
+          "content": "Alan Turing",
+          "proposition_id": 0,
+          "correct": false
+        },
+        {
+          "content": "Alonzo Church",
+          "proposition_id": 1,
+          "correct": true
+        }
+      ]
     };
 
     const res = await request(app)
@@ -115,6 +126,38 @@ describe('POST/DEL /quizzes/:quiz_id/questions/', () => {
 
     createdQuestionId = res.body.question_id;
   }); // it quizz
+
+  // it('should update the question', async () => {
+  //   const questionToUpdate = {
+  //     sentence: 'What is the question again?',
+  //     propositions : [
+  //       {
+  //         "content": "Again Alan Turing",
+  //         "proposition_id": 0,
+  //         "correct": true
+  //       },
+  //       {
+  //         "content": "Again Alonzo Church",
+  //         "proposition_id": 1,
+  //         "correct": false
+  //       }
+  //     ]
+  //   };
+
+  //   const res = await request(app)
+  //     .put(`/quizzes/${createdQuizId}/questions/${createdQuestionId}`)
+  //     .set('Accept', 'application/json')
+  //     .set('X-API-KEY', '944c5fdd-af88-47c3-a7d2-5ea3ae3147da')
+  //     .send(questionToUpdate)
+  //     .expect('Content-Type', /json/);
+
+  //   expect(res.statusCode).toEqual(201);
+  //   expect(res.body).toMatchObject({
+  //     quiz_id: createdQuizId,
+  //     question_id: createdQuestionId,
+  //   });
+
+  // }); // it put quizz
 
   describe('DEL /quizzes/:quiz_id/questions/:question_id', () => {
     it('should delete the fresh question', async () => {
