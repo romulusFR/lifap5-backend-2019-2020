@@ -1,5 +1,116 @@
 -- SEE https://www.postgresql.org/docs/12/functions-json.html FOR DOC ABOUT JSONB FUNCTIONS
 
+
+
+-- ---------------------------------------- DETAILED USERS ----------------------------------------
+-- DROP VIEW IF EXISTS lifap5.v_quiz_user_ext;
+-- CREATE OR REPLACE VIEW lifap5.v_quiz_user_ext AS(
+
+--   WITH answers_json AS(
+--     SELECT  user_id, quiz_id,
+--             jsonb_agg(jsonb_build_object(
+--               'question_id', a.question_id,
+--               'proposition_id', a.proposition_id,
+--               'answered_at', a.answered_at
+--             )) AS answers
+--     FROM answer a
+--     GROUP BY user_id, quiz_id
+--   ),
+
+--   quizzes_json AS(
+--     SELECT  user_id,
+--             jsonb_agg(jsonb_build_object(
+--               'quiz_id', d.quiz_id,
+--               'answers', d.answers
+--             )) AS answers
+--     FROM    answer a JOIN answers_json d USING(user_id, quiz_id)
+--     GROUP BY user_id, quiz_id
+--   )
+
+--   SELECT  user_id,
+--           COALESCE(q.answers, '[]') AS answers
+--   FROM    quiz_user a LEFT OUTER JOIN quizzes_json q  USING(user_id)
+-- );
+
+DROP VIEW IF EXISTS lifap5.v_quiz_user_ext;
+CREATE OR REPLACE VIEW lifap5.v_quiz_user_ext AS(
+
+  WITH answers_json AS(
+    SELECT  user_id, quiz_id,
+            jsonb_agg(jsonb_build_object(
+              'question_id', a.question_id,
+              'proposition_id', a.proposition_id,
+              'answered_at', a.answered_at
+            )) AS answers
+    FROM answer a
+    GROUP BY user_id, quiz_id
+  ),
+
+  quizzes_json AS(
+    SELECT  user_id,
+            jsonb_agg(jsonb_build_object(
+              'quiz_id', d.quiz_id,
+              'answers', d.answers
+            )) AS answers
+    FROM    answers_json d
+    GROUP BY user_id
+  )
+
+  SELECT  user_id,
+          COALESCE(q.answers, '[]') AS answers
+  FROM    quiz_user a LEFT OUTER JOIN quizzes_json q  USING(user_id)
+);
+
+-- select user_id, jsonb_pretty(answers) from v_quiz_user_ext ;
+--      user_id      |                            jsonb_pretty                            
+-- ------------------+--------------------------------------------------------------------
+--  other.user       | [                                                                 +
+--                   |     {                                                             +
+--                   |         "answers": [                                              +
+--                   |             {                                                     +
+--                   |                 "answered_at": "2020-03-18T17:11:32.263172+01:00",+
+--                   |                 "question_id": 0,                                 +
+--                   |                 "proposition_id": 0                               +
+--                   |             }                                                     +
+--                   |         ],                                                        +
+--                   |         "quiz_id": 0                                              +
+--                   |     },                                                            +
+--                   |     {                                                             +
+--                   |         "answers": [                                              +
+--                   |             {                                                     +
+--                   |                 "answered_at": "2020-03-18T17:11:32.263172+01:00",+
+--                   |                 "question_id": 0,                                 +
+--                   |                 "proposition_id": 1                               +
+--                   |             }                                                     +
+--                   |         ],                                                        +
+--                   |         "quiz_id": 1                                              +
+--                   |     }                                                             +
+--                   | ]
+--  test.user        | [                                                                 +
+--                   |     {                                                             +
+--                   |         "answers": [                                              +
+--                   |             {                                                     +
+--                   |                 "answered_at": "2020-03-18T17:11:32.263172+01:00",+
+--                   |                 "question_id": 0,                                 +
+--                   |                 "proposition_id": 1                               +
+--                   |             },                                                    +
+--                   |             {                                                     +
+--                   |                 "answered_at": "2020-03-18T17:11:32.263172+01:00",+
+--                   |                 "question_id": 1,                                 +
+--                   |                 "proposition_id": 0                               +
+--                   |             }                                                     +
+--                   |         ],                                                        +
+--                   |         "quiz_id": 0                                              +
+--                   |     }                                                             +
+--                   | ]
+--  emmanuel.coquery | [                                                                 +
+--                   | ]
+--  romuald.thion    | [                                                                 +
+--                   | ]
+
+
+
+
 -- ---------------------------------------- EXTENDED QUIZZES ----------------------------------------
 -- extended quizzes, with aggregation on questions to provide a summary
 DROP VIEW IF EXISTS lifap5.v_quiz_ext;
