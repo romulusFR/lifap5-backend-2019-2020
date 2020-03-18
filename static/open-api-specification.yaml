@@ -164,6 +164,30 @@ paths:
         403:
           $ref: '#/components/responses/Forbidden'
 
+  /users/{user_id}:
+    get:
+      summary: Given your detailed own infos
+      description: Details include the answered questions 
+      operationId: getUserDetails
+      tags:
+        - authenticated
+        - users
+      security:
+        - XApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/userIdParam'
+      responses:
+        200:
+          description: When OK, answers with ID, first name and last name
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectUserDetail'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+
   /quizzes/:
     get:
       summary: All quizzes
@@ -421,6 +445,7 @@ components:
       schema:
         type: integer
       style: simple
+
     questionIdParam:
       name: question_id
       in: path
@@ -428,6 +453,16 @@ components:
       required: true
       schema:
         type: integer
+      style: simple
+
+    userIdParam:
+      name: user_id
+      in: path
+      description: ID of a user
+      required: true
+      schema:
+        type: string
+        example: 'test.user'
       style: simple
 
   # https://swagger.io/docs/specification/authentication/api-keys/
@@ -609,6 +644,34 @@ components:
         lastname:
           type: string
           example: user
+
+    ObjectUserDetail:
+      allOf:
+        - $ref: '#/components/schemas/ObjectUser'
+      required:
+        - answers
+      properties:
+        answers:
+          type: array
+          items:
+            type: object
+            properties:
+              quiz_id:
+                type: integer
+              answers:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    question_id:
+                      type: integer
+                    proposition_id:
+                      type: integer
+                    answered_at:
+                      type: string
+                      format: date-time
+
+
 
     ObjectQuiz:
       type: object
