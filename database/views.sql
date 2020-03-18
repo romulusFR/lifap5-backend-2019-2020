@@ -161,7 +161,7 @@ CREATE OR REPLACE VIEW lifap5.v_question_ext AS(
 );
 
 -- select * from v_question_ext;
---  quiz_id | question_id |                        content                        | propositions_number | correct_propositions_number | propositions_ids 
+--  quiz_id | question_id |                        sentence                       | propositions_number | correct_propositions_number | propositions_ids 
 -- ---------+-------------+-------------------------------------------------------+---------------------+-----------------------------+------------------
 --        0 |           0 | Qui a inventé le lambda calcul ?                      |                   2 |                           1 | [0, 1]
 --        0 |           1 | Qui a inventé le JavaScript ?                         |                   0 |                           0 | []

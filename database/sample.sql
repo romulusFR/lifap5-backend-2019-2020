@@ -12,10 +12,11 @@ VALUES  (0, 'QCM LIFAP5 #1', 'Des questions de JS et lambda calcul', 'romuald.th
 
 SELECT setval('lifap5.quiz_quiz_id_seq', 2);
 
-INSERT INTO lifap5.question(quiz_id, question_id, content)
+INSERT INTO lifap5.question(quiz_id, question_id, sentence)
 VALUES  (0, 0, 'Qui a inventé le lambda calcul ?'),
         (0, 1, 'Qui a inventé le JavaScript ?'),
         (1, 0, 'En quel année le standard ES2015 a-t''il été proposé ?');
+        (1, 1, 'Cette question at''elle une réponse ?');
 
 
 INSERT INTO lifap5.proposition(quiz_id, question_id, proposition_id, content, correct)
