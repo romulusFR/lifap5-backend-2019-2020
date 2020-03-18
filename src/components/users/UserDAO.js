@@ -36,16 +36,14 @@ async function selectAll(currentPage = 1, pageSize) {
 
     const result = await client.query(query);
 
-    client.release();
     return new PaginatedResult(
       currentPage,
       totalResults,
       pageSize,
       result.rows
     );
-  } catch (err) {
+  } finally {
     client.release();
-    throw err;
   }
 }
 

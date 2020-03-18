@@ -61,7 +61,7 @@ module.exports = function usersRouter(app) {
       const details = await UserDAO.selectById(whoami);
       return res.send(details);
     } catch (err) {
-      logger.debug(`getUserDetails throw ${err}`);
+      logger.error(`getUserDetails throw ${err}`);
       return next(err);
     }
   }

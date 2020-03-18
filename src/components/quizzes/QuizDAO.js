@@ -53,10 +53,12 @@ async function insert(quiz) {
   const args = [title, description, open, owner_id];
   const result = await pool.query(query, args);
 
-  if (result.rowCount) return result.rows[0];
-  throw createError.Conflict(
-    `Invalid content: title "${quiz.title}" probably already exists (no INSERT)`
-  );
+  if (!result.rowCount) {
+    throw createError.Conflict(
+      `Title "${quiz.title}" already exists (no INSERT)`
+    );
+  }
+  return result.rows[0];
 }
 
 async function update(quiz) {

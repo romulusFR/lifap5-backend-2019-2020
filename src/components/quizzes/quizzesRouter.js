@@ -53,7 +53,7 @@ module.exports = function quizzesRouter(app) {
         );
       const quizId = await QuizDAO.insert(quiz);
       logger.silly(
-        `QuizDAO.insert(${JSON.stringify(quiz)})=${JSON.stringify(quizId)}`
+        `postQuizHandler@${JSON.stringify(quizId)}`
       );
       return res.status(201).send(quizId);
     } catch (err) {
@@ -69,7 +69,7 @@ module.exports = function quizzesRouter(app) {
       Object.assign(quiz, { title, description, open });
 
       const updatedQuiz = await QuizDAO.update(quiz);
-      logger.silly(`QuizDAO.putQuizHandler(${quiz})=${updatedQuiz}`);
+      logger.silly(`putQuizHandler@${updatedQuiz}`);
       return res.send(updatedQuiz);
     } catch (err) {
       logger.debug(`putQuizHandler throw ${err}`);
@@ -82,7 +82,7 @@ module.exports = function quizzesRouter(app) {
     const { user_id } = res.locals.user;
     try {
       const deletedQuiz = await QuizDAO.del(quiz_id, user_id);
-      logger.silly(`QuizDAO.delQuiz(${quiz_id}, ${user_id})=${deletedQuiz}`);
+      logger.silly(`delQuiz@${deletedQuiz}`);
       res.send(deletedQuiz);
       return deletedQuiz;
     } catch (err) {
@@ -100,7 +100,7 @@ module.exports = function quizzesRouter(app) {
       res.locals.quiz = quiz;
       return next();
     } catch (err) {
-      logger.debug(`checksQuizByIdHandler throw ${err}`);
+      logger.error(`checksQuizByIdHandler throw ${err}`);
       return next(err);
     }
   }
