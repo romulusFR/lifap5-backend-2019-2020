@@ -16,11 +16,15 @@ describe('GET /users/', () => {
       .expect('Content-Type', /json/);
 
     expect(res.statusCode).toEqual(200);
-    expect(Array.isArray(res.body)).toBe(true);
-    expect(res.body.length).toBeGreaterThanOrEqual(4);
-    expect(res.body.length).toBeLessThanOrEqual(app.locals.pageLimit);
-    expect(res.body).toContainEqual({ user_id: 'test.user' });
-    expect(res.body).toContainEqual({ user_id: 'other.user' });
+    expect(typeof res.body).toBe('object');
+
+    expect(res.body).toMatchObject({
+      currentPage: 1,
+      pageSize: app.locals.pageLimit,
+      nbResults: expect.any(Number),
+      nbPages : expect.any(Number),
+      results: expect.arrayContaining([{ user_id: 'test.user' }, { user_id: 'other.user' }])
+    });
   });
 
   it("should deal correctly with explicit pagination when out of bounds", async () => {
@@ -30,8 +34,8 @@ describe('GET /users/', () => {
       .expect('Content-Type', /json/);
 
     expect(res.statusCode).toEqual(200);
-    expect(Array.isArray(res.body)).toBe(true);
-    expect(res.body).toEqual([]);
+    expect(Array.isArray(res.body.results)).toBe(true);
+    expect(res.body.results).toEqual([]);
   });
 });
 
