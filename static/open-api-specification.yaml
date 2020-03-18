@@ -646,30 +646,24 @@ components:
           example: user
 
     ObjectUserDetail:
-      allOf:
-        - $ref: '#/components/schemas/ObjectUser'
-      required:
-        - answers
-      properties:
-        answers:
-          type: array
-          items:
-            type: object
-            properties:
-              quiz_id:
-                type: integer
-              answers:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    question_id:
-                      type: integer
-                    proposition_id:
-                      type: integer
-                    answered_at:
-                      type: string
-                      format: date-time
+      type: array
+      items:
+        type: object
+        properties:
+          quiz_id:
+            type: integer
+          answers:
+            type: array
+            items:
+              type: object
+              properties:
+                question_id:
+                  type: integer
+                proposition_id:
+                  type: integer
+                answered_at:
+                  type: string
+                  format: date-time
 
 
 

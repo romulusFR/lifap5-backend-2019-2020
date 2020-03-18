@@ -52,10 +52,10 @@ async function selectAll(currentPage = 1, pageSize) {
 async function selectById(user_id) {
   logger.silly(`UserDAO.selectById@${user_id}`);
 
-  const query = 'SELECT * FROM v_quiz_user_ext WHERE user_id = $1';
+  const query = 'SELECT answers FROM v_quiz_user_ext WHERE user_id = $1';
   const result = await pool.query(query, [user_id]);
 
-  return result.rows[0];
+  return result.rows[0].answers;
 }
 
 module.exports = { selectAll, selectById };
