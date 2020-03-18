@@ -81,7 +81,9 @@ module.exports = function questionsRouter(_app) {
     const { question_id } = res.locals.question;
     try {
       const deletedQuiz = await QuestionDAO.del(quiz_id, question_id, user_id);
-      logger.silly(`QuestionDAO.del(${quiz_id}, ${question_id}, ${user_id})=${deletedQuiz}`);
+      logger.silly(
+        `QuestionDAO.del(${quiz_id}, ${question_id}, ${user_id})=${deletedQuiz}`
+      );
       res.send(deletedQuiz);
       return deletedQuiz;
     } catch (err) {
@@ -96,7 +98,11 @@ module.exports = function questionsRouter(_app) {
   //
   router.get('/', [getAllQuestionsHandler]);
 
-  router.get('/:question_id', [getOneQuestionHandler]);
+  router.get('/:question_id', [
+    authFromApiKeyHandler,
+    checksQuizOwnership,
+    getOneQuestionHandler,
+  ]);
 
   // curl -X POST "http://localhost:3000/quizzes/" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json" -d "{\"title\":\"QCM de test\",\"description\":\"Un QCM supplémentaire\",\"open\":false}"
   // curl -X POST "http://localhost:3000/quizzes/36/questions" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json" -d "{\"question_id\":42,\"content\":\"Qui a pissé sur le chien ?\"}"
@@ -112,7 +118,6 @@ module.exports = function questionsRouter(_app) {
     checksQuizOwnership,
     delQuestionHandler,
   ]);
-
 
   return router;
 };

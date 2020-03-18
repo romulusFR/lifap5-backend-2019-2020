@@ -323,7 +323,7 @@ paths:
       description: All questions of a given quizz (if it exists) with extra information
       operationId: getAllQuestionsHandler
       tags:
-        - authenticated
+        - public
         - questions
       responses:
         '200':
@@ -381,8 +381,10 @@ paths:
       summary: A  question of a quizz
       description: A question of a given quizz (if it exists) with detailled information (its propositions)
       operationId: getOneQuestionHandler
+      security:
+        - XApiKeyAuth: []
       tags:
-        - public
+        - authenticated
         - questions
       responses:
         '200':

@@ -31,6 +31,7 @@ describe('GET /quizzes/:quiz_id/questions/:question_id', () => {
     const res = await request(app)
       .get('/quizzes/0/questions/0')
       .set('Accept', 'application/json')
+      .set('X-API-KEY', '4dd729fd-4709-427f-b371-9d177194c260')
       .expect('Content-Type', /json/);
 
     const gold = {
