@@ -74,7 +74,7 @@ describe('GET /quizzes/:quiz_id/questions/:question_id', () => {
   });
 });
 
-describe('POST/DEL /quizzes/:quiz_id/questions/', () => {
+describe('POST/PUT/DEL /quizzes/:quiz_id/questions/', () => {
   let createdQuizId;
   it('should create a fresh quizz you ll own', async () => {
     const quizToCreate = {
@@ -127,37 +127,37 @@ describe('POST/DEL /quizzes/:quiz_id/questions/', () => {
     createdQuestionId = res.body.question_id;
   }); // it quizz
 
-  // it('should update the question', async () => {
-  //   const questionToUpdate = {
-  //     sentence: 'What is the question again?',
-  //     propositions : [
-  //       {
-  //         "content": "Again Alan Turing",
-  //         "proposition_id": 0,
-  //         "correct": true
-  //       },
-  //       {
-  //         "content": "Again Alonzo Church",
-  //         "proposition_id": 1,
-  //         "correct": false
-  //       }
-  //     ]
-  //   };
+  it('should update the question', async () => {
+    const questionToUpdate = {
+      sentence: 'What is the question again?',
+      propositions : [
+        {
+          "content": "Again Alan Turing",
+          "proposition_id": 0,
+          "correct": true
+        },
+        {
+          "content": "Again Alonzo Church",
+          "proposition_id": 1,
+          "correct": false
+        }
+      ]
+    };
 
-  //   const res = await request(app)
-  //     .put(`/quizzes/${createdQuizId}/questions/${createdQuestionId}`)
-  //     .set('Accept', 'application/json')
-  //     .set('X-API-KEY', '944c5fdd-af88-47c3-a7d2-5ea3ae3147da')
-  //     .send(questionToUpdate)
-  //     .expect('Content-Type', /json/);
+    const res = await request(app)
+      .put(`/quizzes/${createdQuizId}/questions/${createdQuestionId}`)
+      .set('Accept', 'application/json')
+      .set('X-API-KEY', '944c5fdd-af88-47c3-a7d2-5ea3ae3147da')
+      .send(questionToUpdate)
+      .expect('Content-Type', /json/);
 
-  //   expect(res.statusCode).toEqual(201);
-  //   expect(res.body).toMatchObject({
-  //     quiz_id: createdQuizId,
-  //     question_id: createdQuestionId,
-  //   });
+    expect(res.statusCode).toEqual(201);
+    expect(res.body).toMatchObject({
+      quiz_id: createdQuizId,
+      question_id: createdQuestionId,
+    });
 
-  // }); // it put quizz
+  }); // it put quizz
 
   describe('DEL /quizzes/:quiz_id/questions/:question_id', () => {
     it('should delete the fresh question', async () => {
