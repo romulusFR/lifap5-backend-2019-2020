@@ -27,7 +27,7 @@ describe('GET /quizzes/:quiz_id/questions', () => {
 });
 
 describe('GET /quizzes/:quiz_id/questions/:question_id', () => {
-  it('should detail aquestion of a quiz', async () => {
+  it('should detail a question of a quiz when you re its owner', async () => {
     const res = await request(app)
       .get('/quizzes/0/questions/0')
       .set('Accept', 'application/json')
@@ -62,9 +62,21 @@ describe('GET /quizzes/:quiz_id/questions/:question_id', () => {
   });
 });
 
+describe('GET /quizzes/:quiz_id/questions/:question_id', () => {
+  it('should not detail a question of a quiz you do not own', async () => {
+    const res = await request(app)
+      .get(`/quizzes/0/questions/0`)
+      .set('Accept', 'application/json')
+      .set('X-API-KEY', '944c5fdd-af88-47c3-a7d2-5ea3ae3147da')
+      .expect('Content-Type', /json/);
+
+    expect(res.statusCode).toEqual(403);
+  });
+});
+
 describe('POST/DEL /quizzes/:quiz_id/questions/', () => {
   let createdQuizId;
-  it('should create a fresh quizz', async () => {
+  it('should create a fresh quizz you ll own', async () => {
     const quizToCreate = {
       title: `Quiz test #${Math.floor(Math.random() * 1000000)}`,
       description: 'Description of test quiz',
@@ -119,3 +131,28 @@ describe('POST/DEL /quizzes/:quiz_id/questions/', () => {
     }); // it DEL
   }); // describe DEL
 }); // describe outer POST/DEL
+
+describe('POST /quizzes/:quiz_id/questions/0', () => {
+  it('cannot add a question to a quizz that you do not own', async () => {
+    const res = await request(app)
+      .post(`/quizzes/0/questions/`)
+      .set('Accept', 'application/json')
+      .set('X-API-KEY', '944c5fdd-af88-47c3-a7d2-5ea3ae3147da')
+      .send({})
+      .expect('Content-Type', /json/);
+
+    expect(res.statusCode).toEqual(403);
+  });
+});
+
+describe('DEL /quizzes/:quiz_id/questions/0', () => {
+  it('cannot delete a question of quizz that you do not own', async () => {
+    const res = await request(app)
+      .delete(`/quizzes/0/questions/0`)
+      .set('Accept', 'application/json')
+      .set('X-API-KEY', '944c5fdd-af88-47c3-a7d2-5ea3ae3147da')
+      .expect('Content-Type', /json/);
+
+    expect(res.statusCode).toEqual(403);
+  });
+});
