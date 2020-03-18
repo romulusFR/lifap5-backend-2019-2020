@@ -161,35 +161,11 @@ paths:
                 type: string
               example: <html>A welcome page</html>
         '400':
-          description: When x-api-key is not a valid UUID
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorBadRequest'
-            text/html:
-              schema:
-                type: string
-              example: <html>An error page</html>
+          $ref: '#/components/responses/BadRequest'
         '401':
-          description: when x-api-key is not provided
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorUnauthorized'
-            text/html:
-              schema:
-                type: string
-              example: <html>An error page</html>
+          $ref: '#/components/responses/Unauthorized'
         '403':
-          description: when given x-api-key is not in the database
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorForbidden'
-            text/html:
-              schema:
-                type: string
-              example: <html>An error page</html>
+          $ref: '#/components/responses/Forbidden'
 
   /quizzes/:
     get:
@@ -438,8 +414,11 @@ components:
       name: X-API-KEY  # name of the header, query parameter or cookie
 
   responses:
-    error:
-      description: The error (with content negotiation)
+
+
+
+    BadRequest:
+      description: A 400 error, 
       content:
         application/json:
           schema:
@@ -447,9 +426,78 @@ components:
         text/html:
           schema:
             type: string
-          example: <html>An error page</html>
+          example: <html>An error page with status, name and message</html>
+    Unauthorized:
+      description: A 401 error, for example when no or invalid UUID is provided in X-API-KEY header 
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+        text/html:
+          schema:
+            type: string
+          example: <html>An error page with status, name and message</html>
+    Forbidden:
+      description: A 403 error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+        text/html:
+          schema:
+            type: string
+          example: <html>An error page with status, name and message</html>
+    NotFound:
+      description: A 404 error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+        text/html:
+          schema:
+            type: string
+          example: <html>An error page with status, name and message</html>
+    InternalServer:
+      description: A 500 error, possibly with content negotiation for some paths
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+        text/html:
+          schema:
+            type: string
+          example: <html>An error page with status, name and message</html>
+    NotImplemented:
+      description: A 501 error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+        text/html:
+          schema:
+            type: string
+          example: <html>An error page with status, name and message</html>
+
+
+
+
 
   schemas:
+
+    Error:
+      type: object
+      properties:
+        name:
+          type: string
+          enum: [BadRequest, Unauthorized, Forbidden, NotFound, InternalServer, NotImplemented]
+        message:
+          type: string
+          example: Invalid content on input
+      required:
+        - name
+        - message
+
+
     ObjectHealthCheck:
       description: The object returned on healthcheck
       type: object
@@ -649,73 +697,3 @@ components:
           type: integer
           example: 0
 
-
-
-
-    ErrorBadRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          enum: [BadRequest]
-        message:
-          type: string
-      required:
-        - name
-        - message
-    ErrorUnauthorized:
-      type: object
-      properties:
-        name:
-          type: string
-          enum: [Unauthorized]
-        message:
-          type: string
-      required:
-        - name
-        - message
-    ErrorForbidden:
-      type: object
-      properties:
-        name:
-          type: string
-          enum: [Forbidden]
-        message:
-          type: string
-      required:
-        - name
-        - message
-    ErrorNotFound:
-      type: object
-      properties:
-        name:
-          type: string
-          enum: [NotFound]
-        message:
-          type: string
-      required:
-        - name
-        - message
-    ErrorInternalServer:
-      type: object
-      description: Default error, caught by the default error handler
-      properties:
-        name:
-          type: string
-          enum: [InternalServer]
-        message:
-          type: string
-      required:
-        - name
-        - message
-    ErrorNotImplemented:
-      type: object
-      properties:
-        name:
-          type: string
-          enum: [NotImplemented]
-        message:
-          type: string
-      required:
-        - name
-        - message

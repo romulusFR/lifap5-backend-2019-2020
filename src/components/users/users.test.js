@@ -55,18 +55,18 @@ describe('GET /users/whoami', () => {
     });
   });
 
-  it('should answer 400 when x-api-key is not UUIDv4', async () => {
+  it('should answer 401 when x-api-key is not UUIDv4', async () => {
     const res = await request(app)
       .get('/users/whoami')
       .set('Accept', 'application/json')
       .set('X-API-KEY', '00000000-0000-0000-0000-000000000000')
       .expect('Content-Type', /json/);
 
-    expect(res.statusCode).toEqual(400);
+    expect(res.statusCode).toEqual(401);
     expect(res.body).toMatchObject({
-      name: 'BadRequestError',
+      name: 'UnauthorizedError',
       message: expect.any(String),
-      status: 400,
+      status: 401,
     });
   });
 
