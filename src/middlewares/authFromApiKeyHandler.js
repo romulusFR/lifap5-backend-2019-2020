@@ -25,13 +25,13 @@ async function getUserFromApiKey(apiKey) {
 async function authFromApiKeyHandler(req, res, next) {
   const token = req.headers['x-api-key'];
   if (!token || !isUUID(token, 4)) {
-    const err = new createError.Unauthorized(`x-api-key not provided or invalid`);
+    const err = new createError.Unauthorized(`x-api-key is not provided or invalid`);
     return next(err);
   }
   try {
     const result = await getUserFromApiKey(token);
     if (!result) {
-      const err = new createError.Forbidden(
+      const err = new createError.Unauthorized(
         `x-api-key "${token}" does not exist`
       );
       return next(err);

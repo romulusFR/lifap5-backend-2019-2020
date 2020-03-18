@@ -95,14 +95,12 @@ describe('POST /quizzes/', () => {
     expect(res.statusCode).toEqual(201);
     expect(res.body).toMatchObject({ quiz_id: expect.any(Number) });
 
-    // console.log(`POST createdQuizId=${createdQuizId}`);
     createdQuizId = res.body.quiz_id;
   });
 
   
 
   it('should detail the quiz we ve just created', async () => {
-    // console.log(`GET createdQuizId=${createdQuizId}`);
     const gold = {
       quiz_id: createdQuizId,
       owner_id: 'test.user',
@@ -119,7 +117,6 @@ describe('POST /quizzes/', () => {
   });
 
   describe('PUT /quizzes/:quiz_id (after POST /quizzes/)', () => {
-    // console.log(`PUT createdQuizId=${createdQuizId}`);
     it('should update the previous quiz', async () => {
       const content = {
         title: `Quiz test #${Math.floor(Math.random() * 1000000)} - modified`,
@@ -140,7 +137,6 @@ describe('POST /quizzes/', () => {
   });
 
   describe('DEL /quizzes/:quiz_id (after POST /quizzes/)', () => {
-    // console.log(`DEL createdQuizId=${createdQuizId}`);
     it('should delete the previous quiz', async () => {
       const res = await request(app)
         .delete(`/quizzes/${createdQuizId}`)
@@ -154,4 +150,29 @@ describe('POST /quizzes/', () => {
   });
 });
 
-// describe('GET /quizzes/:quiz_id (after POST /quizzes/)', () => {});
+describe('DEL /quizzes/:quiz_id', () => {
+  it('cannot delete a quizz that you do not own', async () => {
+    const res = await request(app)
+      .put(`/quizzes/0`)
+      .set('Accept', 'application/json')
+      .set('X-API-KEY', '944c5fdd-af88-47c3-a7d2-5ea3ae3147da')
+      .expect('Content-Type', /json/);
+
+    expect(res.statusCode).toEqual(403);
+
+  });
+});
+
+describe('PUT /quizzes/:quiz_id', () => {
+  it('cannot update a quizz that you do not own', async () => {
+    const res = await request(app)
+      .put(`/quizzes/0`)
+      .set('Accept', 'application/json')
+      .set('X-API-KEY', '944c5fdd-af88-47c3-a7d2-5ea3ae3147da')
+      .send({})
+      .expect('Content-Type', /json/);
+
+    expect(res.statusCode).toEqual(403);
+
+  });
+});

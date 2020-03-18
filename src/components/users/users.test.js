@@ -84,18 +84,18 @@ describe('GET /users/whoami', () => {
     });
   });
 
-  it('should answer 403 when x-api-key is not in the database', async () => {
+  it('should answer 401 when x-api-key is not in the database', async () => {
     const res = await request(app)
       .get('/users/whoami')
       .set('Accept', 'application/json')
       .set('X-API-KEY', '944c5fdd-af88-47c3-a7d2-5ea3ae3147d0')
       .expect('Content-Type', /json/);
 
-    expect(res.statusCode).toEqual(403);
+    expect(res.statusCode).toEqual(401);
     expect(res.body).toMatchObject({
-      name: 'ForbiddenError',
+      name: 'UnauthorizedError',
       message: expect.any(String),
-      status: 403,
+      status: 401,
     });
   });
 });
