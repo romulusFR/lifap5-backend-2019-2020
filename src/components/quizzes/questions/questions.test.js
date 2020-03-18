@@ -96,7 +96,8 @@ describe('POST/DEL /quizzes/:quiz_id/questions/', () => {
   it('should create a fresh question', async () => {
     const questionToCreate = {
       question_id: Math.floor(Math.random() * 1000000),
-      content: 'What is the question?',
+      sentence: 'What is the question?',
+      propositions : []
     };
 
     const res = await request(app)

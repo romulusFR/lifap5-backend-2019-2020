@@ -49,7 +49,7 @@ module.exports = function questionsRouter(_app) {
 
   async function postQuestionHandler(req, res, next) {
     try {
-      const { question_id, content } = req.body;
+      const { question_id, sentence, propositions } = req.body;
       const { quiz_id } = res.locals.quiz;
       if (Number.isNaN(parseInt(question_id, 10)))
         return next(
@@ -57,17 +57,17 @@ module.exports = function questionsRouter(_app) {
             `Invalid content: question_id is not an integer`
           )
         );
-      if (!content)
+      if (!sentence)
         return next(
-          createError.BadRequest(`Invalid content: content is missing`)
+          createError.BadRequest(`Invalid content: sentence is missing`)
         );
-      const question = { quiz_id, question_id, content };
+      if (!Array.isArray(propositions))
+        return next(
+          createError.BadRequest(`Invalid content: propositions is not an array`)
+        );
+      const question = { quiz_id, question_id, sentence, propositions };
       const questionId = await QuestionDAO.insert(question);
-      logger.silly(
-        `QuestionDAO.insert(${JSON.stringify(question)})=${JSON.stringify(
-          questionId
-        )}`
-      );
+      logger.silly(`postQuestionHandler@${JSON.stringify(questionId)}`);
       return res.status(201).send(questionId);
     } catch (err) {
       logger.debug(`postQuestionHandler throw ${err}`);
@@ -81,9 +81,7 @@ module.exports = function questionsRouter(_app) {
     const { question_id } = res.locals.question;
     try {
       const deletedQuiz = await QuestionDAO.del(quiz_id, question_id, user_id);
-      logger.silly(
-        `QuestionDAO.del(${quiz_id}, ${question_id}, ${user_id})=${deletedQuiz}`
-      );
+      logger.silly(`delQuestionHandler@${deletedQuiz}`);
       res.send(deletedQuiz);
       return deletedQuiz;
     } catch (err) {
