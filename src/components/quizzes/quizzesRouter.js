@@ -100,7 +100,7 @@ module.exports = function quizzesRouter(app) {
       res.locals.quiz = quiz;
       return next();
     } catch (err) {
-      logger.debug(`delQuizHandler throw ${err}`);
+      logger.debug(`checksQuizByIdHandler throw ${err}`);
       return next(err);
     }
   }
