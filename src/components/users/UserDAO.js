@@ -3,7 +3,7 @@
  * @author Romuald THION
  */
 
-const { logger, pool } = require('../../config');
+const { logger, pool, PaginatedResult } = require('../../config');
 
 const selectAllUsersQuery = (page, pageLimit) => `
 SELECT user_id
@@ -32,21 +32,14 @@ async function selectAllUsers(currentPage = 1, pageSize) {
 
     const pagesInfoQuery = 'SELECT COUNT(*)::integer AS nb FROM quiz_user;';
     const pagesInfo = await client.query(pagesInfoQuery);
-    const nbResults = pagesInfo.rows[0].nb;
+    const totalResults = pagesInfo.rows[0].nb;
 
     const result = await client.query(
       selectAllUsersQuery(currentPage, pageSize)
     );
 
     client.release();
-
-    return {
-      currentPage,
-      pageSize,
-      nbResults,
-      nbPages: Math.ceil(nbResults / pageSize),
-      results: result.rows,
-    };
+    return new PaginatedResult(currentPage, totalResults, pageSize, result.rows);
   } catch (err) {
     client.release();
     throw err;

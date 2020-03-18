@@ -5,6 +5,6 @@
 
 const config = require('./config');
 const { logger, morgan } = require('./logger');
-const { pool } = require('./pool');
+const { pool, PaginatedResult } = require('./pool');
 
-module.exports = { config, logger, morgan, pool };
+module.exports = { config, logger, morgan, pool, PaginatedResult };

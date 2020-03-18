@@ -31,4 +31,18 @@ pool.on('error', (err, _client) => {
   throw err;
 });
 
-module.exports = { pool };
+class PaginatedResult {
+  static defaultPageSize() {
+    return config.pageLimit;
+  }
+
+  constructor(currentPage, totalResults, pageSize, results) {
+    this.nbResults = totalResults;
+    this.nbPages = Math.ceil(totalResults / pageSize);
+    this.pageSize = pageSize;
+    this.currentPage = currentPage;
+    this.results = results;
+  }
+}
+
+module.exports = { pool, PaginatedResult };
