@@ -13,10 +13,10 @@ const { logger, pool, PaginatedResult } = require('../../config');
  * @param {*} pageSize
  */
 
-async function selectAllUsers(currentPage = 1, pageSize) {
-  logger.silly(`selectAllUsers@${currentPage}, ${pageSize}`);
+async function selectAll(currentPage = 1, pageSize) {
+  logger.silly(`UserDAO.selectAll@${currentPage}, ${pageSize}`);
 
-  const selectAllUsersQuery = `
+  const query = `
   SELECT user_id
   FROM quiz_user
   ORDER BY user_id
@@ -34,7 +34,7 @@ async function selectAllUsers(currentPage = 1, pageSize) {
     const pagesInfo = await client.query(pagesInfoQuery);
     const totalResults = pagesInfo.rows[0].nb;
 
-    const result = await client.query(selectAllUsersQuery);
+    const result = await client.query(query);
 
     client.release();
     return new PaginatedResult(
@@ -49,4 +49,13 @@ async function selectAllUsers(currentPage = 1, pageSize) {
   }
 }
 
-module.exports = { selectAllUsers };
+async function selectById(user_id) {
+  logger.silly(`UserDAO.selectById@${user_id}`);
+
+  const query = 'SELECT * FROM v_quiz_user_ext WHERE user_id = $1';
+  const result = await pool.query(query, [user_id]);
+
+  return result.rows[0];
+}
+
+module.exports = { selectAll, selectById };
