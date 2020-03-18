@@ -132,7 +132,7 @@ describe('POST /quizzes/', () => {
         .expect('Content-Type', /json/);
 
       expect(res.statusCode).toEqual(200);
-      expect(res.body).toMatchObject(content);
+      expect(res.body).toMatchObject({ quiz_id: createdQuizId });
     });
   });
 

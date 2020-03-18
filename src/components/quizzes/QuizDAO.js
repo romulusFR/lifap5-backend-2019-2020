@@ -68,7 +68,7 @@ async function update(quiz) {
       description = $2,
       open = $3
     WHERE quiz_id = $4 AND owner_id = $5
-    RETURNING *;`;
+    RETURNING quiz_id;`;
 
   logger.silly(`QuizDAO.update@${JSON.stringify(quiz)}`);
   const args = [
