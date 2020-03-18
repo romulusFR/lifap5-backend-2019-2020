@@ -3,7 +3,7 @@ openapi: 3.0.2
 info:
   title: REST API for the lifap5-backend-2019-2020
   description: The yaml description of the API, lively available at http://lifap5.univ-lyon1.fr/
-  version: "0.1.1"
+  version: '0.1.1'
   contact:
     email: romuald.thion@univ-lyon1.fr
     name: Romuald THION
@@ -29,9 +29,7 @@ tags:
   - name: authenticated
     description: Authentified user (by x-api-key)
 
-    
 paths:
-
   /:
     get:
       summary: The index page
@@ -41,11 +39,22 @@ paths:
         - public
       responses:
         200:
-          description: The index page (with content negotiation)
+          description: The index page
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ObjectIndex'
+                type: object
+                properties:
+                  appname:
+                    type: string
+                  version:
+                    type: string
+                  description:
+                    type: string
+                required:
+                  - appname
+                  - version
+                  - description
             text/html:
               schema:
                 type: string
@@ -89,16 +98,7 @@ paths:
         - public
       responses:
         501:
-          description: The error (with content negotiation)
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorNotImplemented'
-            text/html:
-              schema:
-                type: string
-              example: <html>An error page</html>
-              
+          $ref: '#/components/responses/NotImplemented'
 
   /healthcheck:
     get:
@@ -108,7 +108,7 @@ paths:
       tags:
         - public
       responses:
-        '200':
+        200:
           description: OK
           content:
             application/json:
@@ -131,13 +131,12 @@ paths:
             default: 1
           description: The number of pages to skip, so (page-1)*pageLimit items are skipped
       responses:
-        '200':
+        200:
           description: OK
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/ObjectPaginatedUsers'
-
 
   /users/whoami:
     get:
@@ -150,7 +149,7 @@ paths:
       security:
         - XApiKeyAuth: []
       responses:
-        '200':
+        200:
           description: When OK, answers with ID, first name and last name
           content:
             application/json:
@@ -160,11 +159,9 @@ paths:
               schema:
                 type: string
               example: <html>A welcome page</html>
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
+        401:
           $ref: '#/components/responses/Unauthorized'
-        '403':
+        403:
           $ref: '#/components/responses/Forbidden'
 
   /quizzes/:
@@ -183,7 +180,7 @@ paths:
             default: 1
           description: The number of pages to skip, so (page-1)*pageLimit items are skipped
       responses:
-        '200':
+        200:
           description: OK
           content:
             application/json:
@@ -207,19 +204,24 @@ paths:
             schema:
               $ref: '#/components/schemas/ObjectQuiz'
             example:
-              title: "QCM de test"
-              description: "Un QCM supplémentaire"
+              title: 'QCM de test'
+              description: 'Un QCM supplémentaire'
       responses:
-        '201':
-          description: Content created, returns the quiz's id 
+        201:
+          description: Content created, returns the quiz's id
           content:
             application/json:
-              schema: 
+              schema:
                 type: object
                 properties:
                   quiz_id:
                     type: integer
                     example: 42
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+
 
   /quizzes/{quiz_id}:
     parameters:
@@ -232,11 +234,11 @@ paths:
         - public
         - quizzes
       responses:
-        '200':
+        200:
           description: OK
           content:
             application/json:
-              schema: 
+              schema:
                 type: object
                 $ref: '#/components/schemas/ObjectQuiz'
     put:
@@ -256,16 +258,22 @@ paths:
             schema:
               $ref: '#/components/schemas/ObjectQuiz'
             example:
-              title: "QCM de test - màj"
-              description: "Un QCM supplémentaire - màj"
+              title: 'QCM de test - màj'
+              description: 'Un QCM supplémentaire - màj'
               open: true
       responses:
-        '200':
+        200:
           description: Content updated, returns the whole quizz
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ObjectQuiz'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
     delete:
       summary: Delete an existing quiz
       description: owner_id must be current user
@@ -276,18 +284,22 @@ paths:
       security:
         - XApiKeyAuth: []
       responses:
-        '200':
+        200:
           description: Content deleted
           content:
             application/json:
-              schema: 
+              schema:
                 type: object
                 properties:
                   quiz_id:
                     type: integer
                     example: 42
-
-
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
 
   /quizzes/{quiz_id}/questions/:
     parameters:
@@ -300,11 +312,11 @@ paths:
         - public
         - questions
       responses:
-        '200':
+        200:
           description: OK
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/ObjectQuestion'
@@ -325,9 +337,9 @@ paths:
               $ref: '#/components/schemas/ObjectQuestion'
             example:
               question_id: 0
-              content: "Qui a inventé le lambda calcul ?"
+              content: 'Qui a inventé le lambda calcul ?'
       responses:
-        '201':
+        201:
           description: OK
           content:
             application/json:
@@ -339,13 +351,17 @@ paths:
                 properties:
                   question_id:
                     type: integer
-                  content: 
+                  content:
                     type: integer
               example:
                 question_id: 0
                 quiz_id: 1
-
-
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
 
   /quizzes/{quiz_id}/questions/{question_id}:
     parameters:
@@ -361,14 +377,18 @@ paths:
         - authenticated
         - questions
       responses:
-        '200':
+        200:
           description: OK
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/ObjectQuestionDetail'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
     delete:
       summary: Delete a question of a quizz
       operationId: delQuestionHandler
@@ -378,14 +398,18 @@ paths:
       security:
         - XApiKeyAuth: []
       responses:
-        '200':
+        200:
           description: OK
           content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/ObjectQuestionDetail'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
 
 components:
   parameters:
@@ -406,19 +430,16 @@ components:
         type: integer
       style: simple
 
-# https://swagger.io/docs/specification/authentication/api-keys/
+  # https://swagger.io/docs/specification/authentication/api-keys/
   securitySchemes:
-    XApiKeyAuth:        # arbitrary name for the security scheme
+    XApiKeyAuth: # arbitrary name for the security scheme
       type: apiKey
-      in: header       # can be "header", "query" or "cookie"
-      name: X-API-KEY  # name of the header, query parameter or cookie
+      in: header # can be "header", "query" or "cookie"
+      name: X-API-KEY # name of the header, query parameter or cookie
 
   responses:
-
-
-
     BadRequest:
-      description: A 400 error, 
+      description: A 400 error, usually on  invalid input (wrong type, unicity)
       content:
         application/json:
           schema:
@@ -428,7 +449,7 @@ components:
             type: string
           example: <html>An error page with status, name and message</html>
     Unauthorized:
-      description: A 401 error, for example when no or invalid UUID is provided in X-API-KEY header 
+      description: A 401 error, for example when no or invalid UUID is provided in X-API-KEY header or when the UUID does not exist in the database
       content:
         application/json:
           schema:
@@ -438,7 +459,7 @@ components:
             type: string
           example: <html>An error page with status, name and message</html>
     Forbidden:
-      description: A 403 error
+      description: A 403 error, when the user is not the owner of the resource
       content:
         application/json:
           schema:
@@ -448,7 +469,7 @@ components:
             type: string
           example: <html>An error page with status, name and message</html>
     NotFound:
-      description: A 404 error
+      description: A 404 error, for resource not found
       content:
         application/json:
           schema:
@@ -458,7 +479,7 @@ components:
             type: string
           example: <html>An error page with status, name and message</html>
     InternalServer:
-      description: A 500 error, possibly with content negotiation for some paths
+      description: A 500 error, internal error that is generated by the final default handler if no status is specified
       content:
         application/json:
           schema:
@@ -468,7 +489,7 @@ components:
             type: string
           example: <html>An error page with status, name and message</html>
     NotImplemented:
-      description: A 501 error
+      description: A 501 error, for features to appear
       content:
         application/json:
           schema:
@@ -478,25 +499,27 @@ components:
             type: string
           example: <html>An error page with status, name and message</html>
 
-
-
-
-
   schemas:
-
     Error:
       type: object
       properties:
         name:
           type: string
-          enum: [BadRequest, Unauthorized, Forbidden, NotFound, InternalServer, NotImplemented]
+          enum:
+            [
+              BadRequest,
+              Unauthorized,
+              Forbidden,
+              NotFound,
+              InternalServer,
+              NotImplemented,
+            ]
         message:
           type: string
           example: Invalid content on input
       required:
         - name
         - message
-
 
     ObjectHealthCheck:
       description: The object returned on healthcheck
@@ -521,20 +544,6 @@ components:
             type: integer
             example: 1
 
-    ObjectIndex:
-      type: object
-      properties:
-        appname:
-          type: string
-        version:
-          type: string
-        description:
-          type: string
-      required:
-        - appname
-        - version
-        - description
-
     ObjectPaginatedList:
       type: object
       required:
@@ -558,7 +567,7 @@ components:
 
     ObjectPaginatedUsers:
       allOf:
-      - $ref: '#/components/schemas/ObjectPaginatedList'
+        - $ref: '#/components/schemas/ObjectPaginatedList'
       required:
         - results
       properties:
@@ -567,15 +576,15 @@ components:
           items:
             type: object
             properties:
-              user_id: 
+              user_id:
                 type: string
-          example: 
+          example:
             - user_id: test.user
             - user_id: other.user
 
     ObjectPaginatedQuizzes:
       allOf:
-      - $ref: '#/components/schemas/ObjectPaginatedList'
+        - $ref: '#/components/schemas/ObjectPaginatedList'
       required:
         - results
       properties:
@@ -583,7 +592,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ObjectQuiz'
-
 
     ObjectUser:
       type: object
@@ -617,10 +625,10 @@ components:
         created_at:
           type: string
           format: date-time
-          example: "2020-03-11T09:56:12.372Z"
+          example: '2020-03-11T09:56:12.372Z'
         title:
           type: string
-          example: "QCM LIFAP5 #1"
+          example: 'QCM LIFAP5 #1'
         description:
           type: string
           example: Des questions de JS et lambda calcul
@@ -634,7 +642,7 @@ components:
           type: array
           items:
             type: integer
-          example: [0,1]
+          example: [0, 1]
         open:
           type: boolean
           example: false
@@ -659,7 +667,7 @@ components:
         content:
           type: string
           description: the text of the question
-          example: "Qui a inventé le lambda calcul ?"
+          example: 'Qui a inventé le lambda calcul ?'
         propositions_number:
           type: integer
           description: the number of propositions
@@ -671,7 +679,7 @@ components:
 
     ObjectQuestionDetail:
       allOf:
-      - $ref: '#/components/schemas/ObjectQuestion'
+        - $ref: '#/components/schemas/ObjectQuestion'
       required:
         - proposition
       properties:
@@ -689,11 +697,10 @@ components:
       properties:
         content:
           type: integer
-          example: "Alan Turing"
+          example: 'Alan Turing'
         correct:
           type: boolean
           example: true
         proposition_id:
           type: integer
           example: 0
-
