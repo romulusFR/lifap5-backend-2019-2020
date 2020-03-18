@@ -245,6 +245,8 @@ paths:
           $ref: '#/components/responses/BadRequest'
         401:
           $ref: '#/components/responses/Unauthorized'
+        409:
+          $ref: '#/components/responses/Conflict'
 
 
   /quizzes/{quiz_id}:
@@ -474,7 +476,7 @@ components:
 
   responses:
     BadRequest:
-      description: A 400 error, usually on  invalid input (wrong type, unicity)
+      description: A 400 error, usually on invalid input (wrong type)
       content:
         application/json:
           schema:
@@ -505,6 +507,16 @@ components:
           example: <html>An error page with status, name and message</html>
     NotFound:
       description: A 404 error, for resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+        text/html:
+          schema:
+            type: string
+          example: <html>An error page with status, name and message</html>
+    Conflict:
+      description: A 409 error, usually due to primary constraint violation
       content:
         application/json:
           schema:
@@ -709,7 +721,7 @@ components:
       required:
         - quiz_id
         - question_id
-        - content
+        - sentence
         - propositions_number
         - correct_propositions_number
       properties:
@@ -721,7 +733,7 @@ components:
           description: the question'is, the value is under user's control
           type: integer
           example: 0
-        content:
+        sentence:
           type: string
           description: the text of the question
           example: 'Qui a inventé le lambda calcul ?'
