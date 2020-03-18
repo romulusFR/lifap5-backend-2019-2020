@@ -136,15 +136,8 @@ paths:
           content:
             application/json:
               schema: 
-                type: array
-                items:
-                  type: object
-                  properties:
-                    user_id: 
-                      type: string
-              example: 
-                - user_id: test.user
-                - user_id: other.user
+                $ref: '#/components/schemas/ObjectPaginatedUsers'
+
 
   /users/whoami:
     get:
@@ -493,6 +486,44 @@ components:
         - appname
         - version
         - description
+
+    ObjectPaginatedList:
+      type: object
+      required:
+        - currentPage
+        - pageSize
+        - nbResults
+        - nbPages
+      properties:
+        currentPage:
+          type: integer
+          example: 6
+        pageSize:
+          type: integer
+          example: 50
+        nbResults:
+          type: integer
+          example: 252
+        nbPages:
+          type: integer
+          example: 6
+
+    ObjectPaginatedUsers:
+      allOf:
+      - $ref: '#/components/schemas/ObjectPaginatedList'
+      required:
+        - results
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              user_id: 
+                type: string
+          example: 
+            - user_id: test.user
+            - user_id: other.user
 
     ObjectUser:
       type: object
