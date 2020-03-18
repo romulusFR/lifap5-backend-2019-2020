@@ -5,13 +5,6 @@
 
 const { logger, pool } = require('../../config');
 
-/**
- *
- * @todo : the OFFSET/FETCH method sucks, see
- *         https://www.citusdata.com/blog/2016/03/30/five-ways-to-paginate/
- * @param {*} page
- * @param {*} pageLimit
- */
 const selectAllUsersQuery = (page, pageLimit) => `
 SELECT user_id
 FROM quiz_user
@@ -21,17 +14,33 @@ FETCH FIRST ${pageLimit} ROWS ONLY;
 `;
 
 /**
- * @class UserDAO
- * @todo Checks if it is a User model or not...
- * @todo Add order by clause to ensure unique order
+ * @function Give the paginated list of all users
+ * @todo : the OFFSET/FETCH method sucks, see
+ *         https://www.citusdata.com/blog/2016/03/30/five-ways-to-paginate/
+ * @param {*} currentPage
+ * @param {*} pageSize
  */
-class UserDAO {
-  // the list of all users
-  static async selectAllUsers(page = 1, pageLimit) {
-    logger.silly(`selectAllUsers@${page}, ${pageLimit}`);
-    const result = await pool.query(selectAllUsersQuery(page, pageLimit));
-    return result.rows;
-  }
+
+async function selectAllUsers(currentPage = 1, pageSize) {
+  logger.silly(`selectAllUsers@${currentPage}, ${pageSize}`);
+
+  // NB : THIS DO NOT USE TRANSACTION YET
+
+
+  
+  const pagesInfoQuery = 'SELECT COUNT(*)::integer AS nb FROM quiz_user;';
+  const pagesInfo = await pool.query(pagesInfoQuery);
+
+  const nbResults = pagesInfo.rows[0].nb;
+  const result = await pool.query(selectAllUsersQuery(currentPage, pageSize));
+
+  return {
+    currentPage,
+    pageSize,
+    nbResults,
+    nbPages: Math.ceil(nbResults / pageSize),
+    results: result.rows,
+  };
 }
 
-module.exports = { UserDAO };
+module.exports = { selectAllUsers };
