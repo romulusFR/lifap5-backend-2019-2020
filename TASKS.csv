@@ -28,3 +28,10 @@ System                 ;2020-03-16 ;2.0       ; Nettoyage paramètres de configu
 Route /questions       ;2020-03-16 ;2.0       ; Nested router sous /quizz (pas encore très clair sur le métier)
 Refactor BD            ;2020-03-16 ;2.0       ; Transformation en JSON depuis postgres, reprise des vues
 Routes /questions      ;2020-03-16 ;2.0       ; DEL/POST et la docs OAS
+Refactor               ;2020-03-17 ;3.0       ; Refactor des DAO (harmonisation, gestion erreurs)
+Refactor prod config   ;2020-03-17 ;2.0       ; différence entre PM2/nodemon pour accès à la config
+Routes /questions      ;2020-03-17 ;3.0       ; Ajout des POST/DELETE
+Doc OAS3               ;2020-03-18 ;2.0       ; Ajout de précédents
+Routes /questions      ;2020-03-18 ;3.0       ; Galère sur le PUT...
+Routes /users          ;2020-03-18 ;3.0       ; Accès à ses propres réponses
+Full-text search       ;2020-03-19 ;1.0       ; Sur la route /search avec une vue postgres
