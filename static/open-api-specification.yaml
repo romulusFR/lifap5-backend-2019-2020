@@ -19,15 +19,20 @@ servers:
 
 tags:
   - name: users
-    description: User related features
+    description: Users related features, including whoami and your answers
   - name: quizzes
-    description: Quizzes related features
+    description: Quizzes CRUD features,
   - name: questions
-    description: Questions related features, w.r.t. a gievn quiz
+    description: Questions and theirs related propositions CRUD features (w.r.t. a quiz)
+  - name: answers
+    description: Retreive, post and delete answers to quizzes
+  - name: search
+    description: minimalistic search engine
   - name: public
     description: Everyone one, without authentication
   - name: authenticated
     description: Authentified user (by x-api-key)
+
 
 paths:
   /:
@@ -121,6 +126,7 @@ paths:
       operationId: searchHandler
       tags:
         - public
+        - search
       parameters:
         - in: query
           name: q
@@ -205,6 +211,7 @@ paths:
       tags:
         - authenticated
         - users
+        - answers
       security:
         - XApiKeyAuth: []
       parameters:
@@ -448,6 +455,7 @@ paths:
       tags:
         - authenticated
         - questions
+        - answers
       responses:
         200:
           description: OK
