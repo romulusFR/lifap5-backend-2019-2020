@@ -241,3 +241,39 @@ CREATE OR REPLACE VIEW lifap5.v_question_detailed AS(
 --          |             | ]
 --        1 |           2 | [                                                                +
 --          |             | ]
+
+
+-- ---------------------------------------- FULL-TEXT SEARCH ----------------------------------------
+
+DROP VIEW IF EXISTS lifap5.v_fts;
+CREATE OR REPLACE VIEW lifap5.v_fts AS(
+  SELECT  'quiz' AS type,
+          quiz_id AS quiz_id,
+          NULL::integer AS question_id,
+          NULL::integer AS proposition_id,
+          setweight(to_tsvector('french', coalesce(title,'')), 'A')    ||
+          setweight(to_tsvector('french', coalesce(description,'')), 'A') ||
+           setweight(to_tsvector('french', coalesce(owner_id,'')), 'B')
+            AS searchable_text
+  FROM quiz
+
+  UNION ALL
+
+  SELECT  'question' AS type,
+          quiz_id,
+          question_id,
+          NULL::integer,
+          setweight(to_tsvector('french', coalesce(sentence,'')), 'A')
+            AS searchable_text
+  FROM question
+
+  UNION  ALL
+
+  SELECT  'proposition' AS type,
+          quiz_id,
+          question_id,
+          proposition_id,
+          setweight(to_tsvector('french', coalesce(content,'')), 'A')
+            AS searchable_text
+  FROM proposition
+);

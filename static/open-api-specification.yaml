@@ -115,7 +115,41 @@ paths:
               schema:
                 $ref: '#/components/schemas/ObjectHealthCheck'
 
-  /users/:
+  /search:
+    get:
+      description: Full-text search service
+      operationId: searchHandler
+      tags:
+        - public
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+            default: 'alan OR alonzo'
+          description: The query to search for, in search engine style
+      responses:
+        200:
+          description: The results, ordered by rank from highest to lowest
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                    quiz_id:
+                      type: integer
+                    quesiton_id:
+                      type: integer
+                    proposition_id:
+                      type: integer
+                    rank:
+                      type: number
+
+  /users:
     get:
       summary: All users
       description: The list of all users with pagination, at most pageLimit items (default 50)
