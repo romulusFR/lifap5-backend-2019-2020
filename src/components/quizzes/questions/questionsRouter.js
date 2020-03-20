@@ -14,21 +14,9 @@ const PropositionDAO = require('./PropositionDAO');
 module.exports = function questionsRouter(_app) {
   const router = Router();
 
-  async function getAllQuestionsHandler(req, res, next) {
-    logger.silly(`getAllQuestionsHandler@${res.locals.quiz.quiz_id}`);
-    try {
-      const results = await QuestionDAO.selectAll(res.locals.quiz.quiz_id);
-      return res.send(results);
-    } catch (err) {
-      logger.debug(`getAllQuestionsHandler throw ${err}`);
-      return next(err);
-    }
-  }
+  /** **********************PARAMETERS HANDLERS************************** */
 
-  function getOneQuestionHandler(_req, res, _next) {
-    return res.send(res.locals.question);
-  }
-
+  // pseudo middlewares triggered on parameters
   async function checksQuestionByIdHandler(_req, res, next, question_id) {
     logger.silly(`checksQuestionByIdHandler@${question_id}`);
     if (Number.isNaN(parseInt(question_id, 10)))
@@ -56,14 +44,16 @@ module.exports = function questionsRouter(_app) {
 
   async function checksPropositionByIdHandler(_req, res, next, proposition_id) {
     logger.silly(`checksPropositionByIdHandler@${proposition_id}`);
+    const { quiz_id } = res.locals.quiz;
     const { question_id } = res.locals.question;
+
     if (Number.isNaN(parseInt(proposition_id, 10)))
       return next(
         createError.BadRequest(
           `Invalid content: '${proposition_id}' is not an integer`
         )
       );
-    const { quiz_id } = res.locals.quiz;
+
     try {
       const proposition = await PropositionDAO.selectById(
         quiz_id,
@@ -84,6 +74,8 @@ module.exports = function questionsRouter(_app) {
     }
   }
 
+  /** ********************** SANITYZER ************************** */
+  // @todo : checks details of propositions
   function validateQuestion(req, _res, next) {
     const { sentence, propositions } = req.body;
     if (!sentence)
@@ -94,9 +86,38 @@ module.exports = function questionsRouter(_app) {
       return next(
         createError.BadRequest(`Invalid content: propositions is not an array`)
       );
-
-    // @todo : checks details of propositions
     return next();
+  }
+
+  /** ********************** HANDLERS FOR VERBS ************************** */
+
+  async function getAllQuestionsHandler(req, res, next) {
+    logger.silly(`getAllQuestionsHandler@${res.locals.quiz.quiz_id}`);
+    try {
+      const results = await QuestionDAO.selectAll(res.locals.quiz.quiz_id);
+      return res.send(results);
+    } catch (err) {
+      logger.debug(`getAllQuestionsHandler throw ${err}`);
+      return next(err);
+    }
+  }
+
+  function getOneQuestionHandler(_req, res, _next) {
+    return res.send(res.locals.question);
+  }
+
+  async function getOneQuestionAnswersHandler(_req, res, next) {
+    const { quiz_id }= res.locals.quiz;
+    const { question_id }= res.locals.question;
+
+    logger.silly(`getOneQuestionAnswersHandler@${quiz_id} ${question_id}`);
+    try {
+      const results = await QuestionDAO.selectByIdAnswers(quiz_id, question_id);
+      return res.send(results);
+    } catch (err) {
+      logger.debug(`getOneQuestionAnswersHandler throw ${err}`);
+      return next(err);
+    }
   }
 
   async function postQuestionHandler(req, res, next) {
@@ -191,10 +212,14 @@ module.exports = function questionsRouter(_app) {
   // root : all questions
   router.get('/', [getAllQuestionsHandler]);
 
-  router.get('/:question_id', [
+    // curl -X GET "http://localhost:3000/quizzes/0/questions/0" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json" 
+  router.get('/:question_id/', [authFromApiKeyHandler, getOneQuestionHandler]);
+
+  // curl -X GET "http://localhost:3000/quizzes/0/questions/0/answers" -H  "accept: application/json" -H  "X-API-KEY: 4dd729fd-4709-427f-b371-9d177194c260" -H  "Content-Type: application/json" 
+  router.get('/:question_id/answers', [
     authFromApiKeyHandler,
     checksQuizOwnership,
-    getOneQuestionHandler,
+    getOneQuestionAnswersHandler,
   ]);
 
   // curl -X POST "http://localhost:3000/quizzes/" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json" -d "{\"title\":\"QCM de test\",\"description\":\"Un QCM supplémentaire\",\"open\":false}"

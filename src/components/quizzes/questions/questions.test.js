@@ -26,10 +26,10 @@ describe('GET /quizzes/:quiz_id/questions', () => {
   });
 });
 
-describe('GET /quizzes/:quiz_id/questions/:question_id', () => {
+describe('GET /quizzes/:quiz_id/questions/:question_id/answers', () => {
   it('should detail a question of a quiz when you re its owner', async () => {
     const res = await request(app)
-      .get('/quizzes/0/questions/0')
+      .get('/quizzes/0/questions/0/answers')
       .set('Accept', 'application/json')
       .set('X-API-KEY', '4dd729fd-4709-427f-b371-9d177194c260')
       .expect('Content-Type', /json/);
@@ -62,10 +62,10 @@ describe('GET /quizzes/:quiz_id/questions/:question_id', () => {
   });
 });
 
-describe('GET /quizzes/:quiz_id/questions/:question_id', () => {
+describe('GET /quizzes/:quiz_id/questions/:question_id/answers', () => {
   it('should not detail a question of a quiz you do not own', async () => {
     const res = await request(app)
-      .get(`/quizzes/0/questions/0`)
+      .get(`/quizzes/0/questions/0/answers`)
       .set('Accept', 'application/json')
       .set('X-API-KEY', '944c5fdd-af88-47c3-a7d2-5ea3ae3147da')
       .expect('Content-Type', /json/);

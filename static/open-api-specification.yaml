@@ -467,7 +467,34 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
 
-  /quizzes/{quiz_id}/questions/{question_id}:
+  /quizzes/{quiz_id}/questions/{question_id}/:
+    parameters:
+      - $ref: '#/components/parameters/quizIdParam'
+      - $ref: '#/components/parameters/questionIdParam'
+    get:
+      summary: A  question of a quizz
+      description: A question of a given quizz (if it exists) with detailled information (its propositions) but without answers
+      operationId: getOneQuestionHandler
+      tags:
+        - public
+        - questions
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ObjectQuestionDetail'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  /quizzes/{quiz_id}/questions/{question_id}/answers:
     parameters:
       - $ref: '#/components/parameters/quizIdParam'
       - $ref: '#/components/parameters/questionIdParam'
@@ -593,6 +620,7 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         404:
           $ref: '#/components/responses/NotFound'
+    
 
   /quizzes/{quiz_id}/questions/{question_id}/answer/{proposition_id}:
     parameters:
