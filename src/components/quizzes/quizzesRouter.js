@@ -93,6 +93,12 @@ module.exports = function quizzesRouter(app) {
 
   async function checksQuizByIdHandler(_req, res, next, quiz_id) {
     logger.silly(`checksQuizByIdHandler@${quiz_id}`);
+    if (Number.isNaN(parseInt(quiz_id, 10)))
+      return next(
+        createError.BadRequest(
+          `Invalid content: '${quiz_id}' is not an integer`
+        )
+      );
     try {
       const quiz = await QuizDAO.selectById(quiz_id);
       if (!quiz)

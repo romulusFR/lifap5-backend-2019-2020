@@ -28,16 +28,16 @@ describe('GET /quizzes/', () => {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/);
 
-      expect(res.statusCode).toEqual(200);
-      expect(typeof res.body).toBe('object');
-  
-      expect(res.body).toMatchObject({
-        currentPage: 1,
-        pageSize: app.locals.pageLimit,
-        nbResults: expect.any(Number),
-        nbPages : expect.any(Number),
-        results: expect.any(Array)
-      });
+    expect(res.statusCode).toEqual(200);
+    expect(typeof res.body).toBe('object');
+
+    expect(res.body).toMatchObject({
+      currentPage: 1,
+      pageSize: app.locals.pageLimit,
+      nbResults: expect.any(Number),
+      nbPages: expect.any(Number),
+      results: expect.any(Array),
+    });
   });
 
   it('should deal correctly with explicit pagination when out of bounds', async () => {
@@ -76,12 +76,69 @@ describe('GET /quizzes/:quiz_id', () => {
   });
 });
 
+describe('GET /quizzes/:quiz_id', () => {
+  it('should return an error on non existent quiz', async () => {
+  const res = await request(app)
+      .get('/quizzes/9999999')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/);
+
+    expect(res.statusCode).toEqual(404);
+  });
+});
+
+describe('GET /quizzes/:quiz_id', () => {
+  it('should return an error on invalid input', async () => {
+  const res = await request(app)
+      .get('/quizzes/this-oes-not-exist')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/);
+
+    expect(res.statusCode).toEqual(400);
+  });
+});
+
+
 describe('POST /quizzes/', () => {
   const quizToCreate = {
     title: `Quiz test #${Math.floor(Math.random() * 1000000)}`,
     description: 'Description of test quiz',
     open: true,
   };
+
+  it('should reject an incomplete quiz with no description', async () => {
+    const res = await request(app)
+      .post('/quizzes/')
+      .set('Accept', 'application/json')
+      .set('X-API-KEY', '944c5fdd-af88-47c3-a7d2-5ea3ae3147da')
+      .send({ title: `Quiz test #${Math.floor(Math.random() * 1000000)}` }) // sends a JSON post body
+      .expect('Content-Type', /json/);
+
+    expect(res.statusCode).toEqual(400);
+  });
+
+  it('should reject an incomplete quiz with no title', async () => {
+    const res = await request(app)
+      .post('/quizzes/')
+      .set('Accept', 'application/json')
+      .set('X-API-KEY', '944c5fdd-af88-47c3-a7d2-5ea3ae3147da')
+      .send({ description: 'Description of test quiz' }) // sends a JSON post body
+      .expect('Content-Type', /json/);
+
+    expect(res.statusCode).toEqual(400);
+  });
+
+  it('should NOT reject an incomplete quiz with no open status', async () => {
+    const res = await request(app)
+      .post('/quizzes/')
+      .set('Accept', 'application/json')
+      .set('X-API-KEY', '944c5fdd-af88-47c3-a7d2-5ea3ae3147da')
+      .send({ description: 'Description of test quiz' , title: `Quiz test #${Math.floor(Math.random() * 1000000)}`}) // sends a JSON post body
+      .expect('Content-Type', /json/);
+
+    expect(res.statusCode).toEqual(201);
+  });
+
   let createdQuizId;
 
   it('should create a new quizz', async () => {
@@ -97,8 +154,6 @@ describe('POST /quizzes/', () => {
 
     createdQuizId = res.body.quiz_id;
   });
-
-  
 
   it('should detail the quiz we ve just created', async () => {
     const gold = {
@@ -159,7 +214,6 @@ describe('DEL /quizzes/:quiz_id', () => {
       .expect('Content-Type', /json/);
 
     expect(res.statusCode).toEqual(403);
-
   });
 });
 
@@ -173,6 +227,5 @@ describe('PUT /quizzes/:quiz_id', () => {
       .expect('Content-Type', /json/);
 
     expect(res.statusCode).toEqual(403);
-
   });
 });

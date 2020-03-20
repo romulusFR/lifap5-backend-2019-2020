@@ -13,6 +13,6 @@ module.exports = {
     'src/**/*.js',
     '!**/node_modules/**',
   ],
-  coveragePathIgnorePatterns: ['/node_modules/'],
+  coveragePathIgnorePatterns: ['/node_modules/, src/server.js'],
   testMatch: [ "**/tests/**/*.js", "**/?(*.)+(spec|test).js" ],
 };

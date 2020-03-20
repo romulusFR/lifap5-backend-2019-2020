@@ -41,6 +41,15 @@ describe('GET /users/', () => {
     expect(Array.isArray(res.body.results)).toBe(true);
     expect(res.body.results).toEqual([]);
   });
+
+  it('should return error on non positive integer', async () => {
+    const res = await request(app)
+      .get('/users/?page=0')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/);
+
+    expect(res.statusCode).toEqual(400);
+  });
 });
 
 describe('GET /users/whoami', () => {
@@ -57,6 +66,16 @@ describe('GET /users/whoami', () => {
       firstname: 'Test',
       lastname: 'User',
     });
+  });
+
+  it('shouldnegotiate text/html content', async () => {
+    const res = await request(app)
+      .get('/users/whoami')
+      .set('Accept', 'text/html')
+      .set('X-API-KEY', '944c5fdd-af88-47c3-a7d2-5ea3ae3147da')
+      .expect('Content-Type', /html/);
+
+    expect(res.statusCode).toEqual(200);
   });
 
   it('should answer 401 when x-api-key is not UUIDv4', async () => {
@@ -102,6 +121,7 @@ describe('GET /users/whoami', () => {
       status: 401,
     });
   });
+  
 });
 
 describe('GET /users/answers', () => {
@@ -160,31 +180,3 @@ describe('GET /users/quizzes', () => {
     // expect(Date.parse(res.body[0].created_at)).not.toBe(NaN);
   });
 });
-
-// const x = [
-//   {
-//     answers: [
-//       {
-//         answered_at: '2020-03-20T10:14:01.090899+01:00',
-//         proposition_id: 1,
-//         question_id: 0,
-//       },
-//       {
-//         answered_at: '2020-03-20T10:14:01.090899+01:00',
-//         proposition_id: 0,
-//         question_id: 1,
-//       },
-//     ],
-//     quiz_id: 0,
-//   },
-//   {
-//     answers: [
-//       {
-//         answered_at: '2020-03-20T10:14:01.090899+01:00',
-//         proposition_id: 0,
-//         question_id: 0,
-//       },
-//     ],
-//     quiz_id: 1,
-//   },
-// ];
