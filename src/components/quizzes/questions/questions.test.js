@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /**
  * @file End-to end (a.k.a., functional, blackbox, functional) tests for 'quizzes/:quizz_id/questions'
  * @author Romuald THION
@@ -23,6 +24,38 @@ describe('GET /quizzes/:quiz_id/questions', () => {
     expect(res.statusCode).toEqual(200);
     expect(Array.isArray(res.body)).toBe(true);
     expect(res.body.length).toBe(2);
+  });
+});
+
+describe('GET /quizzes/:quiz_id/questions/:question_id/', () => {
+  it('should detail a question with its propositions but no answers', async () => {
+    const res = await request(app)
+      .get('/quizzes/0/questions/0/')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/);
+
+    const gold = {
+      quiz_id: 0,
+      question_id: 0,
+      sentence: expect.any(String),
+      propositions_number: 2,
+      correct_propositions_number: 1,
+      propositions: [
+        {
+          content: 'Alan Turing',
+          correct: false,
+          proposition_id: 0,
+        },
+        {
+          content: 'Alonzo Church',
+          correct: true,
+          proposition_id: 1,
+        },
+      ],
+    };
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toMatchObject(gold);
   });
 });
 
@@ -97,18 +130,18 @@ describe('POST/PUT/DEL /quizzes/:quiz_id/questions/', () => {
     const questionToCreate = {
       question_id: Math.floor(Math.random() * 1000000),
       sentence: 'What is the question?',
-      propositions : [
+      propositions: [
         {
-          "content": "Alan Turing",
-          "proposition_id": 0,
-          "correct": false
+          content: 'Alan Turing',
+          proposition_id: 0,
+          correct: false,
         },
         {
-          "content": "Alonzo Church",
-          "proposition_id": 1,
-          "correct": true
-        }
-      ]
+          content: 'Alonzo Church',
+          proposition_id: 1,
+          correct: true,
+        },
+      ],
     };
 
     const res = await request(app)
@@ -130,18 +163,18 @@ describe('POST/PUT/DEL /quizzes/:quiz_id/questions/', () => {
   it('should update the question', async () => {
     const questionToUpdate = {
       sentence: 'What is the question again?',
-      propositions : [
+      propositions: [
         {
-          "content": "Again Alan Turing",
-          "proposition_id": 0,
-          "correct": true
+          content: 'Again Alan Turing',
+          proposition_id: 0,
+          correct: true,
         },
         {
-          "content": "Again Alonzo Church",
-          "proposition_id": 1,
-          "correct": false
-        }
-      ]
+          content: 'Again Alonzo Church',
+          proposition_id: 1,
+          correct: false,
+        },
+      ],
     };
 
     const res = await request(app)
@@ -156,7 +189,6 @@ describe('POST/PUT/DEL /quizzes/:quiz_id/questions/', () => {
       quiz_id: createdQuizId,
       question_id: createdQuestionId,
     });
-
   }); // it put quizz
 
   describe('DEL /quizzes/:quiz_id/questions/:question_id', () => {

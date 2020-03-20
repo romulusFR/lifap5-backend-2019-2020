@@ -213,7 +213,7 @@ module.exports = function questionsRouter(_app) {
   router.get('/', [getAllQuestionsHandler]);
 
     // curl -X GET "http://localhost:3000/quizzes/0/questions/0" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json" 
-  router.get('/:question_id/', [authFromApiKeyHandler, getOneQuestionHandler]);
+  router.get('/:question_id/', [getOneQuestionHandler]);
 
   // curl -X GET "http://localhost:3000/quizzes/0/questions/0/answers" -H  "accept: application/json" -H  "X-API-KEY: 4dd729fd-4709-427f-b371-9d177194c260" -H  "Content-Type: application/json" 
   router.get('/:question_id/answers', [
