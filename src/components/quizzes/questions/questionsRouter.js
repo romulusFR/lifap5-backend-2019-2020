@@ -78,7 +78,7 @@ module.exports = function questionsRouter(_app) {
   // @todo : checks details of propositions
   function validateQuestion(req, _res, next) {
     const { sentence, propositions } = req.body;
-    
+
     if (!sentence)
       return next(
         createError.BadRequest(`Invalid content: sentence is missing`)
@@ -133,7 +133,6 @@ module.exports = function questionsRouter(_app) {
         )
       );
     try {
-
       const questionId = await QuestionDAO.insert(question);
       logger.silly(`postQuestionHandler@${JSON.stringify(questionId)}`);
       return res.status(201).send(questionId);
