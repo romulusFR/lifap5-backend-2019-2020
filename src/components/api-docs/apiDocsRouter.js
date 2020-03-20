@@ -13,11 +13,13 @@ const swaggerUIOptions = {
   explorer: false,
   swaggerUrl: '/open-api-specification.yaml',
   swaggerOptions: {
-    defaultModelsExpandDepth: -1,
+    defaultModelsExpandDepth: 0,
     defaultModelExpandDepth: 0,
+    defaultModelRendering: "example",
     displayRequestDuration: true,
     docExpansion: 'none', // none 'list'
     filter: true,
+    operationsSorter: 'method'
     // validatorUrl: null  to disable
   },
 };

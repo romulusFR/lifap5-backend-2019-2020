@@ -66,7 +66,7 @@ paths:
                 type: string
               example: <html>The index page</html>
 
-  /echo:
+  /echo/:
     post:
       description: Echo service that returns the json body, like ping with json
       operationId: echoHandler
@@ -95,7 +95,7 @@ paths:
         # default:
         #   $ref: "#/components/responses/error"
 
-  /not-implemented:
+  /not-implemented/:
     get:
       summary: Always returns a NotImplemented error
       description: An error page for test purposes
@@ -106,7 +106,7 @@ paths:
         501:
           $ref: '#/components/responses/NotImplemented'
 
-  /healthcheck:
+  /healthcheck/:
     get:
       summary: Checks if server is OK
       description: Tests if the PostgreSQL backend is up
@@ -121,7 +121,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ObjectHealthCheck'
 
-  /search:
+  /search/:
     get:
       description: Full-text search service
       operationId: searchHandler
@@ -156,7 +156,7 @@ paths:
                     rank:
                       type: number
 
-  /users:
+  /users/:
     get:
       summary: All users
       description: The list of all users with pagination, at most pageLimit items (default 50)
@@ -314,7 +314,7 @@ paths:
           $ref: '#/components/responses/Conflict'
 
 
-  /quizzes/{quiz_id}:
+  /quizzes/{quiz_id}/:
     parameters:
       - $ref: '#/components/parameters/quizIdParam'
     get:
@@ -472,8 +472,8 @@ paths:
       - $ref: '#/components/parameters/quizIdParam'
       - $ref: '#/components/parameters/questionIdParam'
     get:
-      summary: A  question of a quizz
-      description: A question of a given quizz (if it exists) with detailled information (its propositions) but without answers
+      summary: A specific question of a quizz
+      description: A question of a given quizz with detailled information (its propositions) but without answers
       operationId: getOneQuestionHandler
       tags:
         - public
@@ -487,64 +487,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ObjectQuestionDetail'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        403:
-          $ref: '#/components/responses/Forbidden'
-        404:
-          $ref: '#/components/responses/NotFound'
-
-  /quizzes/{quiz_id}/questions/{question_id}/answers:
-    parameters:
-      - $ref: '#/components/parameters/quizIdParam'
-      - $ref: '#/components/parameters/questionIdParam'
-    get:
-      summary: A  question of a quizz
-      description: A question of a given quizz (if it exists) with detailled information (its propositions)
-      operationId: getOneQuestionHandler
-      security:
-        - XApiKeyAuth: []
-      tags:
-        - authenticated
-        - questions
-        - answers
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ObjectQuestionDetail'
-        401:
-          $ref: '#/components/responses/Unauthorized'
-        403:
-          $ref: '#/components/responses/Forbidden'
-        404:
-          $ref: '#/components/responses/NotFound'
-    delete:
-      summary: Delete a question of a quizz
-      operationId: delQuestionHandler
-      tags:
-        - authenticated
-        - questions
-      security:
-        - XApiKeyAuth: []
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  quiz_id:
-                    type: integer
-                    example : 0
-                  question_id:
-                    type: integer
-                    example : 0
         401:
           $ref: '#/components/responses/Unauthorized'
         403:
@@ -596,12 +538,38 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
 
-  /quizzes/{quiz_id}/questions/{question_id}/answer:
+  /quizzes/{quiz_id}/questions/{question_id}/answers/:
     parameters:
       - $ref: '#/components/parameters/quizIdParam'
       - $ref: '#/components/parameters/questionIdParam'
+    get:
+      summary: A  question of a quizz
+      description: A question of a given quizz (if it exists) with detailled information (its propositions)
+      operationId: getOneQuestionHandler
+      security:
+        - XApiKeyAuth: []
+      tags:
+        - authenticated
+        - questions
+        - answers
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ObjectQuestionDetail'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
     delete:
-      summary: Delete an existing answer
+      summary: Delete your answer to a question
+      description: It suppresses the chosen proposition for this question
       operationId: deleteAnswerHandler
       tags:
         - authenticated
@@ -620,9 +588,9 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         404:
           $ref: '#/components/responses/NotFound'
-    
 
-  /quizzes/{quiz_id}/questions/{question_id}/answer/{proposition_id}:
+
+  /quizzes/{quiz_id}/questions/{question_id}/answers/{proposition_id}:
     parameters:
       - $ref: '#/components/parameters/quizIdParam'
       - $ref: '#/components/parameters/questionIdParam'

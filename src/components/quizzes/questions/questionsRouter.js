@@ -107,8 +107,8 @@ module.exports = function questionsRouter(_app) {
   }
 
   async function getOneQuestionAnswersHandler(_req, res, next) {
-    const { quiz_id }= res.locals.quiz;
-    const { question_id }= res.locals.question;
+    const { quiz_id } = res.locals.quiz;
+    const { question_id } = res.locals.question;
 
     logger.silly(`getOneQuestionAnswersHandler@${quiz_id} ${question_id}`);
     try {
@@ -212,16 +212,6 @@ module.exports = function questionsRouter(_app) {
   // root : all questions
   router.get('/', [getAllQuestionsHandler]);
 
-    // curl -X GET "http://localhost:3000/quizzes/0/questions/0" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json" 
-  router.get('/:question_id/', [getOneQuestionHandler]);
-
-  // curl -X GET "http://localhost:3000/quizzes/0/questions/0/answers" -H  "accept: application/json" -H  "X-API-KEY: 4dd729fd-4709-427f-b371-9d177194c260" -H  "Content-Type: application/json" 
-  router.get('/:question_id/answers', [
-    authFromApiKeyHandler,
-    checksQuizOwnership,
-    getOneQuestionAnswersHandler,
-  ]);
-
   // curl -X POST "http://localhost:3000/quizzes/" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json" -d "{\"title\":\"QCM de test\",\"description\":\"Un QCM supplémentaire\",\"open\":false}"
   // curl -X POST "http://localhost:3000/quizzes/36/questions" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json" -d "{\"question_id\":42,\"content\":\"Qui a pissé sur le chien ?\"}"
   router.post('/', [
@@ -231,6 +221,16 @@ module.exports = function questionsRouter(_app) {
     postQuestionHandler,
   ]);
 
+  // curl -X DELETE "http://localhost:3000/quizzes/36/questions/42" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json"
+  router.delete('/:question_id/', [
+    authFromApiKeyHandler,
+    checksQuizOwnership,
+    delQuestionHandler,
+  ]);
+
+  // curl -X GET "http://localhost:3000/quizzes/0/questions/0" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json"
+  router.get('/:question_id/', [getOneQuestionHandler]);
+
   router.put('/:question_id', [
     authFromApiKeyHandler,
     checksQuizOwnership,
@@ -238,23 +238,23 @@ module.exports = function questionsRouter(_app) {
     putQuestionHandler,
   ]);
 
-  // curl -X DELETE "http://localhost:3000/quizzes/36/questions/42" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json"
-  router.delete('/:question_id', [
+  // curl -X GET "http://localhost:3000/quizzes/0/questions/0/answers" -H  "accept: application/json" -H  "X-API-KEY: 4dd729fd-4709-427f-b371-9d177194c260" -H  "Content-Type: application/json"
+  router.get('/:question_id/answers/', [
     authFromApiKeyHandler,
     checksQuizOwnership,
-    delQuestionHandler,
-  ]);
-
-  // curl -X POST "http://localhost:3000/quizzes/0/questions/0/answer/0" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json"
-  router.post('/:question_id/answer/:proposition_id/', [
-    authFromApiKeyHandler,
-    postAnswerHandler,
+    getOneQuestionAnswersHandler,
   ]);
 
   // curl -X DELETE "http://localhost:3000/quizzes/0/questions/0/answer/" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json"
-  router.delete('/:question_id/answer/', [
+  router.delete('/:question_id/answers/', [
     authFromApiKeyHandler,
     deleteAnswerHandler,
+  ]);
+
+  // curl -X POST "http://localhost:3000/quizzes/0/questions/0/answer/0" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json"
+  router.post('/:question_id/answers/:proposition_id/', [
+    authFromApiKeyHandler,
+    postAnswerHandler,
   ]);
 
   return router;
