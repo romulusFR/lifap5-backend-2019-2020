@@ -3,7 +3,7 @@ openapi: 3.0.2
 info:
   title: REST API for the lifap5-backend-2019-2020
   description: The yaml description of the API, lively available at http://lifap5.univ-lyon1.fr/
-  version: '0.1.1'
+  version: '0.4.0'
   contact:
     email: romuald.thion@univ-lyon1.fr
     name: Romuald THION
@@ -203,26 +203,50 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 
 
-  /users/{user_id}:
+  /users/answers:
     get:
-      summary: Given your detailed own infos
+      summary: Give your answers to quizzes
       description: Details include the answered questions 
-      operationId: getUserDetails
+      operationId: getUserAnswers
       tags:
         - authenticated
         - users
         - answers
       security:
         - XApiKeyAuth: []
-      parameters:
-        - $ref: '#/components/parameters/userIdParam'
       responses:
         200:
-          description: When OK, answers with ID, first name and last name
+          description: The list of answers, grouped by quizzes
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ObjectUserDetail'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+
+  /users/quizzes:
+    get:
+      summary: Give the quizzes you ve created
+      description: Similar to the /suizzes routes but only for your quizzes
+      operationId: getUserQuizzes
+      tags:
+        - authenticated
+        - users
+        - quizzes
+      security:
+        - XApiKeyAuth: []
+      responses:
+        200:
+          description: The list of quizzes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  schema:
+                  $ref: '#/components/schemas/ObjectQuiz'
         401:
           $ref: '#/components/responses/Unauthorized'
         403:
@@ -499,7 +523,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         404:
           $ref: '#/components/responses/NotFound'
-
     put:
       summary: Update a question of a quizz and its propositions
       operationId: putQuestionHandler
@@ -545,6 +568,57 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
 
+  /quizzes/{quiz_id}/questions/{question_id}/answer:
+    parameters:
+      - $ref: '#/components/parameters/quizIdParam'
+      - $ref: '#/components/parameters/questionIdParam'
+    delete:
+      summary: Delete an existing answer
+      operationId: deleteAnswerHandler
+      tags:
+        - authenticated
+        - questions
+        - answers
+      security:
+        - XApiKeyAuth: []
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/ObjectAnswer'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
+  /quizzes/{quiz_id}/questions/{question_id}/answer/{proposition_id}:
+    parameters:
+      - $ref: '#/components/parameters/quizIdParam'
+      - $ref: '#/components/parameters/questionIdParam'
+      - $ref: '#/components/parameters/propositionIdParam'
+    post:
+      summary: Answer to a question with a proposition. If an answer already exists, it updates it
+      operationId: postAnswerHandler
+      tags:
+        - authenticated
+        - questions
+        - answers
+      security:
+        - XApiKeyAuth: []
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/ObjectAnswer'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+
 components:
   parameters:
     quizIdParam:
@@ -574,6 +648,17 @@ components:
         type: string
         example: 'test.user'
       style: simple
+
+    propositionIdParam:
+      name: proposition_id
+      in: path
+      description: ID of a proposition (local to a question)
+      required: true
+      schema:
+        type: integer
+        example: 1
+      style: simple
+
 
   # https://swagger.io/docs/specification/authentication/api-keys/
   securitySchemes:
@@ -880,3 +965,30 @@ components:
         proposition_id:
           type: integer
           example: 0
+
+    ObjectAnswer:
+      type: object
+      properties:
+        user_id:
+          type: string
+          example: 'test.user'
+        quiz_id:
+          type: integer
+          example: 0
+        question_id:
+          type: integer
+          example: 0
+        proposition_id:
+          type: integer
+          example: 1
+        answered_at:
+          type: string
+          example: '2020-03-20T13:26:24.139Z'
+      required:
+        - quiz_id
+        - question_id
+        - proposition_id
+        - user_id
+
+
+ 

@@ -8,7 +8,7 @@ INSERT INTO lifap5.quiz(quiz_id, title, description, owner_id)
 OVERRIDING SYSTEM VALUE
 VALUES  (0, 'QCM LIFAP5 #1', 'Des questions de JS et lambda calcul', 'romuald.thion'),
         (1, 'QCM LIFAP5 #2', 'Des questions de JS et lambda calcul', 'romuald.thion'),
-        (2, 'QCM LIFAP5 #3', 'Des questions de JS et lambda calcul', 'emmanuel.coquery');
+        (2, 'QCM LIFAP5 #3', 'Des questions de JS et lambda calcul', 'test.user');
 
 SELECT setval('lifap5.quiz_quiz_id_seq', 2);
 
@@ -26,11 +26,12 @@ VALUES  (0, 0, 0, 'Alan Turing', false),
         (0, 1, 1, 'Obi Wan Kenobi', false),
         (0, 1, 2, 'Bjarne Stroustrup', false),
         (1, 0, 0, '2015', true),
-        (1, 0, 1, '2015', false);
+        (1, 0, 1, '2016', false);
 
 
 INSERT INTO lifap5.answer(user_id, quiz_id, question_id, proposition_id)
 VALUES  ('test.user', 0, 0, 1),
         ('test.user', 0, 1, 0),
+        ('test.user', 1, 0, 0),
         ('other.user', 0, 0, 0),
         ('other.user', 1, 0, 1);

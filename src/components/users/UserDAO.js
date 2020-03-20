@@ -56,4 +56,13 @@ async function selectById(user_id) {
   return result.rows[0].answers;
 }
 
-module.exports = { selectAll, selectById };
+async function selectQuizzesByOwner(user_id) {
+  logger.silly(`UserDAO.selectQuizzesByOwner@${user_id}`);
+
+  const query = 'SELECT * FROM v_quiz_ext WHERE owner_id = $1';
+  const result = await pool.query(query, [user_id]);
+
+  return result.rows;
+}
+
+module.exports = { selectAll, selectById, selectQuizzesByOwner };
