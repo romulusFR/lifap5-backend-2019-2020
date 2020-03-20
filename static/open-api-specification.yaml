@@ -203,26 +203,50 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 
 
-  /users/{user_id}:
+  /users/answers:
     get:
-      summary: Given your detailed own infos
+      summary: Give your answers to quizzes
       description: Details include the answered questions 
-      operationId: getUserDetails
+      operationId: getUserAnswers
       tags:
         - authenticated
         - users
         - answers
       security:
         - XApiKeyAuth: []
-      parameters:
-        - $ref: '#/components/parameters/userIdParam'
       responses:
         200:
-          description: When OK, answers with ID, first name and last name
+          description: The list of answers, grouped by quizzes
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ObjectUserDetail'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+
+  /users/quizzes:
+    get:
+      summary: Give the quizzes you ve created
+      description: Similar to the /suizzes routes but only for your quizzes
+      operationId: getUserQuizzes
+      tags:
+        - authenticated
+        - users
+        - quizzes
+      security:
+        - XApiKeyAuth: []
+      responses:
+        200:
+          description: The list of quizzes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  schema:
+                  $ref: '#/components/schemas/ObjectQuiz'
         401:
           $ref: '#/components/responses/Unauthorized'
         403:
