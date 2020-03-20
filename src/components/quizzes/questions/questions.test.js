@@ -28,6 +28,24 @@ describe('GET /quizzes/:quiz_id/questions', () => {
 });
 
 describe('GET /quizzes/:quiz_id/questions/:question_id/', () => {
+  it('should send an error on invalid question_id', async () => {
+    const res = await request(app)
+      .get('/quizzes/0/questions/test/')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/);
+
+    expect(res.statusCode).toEqual(400);
+  });
+
+  it('should send an error on non-esistent question_id', async () => {
+    const res = await request(app)
+      .get('/quizzes/0/questions/9999999/')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/);
+
+    expect(res.statusCode).toEqual(404);
+  });
+
   it('should detail a question with its propositions but no answers', async () => {
     const res = await request(app)
       .get('/quizzes/0/questions/0/')
@@ -125,7 +143,31 @@ describe('POST/PUT/DEL /quizzes/:quiz_id/questions/', () => {
     createdQuizId = quizz.body.quiz_id;
   });
 
+  it('should NOT create a question if sentence is not defined', async () => {
+    const res = await request(app)
+      .post(`/quizzes/${createdQuizId}/questions`)
+      .set('Accept', 'application/json')
+      .set('X-API-KEY', '944c5fdd-af88-47c3-a7d2-5ea3ae3147da')
+      .send({question_id : 42, propositions :[]})
+      .expect('Content-Type', /json/);
+
+    expect(res.statusCode).toEqual(400);
+  });
+
+  it('should NOT create a question if question_id is not defined', async () => {
+    const res = await request(app)
+      .post(`/quizzes/${createdQuizId}/questions`)
+      .set('Accept', 'application/json')
+      .set('X-API-KEY', '944c5fdd-af88-47c3-a7d2-5ea3ae3147da')
+      .send({question_id : 'test', sentence: '', propositions : []})
+      .expect('Content-Type', /json/);
+
+    expect(res.statusCode).toEqual(400);
+  });
+
+
   let createdQuestionId;
+
   it('should create a fresh question', async () => {
     const questionToCreate = {
       question_id: Math.floor(Math.random() * 1000000),

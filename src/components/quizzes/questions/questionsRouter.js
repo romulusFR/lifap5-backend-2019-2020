@@ -22,7 +22,7 @@ module.exports = function questionsRouter(_app) {
     if (Number.isNaN(parseInt(question_id, 10)))
       return next(
         createError.BadRequest(
-          `Invalid content:' ${question_id}' is not an integer`
+          `Invalid content: '${question_id}' is not an integer`
         )
       );
     const { quiz_id } = res.locals.quiz;
@@ -78,6 +78,7 @@ module.exports = function questionsRouter(_app) {
   // @todo : checks details of propositions
   function validateQuestion(req, _res, next) {
     const { sentence, propositions } = req.body;
+    
     if (!sentence)
       return next(
         createError.BadRequest(`Invalid content: sentence is missing`)
@@ -121,10 +122,18 @@ module.exports = function questionsRouter(_app) {
   }
 
   async function postQuestionHandler(req, res, next) {
+    const { question_id, sentence, propositions } = req.body;
+    const { quiz_id } = res.locals.quiz;
+    const question = { quiz_id, question_id, sentence, propositions };
+
+    if (Number.isNaN(parseInt(question_id, 10)))
+      return next(
+        createError.BadRequest(
+          `Invalid content: '${question_id}' is not an integer`
+        )
+      );
     try {
-      const { question_id, sentence, propositions } = req.body;
-      const { quiz_id } = res.locals.quiz;
-      const question = { quiz_id, question_id, sentence, propositions };
+
       const questionId = await QuestionDAO.insert(question);
       logger.silly(`postQuestionHandler@${JSON.stringify(questionId)}`);
       return res.status(201).send(questionId);
@@ -203,12 +212,6 @@ module.exports = function questionsRouter(_app) {
     }
   }
 
-  // when parameter :question_id is used, checks if it exists
-  router.param('question_id', checksQuestionByIdHandler);
-
-  // when parameter :proposition_id is used, checks if it exists
-  router.param('proposition_id', checksPropositionByIdHandler);
-
   // root : all questions
   router.get('/', [getAllQuestionsHandler]);
 
@@ -220,6 +223,9 @@ module.exports = function questionsRouter(_app) {
     validateQuestion,
     postQuestionHandler,
   ]);
+
+  // when parameter :question_id is used, checks if it exists
+  router.param('question_id', checksQuestionByIdHandler);
 
   // curl -X DELETE "http://localhost:3000/quizzes/36/questions/42" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json"
   router.delete('/:question_id/', [
@@ -250,6 +256,9 @@ module.exports = function questionsRouter(_app) {
     authFromApiKeyHandler,
     deleteAnswerHandler,
   ]);
+
+  // when parameter :proposition_id is used, checks if it exists
+  router.param('proposition_id', checksPropositionByIdHandler);
 
   // curl -X POST "http://localhost:3000/quizzes/0/questions/0/answer/0" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json"
   router.post('/:question_id/answers/:proposition_id/', [

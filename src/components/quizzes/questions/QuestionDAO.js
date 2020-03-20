@@ -95,8 +95,6 @@ async function insert(question) {
   }
 }
 
-
-// HERE !!!
 async function update(question) {
   logger.silly(`QuestionDAO.insert@${JSON.stringify(question)}`);
 
