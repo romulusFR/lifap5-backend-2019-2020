@@ -41,52 +41,76 @@ module.exports = function usersRouter(app) {
     { jsonArgs: (req, res) => res.locals.user }
   );
 
-  async function checksUserOwnership(req, res, next) {
-    const { user_id } = req.params;
-    logger.silly(`checksUserOwnership@${user_id}`);
-    const whoami = res.locals.user.user_id;
-    if (whoami !== user_id) {
-      const msg = `Cannot access #${user_id} (as ${whoami})`;
-      return next(createError.Forbidden(msg));
-    }
+  // NOT USED ANYMORE
+  // async function checksUserOwnership(req, res, next) {
+  //   const { user_id } = req.params;
+  //   logger.silly(`checksUserOwnership@${user_id}`);
+  //   const whoami = res.locals.user.user_id;
+  //   if (whoami !== user_id) {
+  //     const msg = `Cannot access #${user_id} (as ${whoami})`;
+  //     return next(createError.Forbidden(msg));
+  //   }
 
-    return next();
-  }
+  //   return next();
+  // }
 
-  async function getUserDetails(_req, res, next) {
+  async function getUserAnswers(_req, res, next) {
     const whoami = res.locals.user.user_id;
-    logger.silly(`getUserDetails@${whoami}`);
+    logger.silly(`getUserAnswers@${whoami}`);
 
     try {
       const details = await UserDAO.selectById(whoami);
       return res.send(details);
     } catch (err) {
-      logger.error(`getUserDetails throw ${err}`);
+      logger.error(`getUserAnswers throw ${err}`);
+      return next(err);
+    }
+  }
+
+  async function getUserQuizzes(_req, res, next) {
+    const whoami = res.locals.user.user_id;
+    logger.silly(`getUserQuizzes@${whoami}`);
+
+    try {
+      const quizzes = await UserDAO.selectQuizzesByOwner(whoami);
+      return res.send(quizzes);
+    } catch (err) {
+      logger.error(`getUserQuizzes throw ${err}`);
       return next(err);
     }
   }
 
   const router = Router();
 
- 
-  // the list of all users
-  // curl -X GET -H "Content-Type:application/json" http://localhost:3000/user/all
+  // NB: X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da IS FOR "test.user"
+
+  // the list of all users (paginated)
   router.get('/', [getAllUsersHandler]);
+  // Examples
+  //  curl -X GET -H "Content-Type:application/json" http://localhost:3000/users/
 
   // checks authentification and serves negotiated content
-  // curl -H "Accept:application/json" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da" http://localhost:3000/user/whoami
-  // curl -H "Accept:text/*" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da" http://localhost:3000/user/whoami
-  // curl -H "Accept:nonexistent/nonexistent" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da" http://localhost:3000/user/whoami
-  // deals with errors
-  // 403 (ForbiddenError)   curl -H "Accept:text/*" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae314700" http://localhost:3000/user/whoami
-  // 400 (Bad Request)      curl -H "Accept:text/*" -H "X-API-KEY:invalid" http://localhost:3000/user/whoami
   router.get('/whoami', [authFromApiKeyHandler, whoamiHandler]);
+  // Examples: content-negotiation
+  //  curl -H "Accept:application/json" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da" http://localhost:3000/users/whoami
+  //  curl -H "Accept:text/*" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da" http://localhost:3000/users/whoami
 
-  // /!\ BUG WITH ORDER : router.params comes BEAFORE getUserDetails
-  // when parameter :user_id is used, checks if it owned by current user (res.locals.user)
-  // router.param('user_id', [authFromApiKeyHandler, checksUserOwnership]);
+  // curl -H "Accept:nonexistent/nonexistent" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae3147da" http://localhost:3000/users/whoami
+  // Examples: errors
+  //  401 (ForbiddenError)
+  //    curl -H "Accept:application/json" -H "X-API-KEY:944c5fdd-af88-47c3-a7d2-5ea3ae314700" http://localhost:3000/users/whoami
+  // 400 (Bad Request)
+  //    curl -H "Accept:application/json" -H "X-API-KEY:invalid" http://localhost:3000/users/whoami
 
-  router.get('/:user_id', [authFromApiKeyHandler, checksUserOwnership, getUserDetails]);
+  // your answers
+  router.get('/answers', [authFromApiKeyHandler, getUserAnswers]);
+  // Examples
+  //  curl -X GET "http://localhost:3000/users/answers" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da"
+
+  // your quizzes
+  router.get('/quizzes', [authFromApiKeyHandler, getUserQuizzes]);
+  // Examples
+  //  curl -X GET "http://localhost:3000/users/quizzes" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da"
 
   return router;
 };
