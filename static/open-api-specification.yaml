@@ -12,10 +12,11 @@ info:
     url: 'https://creativecommons.org/licenses/by-nc-sa/3.0/fr/'
 
 servers:
-  - url: 'http://localhost:3000/'
-    description: A local development server
   - url: 'https://lifap5.univ-lyon1.fr/'
     description: The public production server
+  - url: 'http://localhost:3000/'
+    description: A local development server
+
 
 tags:
   - name: users
