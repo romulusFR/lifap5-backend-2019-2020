@@ -3,7 +3,7 @@ openapi: 3.0.2
 info:
   title: REST API for the lifap5-backend-2019-2020
   description: The yaml description of the API, lively available at http://lifap5.univ-lyon1.fr/
-  version: '0.1.1'
+  version: '0.4.0'
   contact:
     email: romuald.thion@univ-lyon1.fr
     name: Romuald THION
