@@ -1,6 +1,6 @@
 {
   "name": "lifap5-backend-2019-2020",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Backend pour le projet LIFAP5 2019-2020 (gestion de qcm)",
   "main": "src/server.js",
   "scripts": {
