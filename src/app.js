@@ -41,6 +41,7 @@ app.use(cors({ origin: '*' }));
 // static content
 app.use(favicon(path.join(__dirname, '../static', 'favicon.ico')));
 app.use('/', express.static(path.join(__dirname, '../static')));
+app.use('/client', express.static(path.join(__dirname, '../client')));
 
 // body-parser
 app.use(express.json());
