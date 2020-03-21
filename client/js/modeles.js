@@ -8,11 +8,10 @@
 // on pourrait le stocker dans le LocalStorage par exemple
 const state = {
   // la clef de l'utilisateur
-  // xApiKey: '0e81221f-e6e5-4041-8c53-13ac38e3814b',    // prod
-  // xApiKey: '944c5fdd-af88-47c3-a7d2-5ea3ae3147da', // dev
+  xApiKey: '',
 
   // l'URL du serveur où accéder aux données
-  serverUrl: 'https://lifap5.univ-lyon1.fr',          // prod
+  serverUrl: 'https://lifap5.univ-lyon1.fr',
 
   // la liste des quizzes
   quizzes: [],
