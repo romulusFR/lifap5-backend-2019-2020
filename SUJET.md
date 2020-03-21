@@ -4,11 +4,15 @@ LIFAP5 - projet 2019-2020 : gestionnaire de QCM
 - [LIFAP5 - projet 2019-2020 : gestionnaire de QCM](#lifap5---projet-2019-2020--gestionnaire-de-qcm)
   - [Introduction](#introduction)
     - [Présentation du projet](#pr%c3%a9sentation-du-projet)
-    - [Informations Importantes](#informations-importantes)
+    - [Informations importantes](#informations-importantes)
     - [Versions du sujet](#versions-du-sujet)
   - [Gestionnaire de QCM : partie serveur](#gestionnaire-de-qcm--partie-serveur)
+    - [Fonctionnalités de l'API rest](#fonctionnalit%c3%a9s-de-lapi-rest)
+    - [Remarques importantes](#remarques-importantes)
   - [Gestionnaire de QCM : partie client](#gestionnaire-de-qcm--partie-client)
-    - [Fonctionnalités possibles](#fonctionnalit%c3%a9s-possibles)
+    - [Fonctionnalités](#fonctionnalit%c3%a9s)
+      - [Fonctionnalités obligatoires](#fonctionnalit%c3%a9s-obligatoires)
+      - [Fonctionnalités optionnelles](#fonctionnalit%c3%a9s-optionnelles)
     - [Jalons](#jalons)
   - [Modalités d'évaluation](#modalit%c3%a9s-d%c3%a9valuation)
     - [Soutenance](#soutenance)
@@ -26,7 +30,7 @@ On souhaite réaliser une application de gestion de QCM, appellés par la suite 
 
 _Votre tâche consiste à ajouter des fonctionnalités au client pour pouvoir répondre aux QCMs existant, en créer de nouveau, les éditer, consulter les réponses etc._
 
-### Informations Importantes
+### Informations importantes
 
  *  _Le calendrier initial n'est pas à ce jour modifié par les dispositions prises pour COVID-19, le face-à-face pédagogique restant assuré à distance d'ici la reprise des activités universitaires en présentiel_
  * _Le projet est à réaliser en monôme ou en binôme constitué au sein du même groupe de TD._
@@ -40,12 +44,12 @@ _Votre tâche consiste à ajouter des fonctionnalités au client pour pouvoir r�
 Gestionnaire de QCM : partie serveur
 ------------------------------------
 
-Cette partie est entièrement réalisée par l'équipe pédagogique. Le serveur <https://lifap5.univ-lyon1.fr> est en production, accessible publiquement sur internet :
+Cette partie est entièrement réalisée par l'équipe pédagogique. Le serveur <https://lifap5.univ-lyon1.fr> est en production, accessible publiquement sur internet. Le code du serveur contenant ainsi que l'intégralité des ressources associées sont publiquement accessible sur [GitHub](https://github.com/romulusFR/lifap5-backend-2019-2020#readme)
 
-* L'ensemble des fonctionnalités qu'il propose est documenté <https://lifap5.univ-lyon1.fr/api-docs/>. Ces différents routes vous permettront de lire, modifier et supprimer des QCMs et leur réponses.
-* Le code du serveur contenant ainsi que l'intégralité des ressources associées sont publiquement accessible sur [GitHub](https://github.com/romulusFR/lifap5-backend-2019-2020#readme)
 
-**Si vous constatez _des bugs ou des fonctionnalités manquantes_, utilisez [le gestionnaire de ticket](https://github.com/romulusFR/lifap5-backend-2019-2020/issues). Les _issues_ pertinentes seront valorisées dans l'évaluation.**
+**Si vous constatez _des bugs ou des fonctionnalités manquantes_, utilisez [le gestionnaire de ticket](https://github.com/romulusFR/lifap5-backend-2019-2020/issues). Les _issues_ et a fortiori les _pull requests_ pertinentes seront favorablement valorisées dans l'évaluation.**
+
+### Fonctionnalités de l'API rest
 
 En plus de l'entité utilisateur, l'application est constitutée de _quatres concepts métiers_ représentés [sur le schéma de base de données](https://github.com/romulusFR/lifap5-backend-2019-2020/blob/master/database/schema.png) de l'application :
 
@@ -54,20 +58,42 @@ En plus de l'entité utilisateur, l'application est constitutée de _quatres con
 * les _propositions_ : qui sont les réponses possibles à une question, une proposition à un contenu (son texte) et peut être correcte ou pas (attribut _correct_)
 * les _answers_ : les réponses faites par les utilisateurs aux questions. Chaque utilisateur ne peut donner qu'une seule réponse à chaque question en choissant la proposition qu'il considère correcte
 
-Une partie de l'API est accessible [sans authentification](https://lifap5.univ-lyon1.fr/api-docs/#/public) mais la majorité des fonctionnalités n'est accessible qu'aux utilisateurs disposant d'une _clef d'API_ (header HTTP _X-API-KEY_ et attribut _api_key_ dans la base).
+Les différents _routes_ du serveur permettent de lire, modifier et supprimer ces différentes entités.
 
-**Chaque étudiant-e dispose d'une clef d'API _propre_ qui est indiquée dans <https://tomuss.univ-lyon1.fr/>**
+* **L'ensemble des fonctionnalités proposées par le serveur est documenté <https://lifap5.univ-lyon1.fr/api-docs/>.**
+* **C'est votre _référence principale_ pour comprendre et utiliser le serveur.**
 
-**Le contenu de la base de données est remis à zéro tous les jours à 13:37.**
+### Remarques importantes
+
+* Une partie de l'API est accessible [sans authentification](https://lifap5.univ-lyon1.fr/api-docs/#/public) mais la majorité des fonctionnalités n'est accessible qu'aux utilisateurs disposant d'une _clef d'API_ (header HTTP _X-API-KEY_ et attribut _api_key_ dans la base).
+  * **Chaque étudiant-e dispose d'une clef d'API _propre_ qui est indiquée dans <https://tomuss.univ-lyon1.fr/>**
+  * Le projet de départ montre comment utiliser cette clef d'API.
+* **Le contenu de la base de données est remis à zéro tous les jours à 13:37.**
 
 Gestionnaire de QCM : partie client
 ------------------------------------
 
 Un [projet de départ de la partie client](https://lifap5.univ-lyon1.fr/client/) vous est fournie. Elle ne permet que de donner les informations de l'utilisateur authentifié et de lister les quizzes. **Le projet consiste à la compléter avec une partie des fonctionnalités suivantes**
 
-### Fonctionnalités possibles
+Le projet de départ de départ est réalisé avec la bibliothèque <https://materializecss.com/>, qui est une alternative plus légère (et plus simple) à <https://getbootstrap.com/> utilisée en LIFIHM. Les icones utilisées sont celles de <https://material.io/resources/icons/>. Le projet de départ n'utilise aucune bilbliothèque ou framework autre que ce que propose un navigateur à jour. **Votre réalisation devra se plier à ses contraintes**.
+
+### Fonctionnalités
 
 **NB: non définitif**
+
+#### Fonctionnalités obligatoires
+
+**Vous devez en réaliser _toutes ces fonctionnalités_ pour avoir la note maximale**
+
+TBA
+
+####  Fonctionnalités optionnelles
+
+**Vous devez en réaliser _au moins une fonctionnalités dans chaque bloc_ pour avoir la note maximale**
+
+TBA
+
+
 
 ### Jalons
 
@@ -111,4 +137,5 @@ Lors de la soutenance vous serez évalués avec le barème (prévisionnel) suiva
     * -1 point par fonctionnalité manquante, -0.5 par fonctionnalité mal réalisée.
 * /8 _fonctionnalités optionnelles_, une fonctionnalité attendue par catégorie
     * -2 par catégorie manquante, -1 par fonctionnalité mal réalisée,
-* /4 Qualité logicielle : commentaires, structure du projet, outilage (lining, tests, mise en forme), élégance et simplissité du code
+* /4 _qualité logicielle_ : commentaires, structure du projet, outilage (lining, tests, mise en forme), élégance et simplissité du code
+* /2 _bonus contributions_ : pour les utilisateurs qui ont posé des _issues_ ou des _pull requests_ pertinentes sur GitHub
