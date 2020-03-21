@@ -62,3 +62,4 @@ node_modules/
 # local notes
 NOTES.md
 static/client.zip
+.vscode/
