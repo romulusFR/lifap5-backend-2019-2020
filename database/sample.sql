@@ -35,3 +35,13 @@ VALUES  ('test.user', 0, 0, 1),
         ('test.user', 1, 0, 0),
         ('other.user', 0, 0, 0),
         ('other.user', 1, 0, 1);
+        
+        
+        
+-- INSERT INTO lifap5.quiz(title, description, owner_id) (
+--   SELECT 'Quiz #' || r.n::text,
+--          'Description ' || r.n::text,
+--          'other.user'         
+--   FROM generate_series(1, 250) AS g(i), LATERAL (SELECT floor(random()*1000000) AS n, i) AS r
+-- )
+-- ON CONFLICT DO NOTHING;
