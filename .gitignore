@@ -3,8 +3,8 @@ server
 server/
 .env
 
-# clident
-client/
+# client
+client-full/
 
 # JSDoc (generated)
 jsdoc/
