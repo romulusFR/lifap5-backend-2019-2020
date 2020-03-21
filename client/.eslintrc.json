@@ -1,0 +1,28 @@
+{
+  "env": {
+    "es2020": true,
+    "browser": true,
+    "jest": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "airbnb-base",
+    "prettier",
+    "plugin:import/recommended",
+    "plugin:promise/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "ecmaFeatures": {
+    }    
+  },
+  "rules": {
+    "no-console": ["error", { "allow": ["warn", "error", "debug", "info"] }],
+    "strict": ["error", "global"],
+    "camelcase": ["error", { "allow": [ ] }],
+    "no-var": ["error"],
+    //"no-unused-vars": "error",
+    //"no-undef": "off",
+    "no-param-reassign": ["error", { "props": false }]
+  }
+}

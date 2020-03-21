@@ -1,0 +1,32 @@
+/* global M getUser getQuizzes state filterHttpResponse */
+
+// un simple ping/pong, pour montrer comment on envoie des données JSON au serveur
+// eslint-disable-next-line no-unused-vars
+const postEcho = (data) => {
+  const url = `${state.serverUrl}/echo`;
+  const body = JSON.stringify(data);
+  return fetch(url, { method: 'POST', headers: state.headers, body })
+    .then(filterHttpResponse)
+    .catch(console.error);
+};
+
+// //////////////////////////////////////////////////////////////////////////////
+// PROGRAMME PRINCIPAL
+// //////////////////////////////////////////////////////////////////////////////
+
+function app() {
+  console.debug(`@app()`);
+  // ici, on lance en parallèle plusieurs actions
+  return Promise.all([getUser(), getQuizzes()])
+  .then(() => console.debug(`@app(): OK`));
+}
+
+// pour initialiser la bibliothèque Materialize
+// https://materializecss.com/auto-init.html
+M.AutoInit();
+
+// lancement de l'application
+app();
+postEcho({ msg: 'un essai de méthode POST', val: 42 })
+  .then(console.info)
+  .catch(console.error);

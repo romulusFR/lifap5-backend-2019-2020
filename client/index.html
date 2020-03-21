@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <script type="text/javascript" src="js/materialize.min.js" defer></script>
+    <meta charset="UTF-8"/>
+    <title>LIFAP5 2019-2020 - Client</title>
+  </head>
+
+  <!-- Modal Structure -->
+  <div id="id-modal-quizz-menu" class="modal">
+    <div class="modal-content">
+      <h4>Modal Header</h4>
+      <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">OK</a>
+    </div>
+  </div>
+
+  <body>
+    <header >
+      <nav class="nav-extended blue-grey lighten-1">
+        <div class="navbar-fixed">
+          <nav>
+            <div class="nav-wrapper blue-grey">
+              <a href="#!" class="brand-logo  center">Quizzz<i class="material-icons right">question_answer</i></a>
+              <ul class="right hide-on-med-and-down">
+                <li>
+                  <form>
+                    <div class="input-field  blue-grey lighten-3">
+                      <input id="search" type="search" required>
+                      <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                      <i class="material-icons">close</i>
+                    </div>
+                  </form>
+                </li>
+                <li>
+                  <i id="id-login" class="material-icons">face</i>
+                </li>
+              </ul>
+            </div> <!-- nav-wrapper  -->
+          </nav> 
+        </div> <!-- navbar-fixed -->
+        <div class="nav-content">
+          <ul class="tabs tabs-transparent tabs-fixed-width">
+            <li class="tab"><a class="active" href="#id-all-quizzes">Tous les quizzes</a></li>
+            <li class="tab"><a href="#id-my-quizzes">Mes quizzes</a></li>
+            <li class="tab"><a href="#id-my-answers">Mes réponses</a></li>
+          </ul>
+        </div> <!-- nav-content -->
+      </nav> <!-- nav-extended -->
+    </header>
+    
+    <main>
+      <div class="container">
+      <!-- Un premier onglet pour tous les quizzes-->
+      <div id="id-all-quizzes">
+        <div class="row">      
+          <div class="col s4">
+            <div id="id-all-quizzes-list"></div>
+          </div>
+          <div class="col s8">
+            <div id="id-all-quizzes-main"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Un second onglet pour ses propres quizzes-->
+      <div id="id-my-quizzes">
+        <div class="row">      
+          <div class="col s4">
+            <div id="id-my-quizzes-list">Ici le menu pour mes quizzes</div>
+          </div>
+          <div class="col s8">            
+            <div id="id-my-quizzes-main">Ici le contenu pour mes quizzes</div>
+          </div>
+        </div>
+      </div>
+      <!-- Un dernier onglet pour ses propres réponses-->
+      <div id="id-my-answers">
+        <div class="row">      
+          <div class="col s4">
+            <div id="id-my-answers-list">Ici le menu pour mes réponses</div>
+          </div>
+          <div class="col s8">            
+            <div id="id-my-answers-main">Ici le contenu pour mes réponses</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </main>
+    
+    <footer></footer>
+
+    <!-- l'ordre compte dans les scripts : ils sont lues puis interprétés DANS L'ORDRE -->
+    <script type="text/javascript" src="js/modeles.js" defer></script>
+    <script type="text/javascript" src="js/vues.js" defer></script>
+    <script type="text/javascript" src="js/app.js" defer></script>
+  </body>
+</html>
+
