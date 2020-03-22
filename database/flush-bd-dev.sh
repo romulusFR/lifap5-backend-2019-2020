@@ -11,6 +11,7 @@ PGUSER=lifap5
 CMD="psql -X -U $PGUSER -h $PGHOST -p $PGPORT"
 
 eval ${CMD} -f $DIR/schema.sql
+eval ${CMD} -f $DIR/triggers.sql
 eval ${CMD} -f $DIR/views.sql
 eval ${CMD} -f $DIR/sample-users.sql
 eval ${CMD} -f $DIR/sample.sql
