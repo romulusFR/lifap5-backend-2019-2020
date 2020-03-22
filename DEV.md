@@ -25,3 +25,12 @@ Tooling
 Utilise VSCode, eslint (avec ses plugins) et prettier.
 
 * Pour prettier et son intéraction avec eslint <https://stackoverflow.com/questions/44690308/whats-the-difference-between-prettier-eslint-eslint-plugin-prettier-and-eslint>
+
+Notifications PG
+----------------
+
+ * <https://www.postgresql.org/docs/12/sql-notify.html>
+ * <https://node-postgres.com/api/client#events>
+   * option `keepAlive` non documentée !
+ * <https://tapoueh.org/blog/2018/07/postgresql-listen-notify/>
+ * <https://github.com/andywer/pg-listen>

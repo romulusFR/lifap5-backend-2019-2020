@@ -139,3 +139,6 @@ Lors de la soutenance vous serez évalués avec le barème (prévisionnel) suiva
     * -2 par catégorie manquante, -1 par fonctionnalité mal réalisée,
 * /4 _qualité logicielle_ : commentaires, structure du projet, outilage (lining, tests, mise en forme), élégance et simplissité du code
 * /2 _bonus contributions_ : pour les utilisateurs qui ont posé des _issues_ ou des _pull requests_ pertinentes sur GitHub
+
+
+**Quelques rendus sélectionnés seront proposés à leurs auteurs à être rendus publics**
