@@ -21,6 +21,7 @@
     "strict": ["error", "global"],
     "camelcase": ["error", { "allow": [ ] }],
     "no-var": ["error"],
-    "no-param-reassign": ["error", { "props": false }]
+    "no-param-reassign": ["error", { "props": false }],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
   }
 }
