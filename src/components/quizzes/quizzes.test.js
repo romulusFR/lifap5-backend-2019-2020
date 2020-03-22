@@ -78,7 +78,7 @@ describe('GET /quizzes/:quiz_id', () => {
 
 describe('GET /quizzes/:quiz_id', () => {
   it('should return an error on non existent quiz', async () => {
-  const res = await request(app)
+    const res = await request(app)
       .get('/quizzes/9999999')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/);
@@ -89,7 +89,7 @@ describe('GET /quizzes/:quiz_id', () => {
 
 describe('GET /quizzes/:quiz_id', () => {
   it('should return an error on invalid input', async () => {
-  const res = await request(app)
+    const res = await request(app)
       .get('/quizzes/this-oes-not-exist')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/);
@@ -97,7 +97,6 @@ describe('GET /quizzes/:quiz_id', () => {
     expect(res.statusCode).toEqual(400);
   });
 });
-
 
 describe('POST /quizzes/', () => {
   const quizToCreate = {
@@ -133,7 +132,7 @@ describe('POST /quizzes/', () => {
       .post('/quizzes/')
       .set('Accept', 'application/json')
       .set('X-API-KEY', '944c5fdd-af88-47c3-a7d2-5ea3ae3147da')
-      .send({ description: 'Description of test quiz' , title: `Quiz test #${Math.floor(Math.random() * 1000000)}`}) // sends a JSON post body
+      .send({ description: 'Description of test quiz', title: `Quiz test #${Math.floor(Math.random() * 1000000)}` }) // sends a JSON post body
       .expect('Content-Type', /json/);
 
     expect(res.statusCode).toEqual(201);

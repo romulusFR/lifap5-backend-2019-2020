@@ -20,20 +20,11 @@ module.exports = function questionsRouter(_app) {
   async function checksQuestionByIdHandler(_req, res, next, question_id) {
     logger.silly(`checksQuestionByIdHandler@${question_id}`);
     if (Number.isNaN(parseInt(question_id, 10)))
-      return next(
-        createError.BadRequest(
-          `Invalid content: '${question_id}' is not an integer`
-        )
-      );
+      return next(createError.BadRequest(`Invalid content: '${question_id}' is not an integer`));
     const { quiz_id } = res.locals.quiz;
     try {
       const question = await QuestionDAO.selectById(quiz_id, question_id);
-      if (!question)
-        return next(
-          createError.NotFound(
-            `Question #${question_id} for quiz ${quiz_id} does not exist`
-          )
-        );
+      if (!question) return next(createError.NotFound(`Question #${question_id} for quiz ${quiz_id} does not exist`));
       res.locals.question = question;
       return next();
     } catch (err) {
@@ -48,18 +39,10 @@ module.exports = function questionsRouter(_app) {
     const { question_id } = res.locals.question;
 
     if (Number.isNaN(parseInt(proposition_id, 10)))
-      return next(
-        createError.BadRequest(
-          `Invalid content: '${proposition_id}' is not an integer`
-        )
-      );
+      return next(createError.BadRequest(`Invalid content: '${proposition_id}' is not an integer`));
 
     try {
-      const proposition = await PropositionDAO.selectById(
-        quiz_id,
-        question_id,
-        proposition_id
-      );
+      const proposition = await PropositionDAO.selectById(quiz_id, question_id, proposition_id);
       if (!proposition)
         return next(
           createError.NotFound(
@@ -79,14 +62,9 @@ module.exports = function questionsRouter(_app) {
   function validateQuestion(req, _res, next) {
     const { sentence, propositions } = req.body;
 
-    if (!sentence)
-      return next(
-        createError.BadRequest(`Invalid content: sentence is missing`)
-      );
+    if (!sentence) return next(createError.BadRequest(`Invalid content: sentence is missing`));
     if (!Array.isArray(propositions))
-      return next(
-        createError.BadRequest(`Invalid content: propositions is not an array`)
-      );
+      return next(createError.BadRequest(`Invalid content: propositions is not an array`));
     return next();
   }
 
@@ -127,11 +105,7 @@ module.exports = function questionsRouter(_app) {
     const question = { quiz_id, question_id, sentence, propositions };
 
     if (Number.isNaN(parseInt(question_id, 10)))
-      return next(
-        createError.BadRequest(
-          `Invalid content: '${question_id}' is not an integer`
-        )
-      );
+      return next(createError.BadRequest(`Invalid content: '${question_id}' is not an integer`));
     try {
       const questionId = await QuestionDAO.insert(question);
       logger.silly(`postQuestionHandler@${JSON.stringify(questionId)}`);
@@ -177,19 +151,12 @@ module.exports = function questionsRouter(_app) {
     const { question_id } = res.locals.question;
     const { proposition_id } = res.locals.proposition;
 
-    if(!open){
-      return next(createError.Forbidden(
-        `Quiz ${quiz_id} is closed`
-      ));
+    if (!open) {
+      return next(createError.Forbidden(`Quiz ${quiz_id} is closed`));
     }
 
     try {
-      const answer = await PropositionDAO.upsert(
-        user_id,
-        quiz_id,
-        question_id,
-        proposition_id
-      );
+      const answer = await PropositionDAO.upsert(user_id, quiz_id, question_id, proposition_id);
       logger.silly(`postAnswerHandler@${JSON.stringify(answer)}`);
       return res.status(201).send(answer);
     } catch (err) {
@@ -204,10 +171,8 @@ module.exports = function questionsRouter(_app) {
     const { open } = res.locals.quiz;
     const { question_id } = res.locals.question;
 
-    if(!open){
-      return next(createError.Forbidden(
-        `Quiz ${quiz_id} is closed`
-      ));
+    if (!open) {
+      return next(createError.Forbidden(`Quiz ${quiz_id} is closed`));
     }
 
     try {
@@ -232,54 +197,30 @@ module.exports = function questionsRouter(_app) {
 
   // curl -X POST "http://localhost:3000/quizzes/" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json" -d "{\"title\":\"QCM de test\",\"description\":\"Un QCM supplémentaire\",\"open\":false}"
   // curl -X POST "http://localhost:3000/quizzes/36/questions" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json" -d "{\"question_id\":42,\"content\":\"Qui a pissé sur le chien ?\"}"
-  router.post('/', [
-    authFromApiKeyHandler,
-    checksQuizOwnership,
-    validateQuestion,
-    postQuestionHandler,
-  ]);
+  router.post('/', [authFromApiKeyHandler, checksQuizOwnership, validateQuestion, postQuestionHandler]);
 
   // when parameter :question_id is used, checks if it exists
   router.param('question_id', checksQuestionByIdHandler);
 
   // curl -X DELETE "http://localhost:3000/quizzes/36/questions/42" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json"
-  router.delete('/:question_id/', [
-    authFromApiKeyHandler,
-    checksQuizOwnership,
-    delQuestionHandler,
-  ]);
+  router.delete('/:question_id/', [authFromApiKeyHandler, checksQuizOwnership, delQuestionHandler]);
 
   // curl -X GET "http://localhost:3000/quizzes/0/questions/0" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json"
   router.get('/:question_id/', [getOneQuestionHandler]);
 
-  router.put('/:question_id', [
-    authFromApiKeyHandler,
-    checksQuizOwnership,
-    validateQuestion,
-    putQuestionHandler,
-  ]);
+  router.put('/:question_id', [authFromApiKeyHandler, checksQuizOwnership, validateQuestion, putQuestionHandler]);
 
   // curl -X GET "http://localhost:3000/quizzes/0/questions/0/answers" -H  "accept: application/json" -H  "X-API-KEY: 4dd729fd-4709-427f-b371-9d177194c260" -H  "Content-Type: application/json"
-  router.get('/:question_id/answers/', [
-    authFromApiKeyHandler,
-    checksQuizOwnership,
-    getOneQuestionAnswersHandler,
-  ]);
+  router.get('/:question_id/answers/', [authFromApiKeyHandler, checksQuizOwnership, getOneQuestionAnswersHandler]);
 
   // curl -X DELETE "http://localhost:3000/quizzes/0/questions/0/answer/" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json"
-  router.delete('/:question_id/answers/', [
-    authFromApiKeyHandler,
-    deleteAnswerHandler,
-  ]);
+  router.delete('/:question_id/answers/', [authFromApiKeyHandler, deleteAnswerHandler]);
 
   // when parameter :proposition_id is used, checks if it exists
   router.param('proposition_id', checksPropositionByIdHandler);
 
   // curl -X POST "http://localhost:3000/quizzes/0/questions/0/answer/0" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json"
-  router.post('/:question_id/answers/:proposition_id/', [
-    authFromApiKeyHandler,
-    postAnswerHandler,
-  ]);
+  router.post('/:question_id/answers/:proposition_id/', [authFromApiKeyHandler, postAnswerHandler]);
 
   return router;
 };
