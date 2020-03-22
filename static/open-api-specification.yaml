@@ -601,7 +601,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/responses/ObjectAnswer'
+                $ref: '#/components/schemas/ObjectAnswer'
         401:
           $ref: '#/components/responses/Unauthorized'
         404:
