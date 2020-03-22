@@ -182,7 +182,7 @@ module.exports = function questionsRouter(_app) {
         question_id,
         proposition_id
       );
-      logger.silly(`postAnswerHandler@${answer}`);
+      logger.silly(`postAnswerHandler@${JSON.stringify(answer)}`);
       return res.status(201).send(answer);
     } catch (err) {
       logger.debug(`postAnswerHandler throw ${err}`);
