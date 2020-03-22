@@ -4,6 +4,7 @@
  */
 
 const http = require('http');
+const websocket = require('ws');
 const { createTerminus } = require('@godaddy/terminus');
 const { logger, config, pool, createLongRunningClient } = require('./config');
 const app = require('./app');
@@ -82,4 +83,46 @@ process.on('uncaughtException', async (error) => {
 
 httpServer.listen(config.httpPort, () => {
   logger.debug(`listen@${serverVersion} listening on ${config.httpPort}`);
+});
+
+const wserverConfig = {
+  server: httpServer,
+  path: '/stream/',
+  clientTracking: true,
+};
+const wsserver = new websocket.Server(wserverConfig); //
+
+// A broadcast method to all clients connected
+// https://github.com/websockets/ws#server-broadcast
+wsserver.broadcast = (data) => {
+  logger.debug(`websocket@broadcasting "${data}"`);
+  wsserver.clients.forEach((client) => {
+    if (client.readyState === websocket.OPEN) {
+      client.send(data);
+    }
+  });
+};
+
+wsserver.on('connection', (socket, _req) => {
+  const msg = {
+    type: 'info',
+    msg: `${serverVersion} is running WebSocket`,
+    time: Date.now(),
+  };
+
+  // Once connected, send a hello message
+  logger.debug(`websocket@send "${JSON.stringify(msg)}"`);
+  socket.send(JSON.stringify(msg));
+
+  // nothing but debug on message on reception
+  socket.on('message', (message) => {
+    logger.debug(`websocket@received "${message}" @${Date.now()}`);
+  });
+
+  // see https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent
+  // Nginx will timeout proxy connections after 60s with code 1006
+  // http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_connect_timeout
+  socket.on('close', (code) => {
+    logger.debug(`websocket@closing with code ${code} @${Date.now()}`);
+  });
 });
