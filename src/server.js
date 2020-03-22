@@ -12,12 +12,6 @@ const app = require('./app');
 const httpServer = http.createServer(app);
 const serverVersion = `${config.appname}@${config.version}[${config.env}]`;
 
-/* **************************** PG's LISTEN/NOTIFY  **************************** */
-
-const notificationChannel = 'lifap5';
-// eslint-disable-next-line no-unused-vars
-const longRunningClient = createLongRunningClient(notificationChannel);
-
 /* **************************** HEALTCHECK / GRACIOUS TERMINATION  **************************** */
 
 // see https://github.com/godaddy/terminus/blob/master/example/postgres/index.js
@@ -85,6 +79,9 @@ httpServer.listen(config.httpPort, () => {
   logger.debug(`listen@${serverVersion} listening on ${config.httpPort}`);
 });
 
+
+/* **************************** PG's LISTEN/NOTIFY WITH WEB SOCKETS **************************** */
+
 const wserverConfig = {
   server: httpServer,
   path: '/stream/',
@@ -94,11 +91,11 @@ const wsserver = new websocket.Server(wserverConfig); //
 
 // A broadcast method to all clients connected
 // https://github.com/websockets/ws#server-broadcast
-wsserver.broadcast = (data) => {
-  logger.debug(`websocket@broadcasting "${data}"`);
+wsserver.broadcast = (payload) => {
+  logger.silly(`websocket@broadcasting "${payload}"`);
   wsserver.clients.forEach((client) => {
     if (client.readyState === websocket.OPEN) {
-      client.send(data);
+      client.send(payload);
     }
   });
 };
@@ -116,7 +113,7 @@ wsserver.on('connection', (socket, _req) => {
 
   // nothing but debug on message on reception
   socket.on('message', (message) => {
-    logger.debug(`websocket@received "${message}" @${Date.now()}`);
+    logger.silly(`websocket@received "${message}" @${Date.now()}`);
   });
 
   // see https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent
@@ -126,3 +123,13 @@ wsserver.on('connection', (socket, _req) => {
     logger.debug(`websocket@closing with code ${code} @${Date.now()}`);
   });
 });
+
+// the callback to call when Postgres sends NOTIFY to the long running client
+
+function broadcastNotifications(msg) {
+  logger.silly(`broadcastNotifications@on '${msg.channel}' : ${msg.payload}`);
+  wsserver.broadcast(msg.payload);
+};
+
+// suscribe and broadcast
+createLongRunningClient('lifap5', broadcastNotifications);
