@@ -19,12 +19,12 @@ BEGIN
   END CASE;
 
   PERFORM (
-     WITH payload("schema", "type", "operation", "quiz_id") as(
+     WITH payload("type", "operation", "quiz_id", "time") as(
        SELECT 
-        sname,
         tname,
         opname,
-        rec.quiz_id
+        rec.quiz_id,
+        current_timestamp
      )
     SELECT pg_notify(channel, row_to_json(payload)::text)
     FROM payload
