@@ -3,35 +3,7 @@
 
 
 -- ---------------------------------------- DETAILED USERS ----------------------------------------
--- DROP VIEW IF EXISTS lifap5.v_quiz_user_ext;
--- CREATE OR REPLACE VIEW lifap5.v_quiz_user_ext AS(
-
---   WITH answers_json AS(
---     SELECT  user_id, quiz_id,
---             jsonb_agg(jsonb_build_object(
---               'question_id', a.question_id,
---               'proposition_id', a.proposition_id,
---               'answered_at', a.answered_at
---             )) AS answers
---     FROM answer a
---     GROUP BY user_id, quiz_id
---   ),
-
---   quizzes_json AS(
---     SELECT  user_id,
---             jsonb_agg(jsonb_build_object(
---               'quiz_id', d.quiz_id,
---               'answers', d.answers
---             )) AS answers
---     FROM    answer a JOIN answers_json d USING(user_id, quiz_id)
---     GROUP BY user_id, quiz_id
---   )
-
---   SELECT  user_id,
---           COALESCE(q.answers, '[]') AS answers
---   FROM    quiz_user a LEFT OUTER JOIN quizzes_json q  USING(user_id)
--- );
-
+-- with their answers
 DROP VIEW IF EXISTS lifap5.v_quiz_user_ext;
 CREATE OR REPLACE VIEW lifap5.v_quiz_user_ext AS(
 
@@ -147,41 +119,14 @@ CREATE OR REPLACE VIEW lifap5.v_quiz_ext AS(
 -- ---------------------------------------- EXTENDED QUESTIONS ----------------------------------------
 -- extended questions, with aggregation on propositions to provide a summary
 DROP VIEW IF EXISTS lifap5.v_question_ext;
-
--- CREATE OR REPLACE VIEW lifap5.v_question_ext AS(
---   WITH propositions_json AS(
---     SELECT quiz_id, question_id,
---            count(proposition_id)::integer AS propositions_number,
---            count(proposition_id) FILTER (WHERE correct)::integer AS correct_propositions_number,
---            jsonb_agg(to_jsonb(proposition_id)) AS propositions_ids
---     FROM proposition
---     GROUP BY quiz_id, question_id
---   )
---   SELECT  q.*,
---           COALESCE(p.propositions_number, 0) AS propositions_number,
---           COALESCE(p.correct_propositions_number, 0) AS correct_propositions_number,
---           COALESCE(p.propositions_ids,'[]') AS propositions_ids
---   FROM  question q LEFT OUTER JOIN propositions_json p
---         USING (quiz_id, question_id)
--- );
-
--- select * from v_question_ext;
---  quiz_id | question_id |                        sentence                       | propositions_number | correct_propositions_number | propositions_ids 
--- ---------+-------------+-------------------------------------------------------+---------------------+-----------------------------+------------------
---        0 |           0 | Qui a inventé le lambda calcul ?                      |                   2 |                           1 | [0, 1]
---        0 |           1 | Qui a inventé le JavaScript ?                         |                   0 |                           0 | []
---        1 |           2 | En quel année le standard ES2015 a-t'il été proposé ? |                   0 |                           0 | []
-
 CREATE OR REPLACE VIEW lifap5.v_question_ext AS(
   WITH propositions_json AS(
     SELECT quiz_id, question_id,
            count(proposition_id)::integer AS propositions_number,
            count(proposition_id) FILTER (WHERE correct)::integer AS correct_propositions_number,
-           -- jsonb_agg(to_jsonb(proposition_id)) AS propositions_ids
            jsonb_agg(jsonb_build_object(
               'proposition_id', proposition_id,
-              'content', content,
-              'correct', correct
+              'content', content
             ) ORDER BY proposition_id) as propositions
     FROM proposition
     GROUP BY quiz_id, question_id

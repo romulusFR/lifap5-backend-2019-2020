@@ -46,7 +46,7 @@ describe('GET /quizzes/:quiz_id/questions/:question_id/', () => {
     expect(res.statusCode).toEqual(404);
   });
 
-  it('should detail a question with its propositions but no answers', async () => {
+  it('should detail a question with its propositions but no answers and no correct attribute', async () => {
     const res = await request(app)
       .get('/quizzes/0/questions/0/')
       .set('Accept', 'application/json')
@@ -61,12 +61,10 @@ describe('GET /quizzes/:quiz_id/questions/:question_id/', () => {
       propositions: [
         {
           content: 'Alan Turing',
-          correct: false,
           proposition_id: 0,
         },
         {
           content: 'Alonzo Church',
-          correct: true,
           proposition_id: 1,
         },
       ],
