@@ -127,7 +127,7 @@ wsserver.on('connection', (socket, _req) => {
 // the callback to call when Postgres sends NOTIFY to the long running client
 
 function broadcastNotifications(msg) {
-  logger.silly(`broadcastNotifications@on '${msg.channel}' : ${msg.payload}`);
+  // logger.silly(`broadcastNotifications@on '${msg.channel}' : ${msg.payload}`);
   wsserver.broadcast(msg.payload);
 };
 
