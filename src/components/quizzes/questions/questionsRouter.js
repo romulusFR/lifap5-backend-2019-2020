@@ -173,8 +173,16 @@ module.exports = function questionsRouter(_app) {
   async function postAnswerHandler(req, res, next) {
     const { user_id } = res.locals.user;
     const { quiz_id } = res.locals.quiz;
+    const { open } = res.locals.quiz;
     const { question_id } = res.locals.question;
     const { proposition_id } = res.locals.proposition;
+
+    if(!open){
+      return next(createError.Forbidden(
+        `Quiz ${quiz_id} is closed`
+      ));
+    }
+
     try {
       const answer = await PropositionDAO.upsert(
         user_id,
@@ -193,7 +201,15 @@ module.exports = function questionsRouter(_app) {
   async function deleteAnswerHandler(req, res, next) {
     const { user_id } = res.locals.user;
     const { quiz_id } = res.locals.quiz;
+    const { open } = res.locals.quiz;
     const { question_id } = res.locals.question;
+
+    if(!open){
+      return next(createError.Forbidden(
+        `Quiz ${quiz_id} is closed`
+      ));
+    }
+
     try {
       const answer = await PropositionDAO.del(user_id, quiz_id, question_id);
       logger.silly(`deleteAnswerHandler@${answer}`);
