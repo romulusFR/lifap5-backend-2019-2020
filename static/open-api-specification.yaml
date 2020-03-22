@@ -266,7 +266,27 @@ paths:
           schema:
             type: integer
             default: 1
-          description: The number of pages to skip, so (page-1)*pageLimit items are skipped
+          description: The number of pages to skip, so (page-1)*limit items are skipped
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 50
+          description: The number of results by page
+        - in: query
+          name: order
+          schema:
+            type: string
+            enum: ['quiz_id', 'created_at', 'title', 'owner_id']
+            default: quiz_id
+          description: The order to sort results on
+        - in: query
+          name: dir
+          schema:
+            type: string
+            enum: ['asc', 'desc']
+            default: asc
+          description: The order to sort results on
       responses:
         200:
           description: OK

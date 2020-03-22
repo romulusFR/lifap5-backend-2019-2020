@@ -15,17 +15,30 @@ const questionsRouter = require('./questions/questionsRouter');
 module.exports = function quizzesRouter(app) {
   async function getAllQuizzesHandler(req, res, next) {
     const page = req.query.page || 1;
+    const limit = req.query.limit || app.locals.pageLimit;
+    const availableOrders = ['quiz_id', 'created_at', 'title', 'owner_id'];
+    const order = req.query.order || availableOrders[0];
+    const availableDirs = ['asc', 'desc'];
+    const dir = req.query.dir || availableDirs[0];
+
     if (!isInt(`${page}`, { min: 1 })) {
-      const err = new createError.BadRequest(
-        `In query "?page=${page}", page must be greater or equal than 1`
-      );
+      const err = new createError.BadRequest(`In query "?page=${page}", page must be greater or equal than 1`);
+      return next(err);
+    }
+    if (!isInt(`${limit}`, { min: 10 })) {
+      const err = new createError.BadRequest(`In query "?limit=${limit}", limit must be greater or equal than 10`);
+      return next(err);
+    }
+    if (!availableOrders.includes(order)) {
+      const err = new createError.BadRequest(`In query "?order=${order}", order must among ${availableOrders}`);
+      return next(err);
+    }
+    if (!availableDirs.includes(dir)) {
+      const err = new createError.BadRequest(`In query "?dir=${dir}", order must among ${availableDirs}`);
       return next(err);
     }
     try {
-      const results = await QuizDAO.selectAll(
-        Number.parseInt(page, 10),
-        app.locals.pageLimit
-      );
+      const results = await QuizDAO.selectAll(Number.parseInt(page, 10), Number.parseInt(limit, 10), order, dir);
       return res.send(results);
     } catch (err) {
       logger.debug(`getAllQuizzesHandler throw ${err}`);
@@ -43,18 +56,10 @@ module.exports = function quizzesRouter(app) {
       // authFromApiKeyHandler ensures that owner_id is defined
       const owner_id = res.locals.user.user_id;
       const quiz = { title, description, open, owner_id };
-      if (!title)
-        return next(
-          createError.BadRequest(`Invalid content: title is missing`)
-        );
-      if (!description)
-        return next(
-          createError.BadRequest(`Invalid content: description is missing`)
-        );
+      if (!title) return next(createError.BadRequest(`Invalid content: title is missing`));
+      if (!description) return next(createError.BadRequest(`Invalid content: description is missing`));
       const quizId = await QuizDAO.insert(quiz);
-      logger.silly(
-        `postQuizHandler@${JSON.stringify(quizId)}`
-      );
+      logger.silly(`postQuizHandler@${JSON.stringify(quizId)}`);
       return res.status(201).send(quizId);
     } catch (err) {
       logger.debug(`postQuizHandler throw ${err}`);
@@ -94,15 +99,10 @@ module.exports = function quizzesRouter(app) {
   async function checksQuizByIdHandler(_req, res, next, quiz_id) {
     logger.silly(`checksQuizByIdHandler@${quiz_id}`);
     if (Number.isNaN(parseInt(quiz_id, 10)))
-      return next(
-        createError.BadRequest(
-          `Invalid content: '${quiz_id}' is not an integer`
-        )
-      );
+      return next(createError.BadRequest(`Invalid content: '${quiz_id}' is not an integer`));
     try {
       const quiz = await QuizDAO.selectById(quiz_id);
-      if (!quiz)
-        return next(createError.NotFound(`Quiz #${quiz_id} does not exist`));
+      if (!quiz) return next(createError.NotFound(`Quiz #${quiz_id} does not exist`));
       res.locals.quiz = quiz;
       return next();
     } catch (err) {
@@ -131,19 +131,11 @@ module.exports = function quizzesRouter(app) {
   // curl -X PUT "http://localhost:3000/quizzes/3" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da" -H  "Content-Type: application/json" -d "{\"title\":\"QCM de test - màj \",\"description\":\"Un QCM supplémentaire - màj \"}"
 
   // curl -X PUT "http://localhost:3000/quizzes/3" -H  "accept: application/json" -H  "X-API-KEY: 64decee2-acca-4a86-8e60-a46c4ccbca97" -H  "Content-Type: application/json" -d "{\"title\":\"QCM de test - màj \",\"description\":\"Un QCM supplémentaire - màj \"}"
-  router.put('/:quiz_id', [
-    authFromApiKeyHandler,
-    checksQuizOwnership,
-    putQuizHandler,
-  ]);
+  router.put('/:quiz_id', [authFromApiKeyHandler, checksQuizOwnership, putQuizHandler]);
 
   // curl -X DELETE "http://localhost:3000/quizzes/3" -H  "accept: application/json" -H  "X-API-KEY: 64decee2-acca-4a86-8e60-a46c4ccbca97"
   // curl -X DELETE "http://localhost:3000/quizzes/3" -H  "accept: application/json" -H  "X-API-KEY: 944c5fdd-af88-47c3-a7d2-5ea3ae3147da"
-  router.delete('/:quiz_id', [
-    authFromApiKeyHandler,
-    checksQuizOwnership,
-    delQuizHandler,
-  ]);
+  router.delete('/:quiz_id', [authFromApiKeyHandler, checksQuizOwnership, delQuizHandler]);
 
   router.use('/:quiz_id/questions', questionsRouter(app));
 
