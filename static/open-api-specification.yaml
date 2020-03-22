@@ -596,7 +596,7 @@ paths:
       - $ref: '#/components/parameters/questionIdParam'
       - $ref: '#/components/parameters/propositionIdParam'
     post:
-      summary: Answer to a question with a proposition. If an answer already exists, it updates it
+      summary: Answer to a question with a proposition. If an answer to this question already exists, it updates it
       operationId: postAnswerHandler
       tags:
         - authenticated
@@ -605,7 +605,7 @@ paths:
       security:
         - XApiKeyAuth: []
       responses:
-        200:
+        201:
           description: OK
           content:
             application/json:
