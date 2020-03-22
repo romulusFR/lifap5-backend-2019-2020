@@ -414,7 +414,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ObjectQuestion'
+                  $ref: '#/components/schemas/ObjectQuestionDetail'
         404:
           $ref: '#/components/responses/NotFound'
     post:
@@ -673,6 +673,9 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+          example:
+            name: BadRequest
+            message: "Invalid content: 'xxx' is not an integer"
         text/html:
           schema:
             type: string
@@ -683,6 +686,9 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+          example:
+            name: Unauthorized
+            message: x-api-key is not provided or invalid
         text/html:
           schema:
             type: string
@@ -693,6 +699,9 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+          example:
+            name: Forbidden
+            message: "Quiz #0 is not owned by test (owner is 'this guy')"
         text/html:
           schema:
             type: string
@@ -703,6 +712,9 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+          example:
+            name: NotFound
+            message: Quiz 999 does not exist
         text/html:
           schema:
             type: string
@@ -713,6 +725,9 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+          example:
+            name: Conflict
+            message: Title "a title" already exists (no INSERT)
         text/html:
           schema:
             type: string
@@ -723,6 +738,9 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+          example:
+            name: InternalServer
+            message: database complains
         text/html:
           schema:
             type: string
@@ -733,6 +751,9 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+          example:
+            name: NotImplemented
+            message: this route does no exist
         text/html:
           schema:
             type: string
@@ -755,7 +776,6 @@ components:
             ]
         message:
           type: string
-          example: Invalid content on input
       required:
         - name
         - message
@@ -958,9 +978,6 @@ components:
         content:
           type: integer
           example: 'Alan Turing'
-        correct:
-          type: boolean
-          example: true
         proposition_id:
           type: integer
           example: 0
