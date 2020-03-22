@@ -282,8 +282,9 @@ CREATE OR REPLACE VIEW lifap5.v_fts AS(
           NULL::integer AS proposition_id,
           setweight(to_tsvector('french', coalesce(title,'')), 'A')    ||
           setweight(to_tsvector('french', coalesce(description,'')), 'A') ||
-           setweight(to_tsvector('french', coalesce(owner_id,'')), 'B')
-            AS searchable_text
+          setweight(to_tsvector('french', coalesce(owner_id,'')), 'B')
+            AS searchable_text,
+          title || ' : ' || description || ' (' || owner_id || ')' AS "text"
   FROM quiz
 
   UNION ALL
@@ -293,7 +294,8 @@ CREATE OR REPLACE VIEW lifap5.v_fts AS(
           question_id,
           NULL::integer,
           setweight(to_tsvector('french', coalesce(sentence,'')), 'A')
-            AS searchable_text
+            AS searchable_text,
+          sentence  AS "text"
   FROM question
 
   UNION  ALL
@@ -303,6 +305,7 @@ CREATE OR REPLACE VIEW lifap5.v_fts AS(
           question_id,
           proposition_id,
           setweight(to_tsvector('french', coalesce(content,'')), 'A')
-            AS searchable_text
+            AS searchable_text,
+          content AS "text"
   FROM proposition
 );

@@ -51,7 +51,8 @@ module.exports = function indexRouter(app) {
            quiz_id,
            question_id,
            proposition_id,
-           ts_rank(searchable_text, q.fts_query) AS rank
+           "text",
+           round(100*ts_rank(searchable_text, q.fts_query))::integer AS rank
     FROM v_fts, q 
     WHERE  searchable_text @@ q.fts_query
     ORDER BY rank desc, quiz_id, question_id, proposition_id;`;

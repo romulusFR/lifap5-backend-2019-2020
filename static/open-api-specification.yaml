@@ -134,7 +134,7 @@ paths:
           schema:
             type: string
             default: 'alan OR alonzo'
-          description: The query to search for, in search engine style
+          description: The query to search for, in search engine style. Searches in all text fields and user's id
       responses:
         200:
           description: The results, ordered by rank from highest to lowest
@@ -153,6 +153,8 @@ paths:
                       type: integer
                     proposition_id:
                       type: integer
+                    text:
+                      type: string
                     rank:
                       type: number
 
