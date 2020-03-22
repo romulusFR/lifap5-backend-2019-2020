@@ -5,6 +5,13 @@
 
 const config = require('./config');
 const { logger, morgan } = require('./logger');
-const { pool, PaginatedResult } = require('./pool');
+const { pool, createLongRunningClient, PaginatedResult } = require('./pool');
 
-module.exports = { config, logger, morgan, pool, PaginatedResult };
+module.exports = {
+  config,
+  logger,
+  morgan,
+  pool,
+  createLongRunningClient,
+  PaginatedResult,
+};
