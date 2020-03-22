@@ -17,7 +17,6 @@ servers:
   - url: 'http://localhost:3000/'
     description: A local development server
 
-
 tags:
   - name: users
     description: Users related features, including whoami and your answers
@@ -33,7 +32,6 @@ tags:
     description: Everyone one, without authentication
   - name: authenticated
     description: Authentified user (by x-api-key)
-
 
 paths:
   /:
@@ -205,11 +203,10 @@ paths:
         401:
           $ref: '#/components/responses/Unauthorized'
 
-
   /users/answers:
     get:
       summary: Give your answers to quizzes
-      description: Details include the answered questions 
+      description: Details include the answered questions
       operationId: getUserAnswers
       tags:
         - authenticated
@@ -314,7 +311,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         409:
           $ref: '#/components/responses/Conflict'
-
 
   /quizzes/{quiz_id}/:
     parameters:
@@ -435,13 +431,13 @@ paths:
             example:
               question_id: 0
               sentence: 'Qui a inventé le lambda calcul ?'
-              propositions: 
+              propositions:
                 - content: 'Alan Turing'
                   proposition_id: 0
-                  correct : false
+                  correct: false
                 - content: 'Alonzo Church'
                   proposition_id: 1
-                  correct : true
+                  correct: true
       responses:
         201:
           description: OK
@@ -512,13 +508,13 @@ paths:
               $ref: '#/components/schemas/ObjectQuestionDetail'
             example:
               sentence: 'Qui a encore pas inventé le lambda calcul ?'
-              propositions: 
+              propositions:
                 - content: 'encore Alan Turing'
                   proposition_id: 0
-                  correct : true
+                  correct: true
                 - content: 'encore Alonzo Church'
                   proposition_id: 1
-                  correct : false
+                  correct: false
       responses:
         200:
           description: OK
@@ -529,10 +525,10 @@ paths:
                 properties:
                   quiz_id:
                     type: integer
-                    example : 0
+                    example: 0
                   question_id:
                     type: integer
-                    example : 0
+                    example: 0
         401:
           $ref: '#/components/responses/Unauthorized'
         403:
@@ -591,7 +587,6 @@ paths:
         404:
           $ref: '#/components/responses/NotFound'
 
-
   /quizzes/{quiz_id}/questions/{question_id}/answers/{proposition_id}:
     parameters:
       - $ref: '#/components/parameters/quizIdParam'
@@ -612,7 +607,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/responses/ObjectAnswer'
+                $ref: '#/components/schemas/ObjectAnswer'
         401:
           $ref: '#/components/responses/Unauthorized'
         404:
@@ -620,6 +615,16 @@ paths:
 
 components:
   parameters:
+    userIdParam:
+      name: user_id
+      in: path
+      description: ID of a user
+      required: true
+      schema:
+        type: string
+        example: 'test.user'
+      style: simple
+
     quizIdParam:
       name: quiz_id
       in: path
@@ -627,6 +632,7 @@ components:
       required: true
       schema:
         type: integer
+        example: 0
       style: simple
 
     questionIdParam:
@@ -636,16 +642,7 @@ components:
       required: true
       schema:
         type: integer
-      style: simple
-
-    userIdParam:
-      name: user_id
-      in: path
-      description: ID of a user
-      required: true
-      schema:
-        type: string
-        example: 'test.user'
+        example: 0
       style: simple
 
     propositionIdParam:
@@ -657,7 +654,6 @@ components:
         type: integer
         example: 1
       style: simple
-
 
   # https://swagger.io/docs/specification/authentication/api-keys/
   securitySchemes:
@@ -765,15 +761,7 @@ components:
       properties:
         name:
           type: string
-          enum:
-            [
-              BadRequest,
-              Unauthorized,
-              Forbidden,
-              NotFound,
-              InternalServer,
-              NotImplemented,
-            ]
+          enum: [BadRequest, Unauthorized, Forbidden, NotFound, InternalServer, NotImplemented]
         message:
           type: string
       required:
@@ -889,8 +877,6 @@ components:
                   type: string
                   format: date-time
 
-
-
     ObjectQuiz:
       type: object
       required:
@@ -956,7 +942,6 @@ components:
           description: the number of correct propositions
           example: 1
 
-
     ObjectQuestionDetail:
       allOf:
         - $ref: '#/components/schemas/ObjectQuestion'
@@ -1005,6 +990,3 @@ components:
         - question_id
         - proposition_id
         - user_id
-
-
- 
