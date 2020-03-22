@@ -38,7 +38,7 @@ pool.on('error', (err, client) => {
 /* **************************** LONG RUNNING CLIENT FOR LISTEN/NOTIFY  **************************** */
 
 function defaultNotificationCallback(msg) {
-  logger.silly(`Notification on '${msg.channel}' : ${msg.payload}`);
+  logger.silly(`defaultNotificationCallback@on '${msg.channel}' : ${msg.payload}`);
 };
 
 async function createLongRunningClient(channel, callback = defaultNotificationCallback) {
