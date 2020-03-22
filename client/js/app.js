@@ -1,4 +1,4 @@
-/* global M getUser getQuizzes state filterHttpResponse */
+/* global M getUser getQuizzes state filterHttpResponse installWebSocket */
 
 // un simple ping/pong, pour montrer comment on envoie des données JSON au serveur
 // eslint-disable-next-line no-unused-vars
@@ -17,8 +17,9 @@ const postEcho = (data) => {
 function app() {
   console.debug(`@app()`);
   // ici, on lance en parallèle plusieurs actions
-  return Promise.all([getUser(), getQuizzes()])
-  .then(() => console.debug(`@app(): OK`));
+  return Promise.all([getUser(), getQuizzes()]).then(() =>
+    console.debug(`@app(): OK`)
+  );
 }
 
 // pour initialiser la bibliothèque Materialize
@@ -27,6 +28,6 @@ M.AutoInit();
 
 // lancement de l'application
 app();
-postEcho({ msg: 'un essai de méthode POST', val: 42 })
-  .then(console.info)
-  .catch(console.error);
+
+// pour installer le websocket
+// sendMessage = installWebSocket(console.log);
