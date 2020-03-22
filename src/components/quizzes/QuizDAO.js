@@ -11,13 +11,13 @@ const { logger, pool, PaginatedResult } = require('../../config');
  *         https://www.citusdata.com/blog/2016/03/30/five-ways-to-paginate/
  */
 // the list of all quizzes. The queried views contains extra information
-async function selectAll(currentPage, pageSize) {
+async function selectAll(currentPage, pageSize, orderBy, direction) {
   logger.silly(`QuizDAO.selectAll@${currentPage}, ${pageSize})`);
 
   const query = `
     SELECT *
     FROM v_quiz_ext
-    ORDER BY quiz_id
+    ORDER BY ${orderBy} ${direction}
     OFFSET ${(currentPage - 1) * pageSize} ROWS
     FETCH FIRST ${pageSize} ROWS ONLY;`;
   // const result = await pool.query(query);
@@ -54,9 +54,7 @@ async function insert(quiz) {
   const result = await pool.query(query, args);
 
   if (!result.rowCount) {
-    throw createError.Conflict(
-      `Title "${quiz.title}" already exists (no INSERT)`
-    );
+    throw createError.Conflict(`Title "${quiz.title}" already exists (no INSERT)`);
   }
   return result.rows[0];
 }
@@ -71,13 +69,7 @@ async function update(quiz) {
     RETURNING quiz_id;`;
 
   logger.silly(`QuizDAO.update@${JSON.stringify(quiz)}`);
-  const args = [
-    quiz.title,
-    quiz.description,
-    quiz.open,
-    quiz.quiz_id,
-    quiz.owner_id,
-  ];
+  const args = [quiz.title, quiz.description, quiz.open, quiz.quiz_id, quiz.owner_id];
   const result = await pool.query(putQuizQuery, args);
 
   if (result.rowCount) return result.rows[0];
