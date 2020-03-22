@@ -31,6 +31,7 @@ Notifications PG
 
  * <https://www.postgresql.org/docs/12/sql-notify.html>
  * <https://node-postgres.com/api/client#events>
-   * option `keepAlive` non documentée !
+   * option `keepAlive` non documentée <https://github.com/brianc/node-postgres/search?q=keepALive&unscoped_q=keepALive>
+   * c'est celle des Stram Node <https://nodejs.org/api/net.html#net_socket_setkeepalive_enable_initialdelay>
  * <https://tapoueh.org/blog/2018/07/postgresql-listen-notify/>
  * <https://github.com/andywer/pg-listen>
