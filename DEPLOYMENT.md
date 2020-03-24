@@ -7,7 +7,7 @@ On donne ici des informations sur le développement et le déploiement de l'appl
 Installation générale
 ---------------------
 
-### Pour des versions à jour de nginx, PostgresSQL et Node.JS.
+### Pour des versions à jour de nginx, PostgresSQL et Node.JS.
 
 ```bash
 # update générale
@@ -31,7 +31,7 @@ sudo apt-get update
 sudo apt-get install -y nodejs gcc g++ make
 ```
 
-### Vérifications 
+### Vérifications 
 
 ```bash
 nginx -v
@@ -46,7 +46,7 @@ node -v
 # v13.10.1
 ```
 
-###  Clone du dépôt public
+### Clone du dépôt public
 
 ```bash
 # installation de git
@@ -55,7 +55,7 @@ git clone https://github.com/romulusFR/lifap5-backend-2019-2020.git
 cd lifap5-backend-2019-2020/
 ```
 
-###  Creation du compte non privilegié `lifap5`
+### Creation du compte non privilegié `lifap5`
 
 ```bash
 sudo useradd --user-group --create-home --shell /bin/bash --groups ubuntu lifap5
@@ -119,14 +119,13 @@ Pour créer le schéma puis peupler
 
 ```bash
  psql -U lifap5 -h localhost -f ./database/schema.sql
- psql -U lifap5 -h localhost -f ./database/views.sql
+ psql -U lifap5 -h localhost -f ./database/triggers.sql
+ psql -U lifap5 -h localhost -f ./database/views.sql 
  psql -U lifap5 -h localhost -f ./database/sample-users.sql
  psql -U lifap5 -h localhost -f ./database/sample.sql
 ```
 
 Pour tester
-
-
 
 ```sql
 select quiz_id, title, owner_id,
@@ -199,8 +198,6 @@ sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.ce
 
 Là, on a la rediretion 80 vers 443 et un HTTPS de qualité B sur <https://www.ssllabs.com/ssltest/analyze.html?d=lifap5.univ-lyon1.fr>
 On va maitenant durcir la configuration TLS et configurer les redirections vers Node.JS
-
-# sudo openssl dhparam -out /etc/nginx/dhparam.pem 4096
 
 ```bash
 sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
