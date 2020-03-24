@@ -136,6 +136,18 @@ from quiz left join question using (quiz_id)
 order by quiz_id, question_id, proposition_id;
 ```
 
+
+### Crontab pour remise à zéro de la base
+
+Ajouter avec `crontab -e`, ici remise à zéro à 13:37 chaque jour <https://crontab.guru/#37_13_*_*_*>
+
+```bash
+crontab -e
+
+# ajouter
+# 37 13 * * * psql -X -U lifap5 -h localhost -f /home/ubuntu/lifap5-backend-2019-2020/database/sample.sql
+```
+
 Configuration Node.JS
 ---------------------
 
