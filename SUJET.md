@@ -12,7 +12,7 @@ LIFAP5 - projet 2019-2020 : gestionnaire de QCM
   - [Gestionnaire de QCM : partie client](#gestionnaire-de-qcm--partie-client)
     - [Fonctionnalités](#fonctionnalit%c3%a9s)
       - [Fonctionnalités obligatoires](#fonctionnalit%c3%a9s-obligatoires)
-      - [Fonctionnalités optionnelles](#fonctionnalit%c3%a9s-optionnelles)
+      - [Fonctionnalités optionnelles (au choix)](#fonctionnalit%c3%a9s-optionnelles-au-choix)
     - [Jalons](#jalons)
   - [Modalités d'évaluation](#modalit%c3%a9s-d%c3%a9valuation)
     - [Soutenance](#soutenance)
@@ -24,9 +24,9 @@ Introduction
 
 ### Présentation du projet
 
-L'objectif de ce projet est de mettre en pratiqude ce qui a été vu dans l'UE LIFAP5 à travers la réalisation de la partie client, entièrement en JavaScript dans le navigateur et sans serveur, d'une _application minimaliste de gestion de QCM. 
+L'objectif de ce projet est de mettre en pratique ce qui a été vu dans l'UE LIFAP5 à travers la réalisation de la partie client, entièrement en JavaScript dans le navigateur et sans serveur, d'une _application minimaliste de gestion de QCM. 
 
-On souhaite réaliser une application de gestion de QCM, appellés par la suite _quizzes_, ici simplifié pour les besoins pédagogiques. L'intégralité du [serveur REST](https://lifap5.univ-lyon1.fr/api-docs/) (_backend_) ainsi qu'une [version de départ du client](https://lifap5.univ-lyon1.fr/client/) vous sont fournis.
+On souhaite réaliser une application de gestion de QCM, appelés par la suite _quizzes_, ici simplifié pour les besoins pédagogiques. L'intégralité du [serveur REST](https://lifap5.univ-lyon1.fr/api-docs/) (_backend_) ainsi qu'une [version de départ du client](https://lifap5.univ-lyon1.fr/client/) vous sont fournis.
 
 _Votre tâche consiste à ajouter des fonctionnalités au client pour pouvoir répondre aux QCMs existant, en créer de nouveau, les éditer, consulter les réponses etc._
 
@@ -51,12 +51,12 @@ Cette partie est entièrement réalisée par l'équipe pédagogique. Le serveur 
 
 ### Fonctionnalités de l'API rest
 
-En plus de l'entité utilisateur, l'application est constitutée de _quatres concepts métiers_ représentés [sur le schéma de base de données](https://github.com/romulusFR/lifap5-backend-2019-2020/blob/master/database/schema.png) de l'application :
+En plus de l'entité utilisateur, l'application est constituée de _quatre concepts métiers_ représentés [sur le schéma de base de données](https://github.com/romulusFR/lifap5-backend-2019-2020/blob/master/database/schema.png) de l'application :
 
 * les _quizzes_ : un ensemble de questions, chaque _quiz_ a un propriétaire (_owner_id_) qui est le seul à pouvoir le modifier et consulter les réponses. 
 * les _questions_ : chaque question est décrite par une phrase (_sentence_) est est composée d'un ensemble de _propositions_
 * les _propositions_ : qui sont les réponses possibles à une question, une proposition à un contenu (son texte) et peut être correcte ou pas (attribut _correct_)
-* les _answers_ : les réponses faites par les utilisateurs aux questions. Chaque utilisateur ne peut donner qu'une seule réponse à chaque question en choissant la proposition qu'il considère correcte
+* les _answers_ : les réponses faites par les utilisateurs aux questions. Chaque utilisateur ne peut donner qu'une seule réponse à chaque question en choisissant la proposition qu'il considère correcte
 
 Les différents _routes_ du serveur permettent de lire, modifier et supprimer ces différentes entités.
 
@@ -73,9 +73,9 @@ Les différents _routes_ du serveur permettent de lire, modifier et supprimer ce
 Gestionnaire de QCM : partie client
 ------------------------------------
 
-Un [projet de départ de la partie client](https://lifap5.univ-lyon1.fr/client/) vous est fournie. Elle ne permet que de donner les informations de l'utilisateur authentifié et de lister les quizzes. **Le projet consiste à la compléter avec une partie des fonctionnalités suivantes**
+Un [projet de départ de la partie client](https://lifap5.univ-lyon1.fr/client/) vous est fournie. Elle ne permet que de donner les informations de l'utilisateur authentifié et de lister les _quizzes_. **Le projet consiste à la compléter avec une partie des fonctionnalités suivantes**
 
-Le projet de départ de départ est réalisé avec la bibliothèque <https://materializecss.com/>, qui est une alternative plus légère (et plus simple) à <https://getbootstrap.com/> utilisée en LIFIHM. Les icones utilisées sont celles de <https://material.io/resources/icons/>. Le projet de départ n'utilise aucune bilbliothèque ou framework autre que ce que propose un navigateur à jour. **Votre réalisation devra se plier à ses contraintes**.
+Le projet de départ de départ est réalisé avec la bibliothèque <https://materializecss.com/>, qui est une alternative plus légère (et plus simple) à <https://getbootstrap.com/> utilisée en LIFIHM. Les icônes utilisées sont celles de <https://material.io/resources/icons/>. Le projet de départ n'utilise aucune bibliothèque ou framework autre que ce que propose un navigateur à jour. **Votre réalisation devra se plier à ses contraintes**.
 
 ### Fonctionnalités
 
@@ -87,7 +87,7 @@ Le projet de départ de départ est réalisé avec la bibliothèque <https://mat
 
 TBA
 
-####  Fonctionnalités optionnelles
+#### Fonctionnalités optionnelles (au choix)
 
 **Vous devez en réaliser _au moins une fonctionnalités dans chaque bloc_ pour avoir la note maximale**
 
@@ -105,20 +105,20 @@ Le calendrier est le suivant. Sauf prolongement des dispositions sur COVID-19, l
   * mise en place de l'environnement de travail sur <https://forge.univ-lyon1.fr>
 * 06/04/20 - première séance de soutien projet 
   * communication des choix de binômes
-  * dévelloppement des premières fonctionnalités (lecture)
+  * développement des premières fonctionnalités (lecture)
 * 20/04/20 - deuxième séance de soutien projet 
-  * dévelloppement des autres fonctionnalités (écritures)
+  * développement des autres fonctionnalités (écritures)
   * enregistrement de l'ordre de passage
 * 04/05/20 - **soutenances projet**
   * démonstration de 5 minutes suivies de 5 minutes de question
-  * dépot du code et du tableau de synthèse
+  * dépôt du code et du tableau de synthèse
 
 
 Modalités d'évaluation
 ---------------------
 **NB: non définitif**
 
-Une archive zip contiendra tous vos fichiers `html`, `js` et les fichiers statiques (e.g., images) utilisés ainsi que **le fichier `README.md`** et **le fichier `SYNTHESE.csv`** duement complétés.
+Une archive zip contiendra tous vos fichiers `html`, `js` et les fichiers statiques (e.g., images) utilisés ainsi que **le fichier `README.md`** dument complété (voir l'archive zip de départ).
 
 ### Soutenance
 
@@ -137,7 +137,7 @@ Lors de la soutenance vous serez évalués avec le barème (prévisionnel) suiva
     * -1 point par fonctionnalité manquante, -0.5 par fonctionnalité mal réalisée.
 * /8 _fonctionnalités optionnelles_, une fonctionnalité attendue par catégorie
     * -2 par catégorie manquante, -1 par fonctionnalité mal réalisée,
-* /4 _qualité logicielle_ : commentaires, structure du projet, outilage (lining, tests, mise en forme), élégance et simplissité du code
+* /4 _qualité logicielle_ : commentaires, structure du projet, outillage (linting, tests, mise en forme), élégance et simplicité du code
 * /2 _bonus contributions_ : pour les utilisateurs qui ont posé des _issues_ ou des _pull requests_ pertinentes sur GitHub
 
 
