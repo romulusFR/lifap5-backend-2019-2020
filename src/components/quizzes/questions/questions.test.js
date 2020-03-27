@@ -91,14 +91,10 @@ describe('GET /quizzes/:quiz_id/questions/:question_id/answers', () => {
           content: 'Alan Turing',
           correct: false,
           proposition_id: 0,
+          answers: expect.any(Array),
         },
         {
-          answers: [
-            {
-              user_id: 'test.user',
-              answered_at: expect.any(String),
-            },
-          ],
+          answers: expect.any(Array),
           content: 'Alonzo Church',
           correct: true,
           proposition_id: 1,

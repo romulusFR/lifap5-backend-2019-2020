@@ -40,7 +40,7 @@ async function upsert(user_id, quiz_id, question_id, proposition_id) {
     proposition_id,
   ]);
 
-  return result.rows;
+  return result.rows[0];
 }
 
 async function del(user_id, quiz_id, question_id) {
