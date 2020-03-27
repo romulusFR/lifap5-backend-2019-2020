@@ -59,7 +59,7 @@ describe('GET /quizzes/:quiz_id', () => {
       title: 'QCM LIFAP5 #1',
       description: 'Des questions de JS et lambda calcul',
       owner_id: 'romuald.thion',
-      open: false,
+      open: true,
       // eslint-disable-next-line camelcase
       questions_number: 2,
       // eslint-disable-next-line camelcase
