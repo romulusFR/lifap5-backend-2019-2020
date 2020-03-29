@@ -297,7 +297,7 @@ paths:
 
     post:
       summary: Creates a new quiz
-      description: Creates a quiz, in the database. quiz_id is auto generated, title and description are mandatory
+      description: Creates a quiz, in the database. quiz_id is auto generated, owner_id is set to current user, title and description are mandatory
       operationId: postQuizHandler
       tags:
         - authenticated
@@ -561,14 +561,13 @@ paths:
       - $ref: '#/components/parameters/quizIdParam'
       - $ref: '#/components/parameters/questionIdParam'
     get:
-      summary: A  question of a quizz
-      description: A question of a given quizz (if it exists) with detailled information (its propositions)
-      operationId: getOneQuestionHandler
+      summary: All answers to a question of a quiz you own
+      description: List all answers (grouped by propositions) of a quiz you own
+      operationId: getOneQuestionAnswersHandler
       security:
         - XApiKeyAuth: []
       tags:
         - authenticated
-        - questions
         - answers
       responses:
         200:
@@ -578,7 +577,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ObjectQuestionDetail'
+                  $ref: '#/components/schemas/ObjectQuestionWithAnswers'
         401:
           $ref: '#/components/responses/Unauthorized'
         403:
@@ -591,7 +590,6 @@ paths:
       operationId: deleteAnswerHandler
       tags:
         - authenticated
-        - questions
         - answers
       security:
         - XApiKeyAuth: []
@@ -617,7 +615,6 @@ paths:
       operationId: postAnswerHandler
       tags:
         - authenticated
-        - questions
         - answers
       security:
         - XApiKeyAuth: []
@@ -973,6 +970,19 @@ components:
           items:
             $ref: '#/components/schemas/ObjectProposition'
 
+
+    ObjectQuestionWithAnswers:
+      allOf:
+        - $ref: '#/components/schemas/ObjectQuestion'
+      required:
+        - proposition
+      properties:
+        propositions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectPropositionWithAnswers'
+        
+
     ObjectProposition:
       type: object
       required:
@@ -986,6 +996,29 @@ components:
         proposition_id:
           type: integer
           example: 0
+
+
+    ObjectPropositionWithAnswers:
+      allOf:
+        - $ref: '#/components/schemas/ObjectProposition'
+      required:
+        - answers
+      properties:
+        answers:
+          type: array
+          items:
+            type: object
+            properties:
+              user_id:
+                type: string
+                example: 'test.user'
+              answered_at:
+                type: string
+                example: '2020-03-20T13:26:24.139Z'
+            required:
+              - answered_at
+              - user_id
+
 
     ObjectAnswer:
       type: object
