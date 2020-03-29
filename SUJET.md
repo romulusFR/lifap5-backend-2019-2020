@@ -79,12 +79,6 @@ Le projet de départ de départ est réalisé avec la bibliothèque <https://mat
 
 ### Fonctionnalités
 
-- interface responsive
-- regarder/changer les réponses si on a déjà répondu à un quizz
-- créer / mettre à jour / supprimer un quizz
-- créer / mettre à jour / supprimer une question à un quizz
-
-
 **NB: non définitif**
 
 #### Fonctionnalités obligatoires
@@ -96,27 +90,27 @@ Le projet de départ de départ est réalisé avec la bibliothèque <https://mat
 - Répondre à un quizz: modifier l'affichage précédent de façon à pouvoir répondre au quizz, c'est à dire pouvoir cocher la réponse choisie à chaque question, puis pouvoir cliquer sur un bouton "Répondre" qui enverra les réponses au serveur.
 - Afficher les quizzes de l'utilisateur connecté: reprendre la fonctionnalité d'affichage de tous les quizz et l'adapter pour afficher les quizzes de l'utilisateur connecté dans l'onglet "MES QUIZZES".
 - Créer un quizz: ajouter un formulaire permettant de saisir les informations d'un nouveau quizz dans l'onglet "MES QUIZZES". Ajouter un bouton "Créer" qu déclenchera l'ajout du quizz sur le serveur et le rafraîchissement de la liste des quizzes.
-- Ajouter une question: Dans l'affichage d'un quizz, si c'est un quizz de l'utilisateur, ajouter un formulaire d'ajout de question. Ce formulaire permettra de saisir deux réponses possibles pour la question. Sa validation déclenchera l'ajout de la question sur le serveur.
+- Ajouter une question: Dans l'affichage d'un quizz, si c'est un quizz de l'utilisateur, ajouter un formulaire d'ajout de question. Ce formulaire permettra de saisir deux propositions possibles pour la question. Sa validation déclenchera l'ajout de la question sur le serveur.
 
 #### Fonctionnalités optionnelles (au choix)
 
 **Vous devez en réaliser _au moins une fonctionnalités dans chaque bloc_ pour avoir la note maximale**
 
 Bloc 1:
-- Mettre à jour un quizz
-- Mettre à jour l'énoncé une question
+- Mettre à jour un quizz: changer la description et le titre d'un quizz. Ajouter un bouton "Modifier" qui va faire apparaître un formulaire de modification. Gérer ce formulaire pour mettre à jour les données sur le serveur.
+- Mettre à jour l'énoncé une question: changer la phrase (`sentence`) d'énoncé. Ajouter un bouton "Modifier" qui va faire apparaître un formulaire de modification. Gérer ce formulaire pour mettre à jour les données sur le serveur.
 
 Bloc 2:
-- Permettre d'ajouter une réponse à une question
-- Modifier une réponse existante
+- Permettre d'ajouter / de supprimer une proposition à une question: ajouter par exemple un bouton de suppression à côté de chaque question et un formulaire d'ajout de proposition. 
+- Modifier une proposition existante: ajouter un bouton qui remplace le texte de la proposition par un formulaire dont la validation met à jour la proposition.
 
 Bloc 3:
-- Lister les quizzes auxquels on a répondu
-- Chercher un quizz
+- Lister les quizzes auxquels on a répondu: compléter l'onglet "MES RÉPONSES" de manière similaire à "MES QUIZZES", mais pour les quizzes auxquelles l'utilisateur a déjà répondu.
+- Chercher un quizz: changer le comportement de façon à ce que l'onglet "TOUS LES QUIZZES" n'affiche que les quizzs renvoyés par la recherche indiquée dans le formulaire de recherche en haut de la page.
 
 Bloc 4:
-- Modifier les réponses à un quizz auquel on a déjà répondu
-- Se passer du bouton "Répondre" dans le formulaire de réponse
+- Modifier les réponses à un quizz auquel on a déjà répondu: Lorsque l'on a déjà répondu à un quizz, modifier le formulaire de réponse de façon à ce que le contenu du formulaire soit pré-rempli avec les réponses de l'utilisateur.
+- Se passer du bouton "Répondre" dans le formulaire de réponse: à chaque fois qu'une case est cochée, mettre directement à jour le serveur avec la réponse choisie par l'utilisateur.
 
 
 
