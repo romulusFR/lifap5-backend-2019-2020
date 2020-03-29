@@ -79,19 +79,44 @@ Le projet de départ de départ est réalisé avec la bibliothèque <https://mat
 
 ### Fonctionnalités
 
+- interface responsive
+- regarder/changer les réponses si on a déjà répondu à un quizz
+- créer / mettre à jour / supprimer un quizz
+- créer / mettre à jour / supprimer une question à un quizz
+
+
 **NB: non définitif**
 
 #### Fonctionnalités obligatoires
 
 **Vous devez en réaliser _toutes ces fonctionnalités_ pour avoir la note maximale**
 
-TBA
+- Être connecté et afficher le nom de l'utilisateur connecté: il faut pour cela remplir la champ `xApiKey` de l'objet `state` déclaré dans `js/modeles.js`. Comprendre le fonctionnement permettant le mise à jour de l'état (dans `js/modeles.js`) et la modification du comportement du bouton "utilisateur" (dans `js/vues.js`).
+- Afficher les questions d'un quizz: lorsque l'on clique sur un quizz, la fonction `clickQuiz` (définie dans `js/vues.js`) est appelée. Elle appelle `renderCurrentQuizz` qui va changer l'affichage du div HTML `id-all-quizzes-main`. Modifier ces fonctions de façon à afficher les questions du quizz au lieu de "Ici les détails pour le quizz xxyyzz". Il faudra pour cela récupérer les questions du quizz à afficher via un appel au serveur.
+- Répondre à un quizz: modifier l'affichage précédent de façon à pouvoir répondre au quizz, c'est à dire pouvoir cocher la réponse choisie à chaque question, puis pouvoir cliquer sur un bouton "Répondre" qui enverra les réponses au serveur.
+- Afficher les quizzes de l'utilisateur connecté: reprendre la fonctionnalité d'affichage de tous les quizz et l'adapter pour afficher les quizzes de l'utilisateur connecté dans l'onglet "MES QUIZZES".
+- Créer un quizz: ajouter un formulaire permettant de saisir les informations d'un nouveau quizz dans l'onglet "MES QUIZZES". Ajouter un bouton "Créer" qu déclenchera l'ajout du quizz sur le serveur et le rafraîchissement de la liste des quizzes.
+- Ajouter une question: Dans l'affichage d'un quizz, si c'est un quizz de l'utilisateur, ajouter un formulaire d'ajout de question. Ce formulaire permettra de saisir deux réponses possibles pour la question. Sa validation déclenchera l'ajout de la question sur le serveur.
 
 #### Fonctionnalités optionnelles (au choix)
 
 **Vous devez en réaliser _au moins une fonctionnalités dans chaque bloc_ pour avoir la note maximale**
 
-TBA
+Bloc 1:
+- Mettre à jour un quizz
+- Mettre à jour l'énoncé une question
+
+Bloc 2:
+- Permettre d'ajouter une réponse à une question
+- Modifier une réponse existante
+
+Bloc 3:
+- Lister les quizzes auxquels on a répondu
+- Chercher un quizz
+
+Bloc 4:
+- Modifier les réponses à un quizz auquel on a déjà répondu
+- Se passer du bouton "Répondre" dans le formulaire de réponse
 
 
 
