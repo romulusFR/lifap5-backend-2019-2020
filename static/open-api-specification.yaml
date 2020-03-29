@@ -93,6 +93,39 @@ paths:
         # default:
         #   $ref: "#/components/responses/error"
 
+  /stream/:
+    get:
+      description: Websocket that stream updates on serveur to the client. WARNING this features cannot be tested HERE 
+      operationId: broadcastNotifications
+      tags:
+        - public
+      responses:
+        200:
+          description: An update message that tells which quiz is updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum: [quiz, question, operation, answer]
+                  operation:
+                    type: string
+                    enum: [INSERT, UPDATE, DELETE]
+                  quiz_id:
+                    type: integer
+                  time:
+                    type: string
+              example:
+                type: 'quiz'
+                operation: 'INSERT'
+                quiz_id: 3
+                time: "2020-03-29T19:01:25.847158+02:00"
+              
+        # default:
+        #   $ref: "#/components/responses/error"
+
   /not-implemented/:
     get:
       summary: Always returns a NotImplemented error
