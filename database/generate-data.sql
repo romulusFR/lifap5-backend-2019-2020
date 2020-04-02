@@ -1,4 +1,3 @@
-
 TRUNCATE quiz CASCADE;
 
 WITH
@@ -12,7 +11,7 @@ WITH
 
   new_quizzes AS (
     INSERT INTO lifap5.quiz(title, description, owner_id, open) (
-      SELECT q.titre || firstname, q.description, user_id, q.open
+      SELECT q.titre || user_id, q.description, user_id, q.open
       FROM quiz_user CROSS JOIN base_quizzes q)
       RETURNING quiz_id, owner_id, open
   ),
