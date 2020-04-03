@@ -7,8 +7,8 @@ TRUNCATE lifap5.quiz RESTART IDENTITY  CASCADE;
 INSERT INTO lifap5.quiz(quiz_id, title, description, owner_id, open)
 OVERRIDING SYSTEM VALUE
 VALUES  (0, 'QCM LIFAP5 #1', 'Des questions de JS et lambda calcul', 'romuald.thion', true),
-        (1, 'QCM LIFAP5 #2', 'Des questions de JS et lambda calcul', 'romuald.thion', true),
-        (2, 'QCM LIFAP5 #3', 'Des questions de JS et lambda calcul', 'test.user', DEFAULT);
+        (1, 'QCM LIFAP5 #2', 'Des questions de JS et lambda calcul', 'romuald.thion', false),
+        (2, 'QCM LIFAP5 #3', 'Des questions de JS et lambda calcul', 'test.user', false);
 
 SELECT setval('lifap5.quiz_quiz_id_seq', 2);
 

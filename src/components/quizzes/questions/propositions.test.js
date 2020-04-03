@@ -55,7 +55,6 @@ describe('POST/DEL /quizzes/:quiz_id/questions/:question_id/answers/:proposition
     expect(res.body).toMatchObject(gold);
   });
 
-
   it('should delete a question of a quiz previously answered', async () => {
     const res = await request(app)
       .delete('/quizzes/0/questions/0/answers/')
@@ -73,5 +72,30 @@ describe('POST/DEL /quizzes/:quiz_id/questions/:question_id/answers/:proposition
 
     expect(res.statusCode).toEqual(200);
     expect(res.body).toMatchObject(gold);
+  });
+});
+
+describe('POST /quizzes/:quiz_id/questions/:question_id/answers/:proposition_id/', () => {
+  it('should NOT answer a question of a quiz when it is closed', async () => {
+    const res = await request(app)
+      .post('/quizzes/1/questions/0/answers/0/')
+      .set('Accept', 'application/json')
+      .set('X-API-KEY', '944c5fdd-af88-47c3-a7d2-5ea3ae3147da')
+      .expect('Content-Type', /json/);
+
+    expect(res.statusCode).toEqual(403);
+  });
+});
+
+
+describe('POST /quizzes/:quiz_id/questions/:question_id/answers/:proposition_id/', () => {
+  it('should NOT answer a question of an invalid proposition', async () => {
+    const res = await request(app)
+      .post('/quizzes/0/questions/0/answers/42/')
+      .set('Accept', 'application/json')
+      .set('X-API-KEY', '944c5fdd-af88-47c3-a7d2-5ea3ae3147da')
+      .expect('Content-Type', /json/);
+
+    expect(res.statusCode).toEqual(404);
   });
 });
