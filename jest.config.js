@@ -12,7 +12,8 @@ module.exports = {
   collectCoverageFrom: [
     'src/**/*.js',
     '!**/node_modules/**',
+    '!src/server.js',
   ],
-  coveragePathIgnorePatterns: ['/node_modules/, src/server.js'],
+  coveragePathIgnorePatterns: ['/node_modules/'],
   testMatch: [ "**/tests/**/*.js", "**/?(*.)+(spec|test).js" ],
 };
