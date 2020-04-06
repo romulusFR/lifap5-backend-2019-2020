@@ -5,6 +5,7 @@ server/
 
 # client
 client-full/
+client-tests/
 
 # JSDoc (generated)
 jsdoc/
