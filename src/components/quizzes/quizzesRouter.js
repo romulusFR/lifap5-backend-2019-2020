@@ -25,8 +25,10 @@ module.exports = function quizzesRouter(app) {
       const err = new createError.BadRequest(`In query "?page=${page}", page must be greater or equal than 1`);
       return next(err);
     }
-    if (!isInt(`${limit}`, { min: 1 })) {
-      const err = new createError.BadRequest(`In query "?limit=${limit}", limit must be greater or equal than 1`);
+    if (!isInt(`${limit}`, { min: 1, max: 200 })) {
+      const err = new createError.BadRequest(
+        `In query "?limit=${limit}", limit must be greater or equal than 1 and lower than 200`
+      );
       return next(err);
     }
     if (!availableOrders.includes(order)) {
