@@ -17,15 +17,13 @@ Pour aller plus loin, le dépôt contient aussi :
 * le [code de l'application](src/) réalisée avec Node.js et le framework Express,
 * la [base de données PostgreSQL](./database/schema.png)
   * le [dossier `database`](./database/) contient toutes les définitions SQL et le jeu d'essai
-* le [guide d'installation et de déploiement](./DEPLOYMENT.md)
-  * NB: pour le développement local, la partie nginx n'est pas nécessaire
+
+
 
 Pour installer et utiliser ce projet en local
 ---------------------------------------------
 
-Voir [DEPLOYMENT.md](https://github.com/romulusFR/lifap5-backend-2019-2020/blob/master/DEPLOYMENT.md).
-
-Détails à venir
+Consulter le [guide d'installation et de déploiement](./DEPLOYMENT.md) pour l'installation et le déploiement éventuel avec un reverse proxy nginx.
 
 
 
