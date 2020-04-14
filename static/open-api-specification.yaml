@@ -25,7 +25,7 @@ tags:
   - name: questions
     description: Questions and theirs related propositions CRUD features (w.r.t. a quiz)
   - name: answers
-    description: Retreive, post and delete answers to quizzes
+    description: Retrieve, post and delete answers to quizzes
   - name: search
     description: minimalistic search engine
   - name: public
@@ -262,7 +262,7 @@ paths:
   /users/quizzes:
     get:
       summary: Give the quizzes you ve created
-      description: Similar to the /suizzes routes but only for your quizzes
+      description: Similar to the /quizzes routes but only for your quizzes
       operationId: getUserQuizzes
       tags:
         - authenticated
@@ -370,7 +370,7 @@ paths:
       - $ref: '#/components/parameters/quizIdParam'
     get:
       summary: Get one quiz
-      description: Retreive the given quizz if it exists
+      description: Retrieve the given quizz if it exists
       operationId: getOneQuizHandler
       tags:
         - public
