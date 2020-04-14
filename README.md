@@ -4,7 +4,7 @@ LIFAP5 - projet 2019-2020 : backend
 Ce dépôt est celui du projet 2019-2020 (Printemps) de l'unité d'enseignement [LIFAP5 "Programmation fonctionnelle pour le WEB"](https://perso.liris.cnrs.fr/romuald.thion/dokuwiki/doku.php?id=enseignement:lifap5:start) en licence 2 informatique UCBL. Ce dépôt contient pour les étudiants :
 
 * le [sujet du projet](SUJET.md)
-* le [le travail à faire](client/README.md)
+* le [travail à faire](client/README.md)
 * la [spécification de l'API du serveur](https://lifap5.univ-lyon1.fr/api-docs)
 * le [client de départ](./client/)
 
