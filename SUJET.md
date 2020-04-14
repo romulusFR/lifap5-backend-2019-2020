@@ -5,7 +5,6 @@ LIFAP5 - projet 2019-2020 : gestionnaire de QCM
   - [Introduction](#introduction)
     - [Présentation du projet](#pr%c3%a9sentation-du-projet)
     - [Informations importantes](#informations-importantes)
-    - [Versions du sujet](#versions-du-sujet)
   - [Gestionnaire de QCM : partie serveur](#gestionnaire-de-qcm--partie-serveur)
     - [Fonctionnalités de l'API rest](#fonctionnalit%c3%a9s-de-lapi-rest)
     - [Remarques importantes](#remarques-importantes)
@@ -13,8 +12,10 @@ LIFAP5 - projet 2019-2020 : gestionnaire de QCM
     - [Fonctionnalités](#fonctionnalit%c3%a9s)
     - [Jalons](#jalons)
   - [Modalités d'évaluation](#modalit%c3%a9s-d%c3%a9valuation)
-    - [Soutenance](#soutenance)
     - [Critères d'évaluation](#crit%c3%a8res-d%c3%a9valuation)
+      - [Pour la première partie](#pour-la-premi%c3%a8re-partie)
+      - [Pour la seconde partie](#pour-la-seconde-partie)
+      - [Bonus (réparties aux notes précédentes pour le calcul de la moyenne)](#bonus-r%c3%a9parties-aux-notes-pr%c3%a9c%c3%a9dentes-pour-le-calcul-de-la-moyenne)
 
 
 Introduction
@@ -30,14 +31,13 @@ _Votre tâche consiste à ajouter des fonctionnalités au client pour pouvoir r�
 
 ### Informations importantes
 
- *  _Le calendrier initial n'est pas à ce jour modifié par les dispositions prises pour COVID-19, le face-à-face pédagogique restant assuré à distance d'ici la reprise des activités universitaires en présentiel_
- * _Le projet est à réaliser en monôme ou en binôme constitué au sein du même groupe de TD._
+ *  _~~Le calendrier initial n'est pas à ce jour modifié par les dispositions prises pour COVID-19, le face-à-face pédagogique restant assuré à distance d'ici la reprise des activités universitaires en présentiel~~_
+  * _Le projet est à réaliser en monôme ou en binôme ~~constitué au sein du même groupe de TD~~._ Donner dans <https://tomuss.univ-lyon1.fr>
+    * l'URL de votre dépôt sur <https://forge.univ-lyon1.fr/>
+    * le Nom de votre binôme
  * _Le serveur <https://lifap5.univ-lyon1.fr> est en ligne, sa page d'accueil contient toutes les informations utiles._
+ * _Le nouveau calendrier des séances d'assistance au projet est publié sur [la page de l'UE](https://perso.liris.cnrs.fr/romuald.thion/dokuwiki/doku.php?id=enseignement:lifap5:start#programme_et_supports_pedagogique)_
  
-### Versions du sujet
-
-* 21/03/20 : version initiale
-
 
 Gestionnaire de QCM : partie serveur
 ------------------------------------
@@ -71,59 +71,46 @@ Les différents _routes_ du serveur permettent de lire, modifier et supprimer ce
 Gestionnaire de QCM : partie client
 ------------------------------------
 
-Un [projet de départ de la partie client](https://lifap5.univ-lyon1.fr/client/) vous est fournie. Elle ne permet que de donner les informations de l'utilisateur authentifié et de lister les QCMs. **Le projet consiste à la compléter avec une partie des fonctionnalités suivantes**
+Un [projet de départ de la partie client](https://lifap5.univ-lyon1.fr/client/) vous est fournie. Elle ne permet que de donner les informations de l'utilisateur authentifié et de lister les QCMs. **Le projet consiste à la compléter avec les fonctionnalités demandées**.
 
-Le projet de départ de départ est réalisé avec la bibliothèque <https://materializecss.com/>, qui est une alternative plus légère (et plus simple) à <https://getbootstrap.com/> utilisée en LIFIHM. Les icônes utilisées sont celles de <https://material.io/resources/icons/>. Le projet de départ n'utilise aucune bibliothèque ou framework autre que ce que propose un navigateur à jour. **Votre réalisation devra se plier à ses contraintes**.
+Le projet de départ de départ est réalisé avec la bibliothèque <https://materializecss.com/>, qui est une alternative plus légère (et plus simple) à <https://getbootstrap.com/> utilisée en LIFIHM. Les icônes utilisées sont celles de <https://material.io/resources/icons/>. Le projet de départ n'utilise aucune bibliothèque ou framework autre que ce que propose un navigateur à jour. **Votre réalisation devra se plier à ses contraintes : n'utiliser aucun autre framework**. Vous pouvez en revanche, si vous le souhaitez ne pas utiliser Materialize.
 
 ### Fonctionnalités
-
-**NOTA BENE : la liste des fonctionnalités n'est pas encore définitive**
 
 Les fonctionnalités obligatoires et optionnelles (au choix) sont listées dans le fichier [README.md](./client/README.md) à compléter avec votre rendu.
 
 
 ### Jalons
 
-Le calendrier est le suivant. Sauf prolongement des dispositions sur COVID-19, la soutenance est prévue en présentiel, un ordre de passage sera fixé sur <https://tomuss.univ-lyon1.fr/>
+Le calendrier est le suivant, à voir [la page de l'UE](https://perso.liris.cnrs.fr/romuald.thion/dokuwiki/doku.php?id=enseignement:lifap5:start#programme_et_supports_pedagogique). ~~Sauf prolongement des dispositions sur COVID-19, la soutenance est prévue en présentiel, un ordre de passage sera fixé sur <https://tomuss.univ-lyon1.fr/>~~
 
 * 30/03/20 : initialisation projet
   * prise en main du client de départ en intégrant la fin du TP3/4
-  * mise en place de l'environnement de travail sur <https://forge.univ-lyon1.fr>
-* 06/04/20 - première séance de soutien projet 
-  * communication des choix de binômes
-  * développement des premières fonctionnalités (lecture)
-* 20/04/20 - deuxième séance de soutien projet 
-  * développement des autres fonctionnalités (écritures)
-  * enregistrement de l'ordre de passage
-* 04/05/20 - **soutenances projet**
-  * démonstration de 5 minutes suivies de 5 minutes de question
-  * dépôt du code et du tableau de synthèse
-
+* du 06/04/20 au 01/05/20 : assistance projet sur <https://chat-info.univ-lyon1.fr/channel/lifap5>
+* 03/05/20 - 23h59 **dépôt première partie du projet** sur Tomuss
+* du 11/05/20 au 22/05/20 : assistance projet sur <https://chat-info.univ-lyon1.fr/channel/lifap5>
+* 24/05/20 - 23h59 **dépôt seconde partie du projet** sur Tomuss
 
 Modalités d'évaluation
 ---------------------
 
-
-Une archive zip contiendra tous vos fichiers `html`, `js` et les fichiers statiques (e.g., images) utilisés ainsi que **le fichier `README.md`** dument complété (voir l'archive zip de départ).
-
-### Soutenance
-
-Pour la soutenance, vous préparez une courte présentation du projet qui doit montrer l'ensemble des fonctionnalités réalisées.
-
-**Arrivez 5 minutes en avance et préparer votre poste de travail avec votre éditeur et votre navigateur prêts à commence la démonstration**.
-
+Comme indiqué précédement, le rendu se fait en deux temps, à chaque fois, vous rendrez une archive zip qui contiendra tous vos fichiers `html`, `js` et les fichiers statiques (e.g., images) utilisés ainsi que **le fichier [`README.md`](./client/README.md)** dument complété.
 
 ### Critères d'évaluation
 
-
-
-Lors de la soutenance vous serez évalués avec le barème (prévisionnel) suivant :
+#### Pour la première partie
 
 * /10 _fonctionnalités obligatoires_ :
     * -2 point par fonctionnalité manquante, -1 par fonctionnalité mal réalisée.
+
+#### Pour la seconde partie
+
 * /6 _fonctionnalités optionnelles_, au moins trois catégories réalisées
     * -2 par catégorie manquante, -1 par fonctionnalité mal réalisée,
 * /4 _qualité logicielle_ : commentaires, structure du projet, outillage (linting, tests, mise en forme), élégance et simplicité du code
+
+#### Bonus (réparties aux notes précédentes pour le calcul de la moyenne)
+
 * /2 _bonus contributions_ : pour les utilisateurs qui ont posé des _issues_ ou des _pull requests_ pertinentes sur GitHub
 
 **Quelques rendus sélectionnés seront proposés à leurs auteurs à être rendus publics**

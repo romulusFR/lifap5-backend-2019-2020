@@ -1,17 +1,17 @@
 LIFAP5 - projet 2019-2020 : gestionnaire de QCM
 ===============================================
 
+**Ce document est à remplir et à remettre avec votre rendu projet sur Tomuss**
+
 * URL de votre dépôt <https://forge.univ-lyon1.fr>
 * NOM Prénom numet #1
 * NOM Prénom numet #2
 * Nom de votre application (optionnel)
 
-**NOTA BENE : la liste des fonctionnalités n'est pas encore définitive**
+Partie 1 : fonctionnalités obligatoires pour le 03/05/20 - 23h59 
+----------------------------------------------------------------
 
-Fonctionnalités obligatoires
-----------------------------
-
-_*_Vous devez réaliser _toutes ces fonctionnalités_ pour avoir la note maximale_*_. Cocher celles réalisées :
+_Vous devez réaliser **toutes ces fonctionnalités** pour avoir la note maximale_. Cocher celles réalisées :
 
 * [ ] **Modifier l'utilisateur connecté** : il faut pour cela remplir la champ `xApiKey` de l'objet `state` déclaré dans `js/modeles.js`. Comprendre le fonctionnement permettant le mise à jour de l'état (dans `js/modeles.js`) et la modification du comportement du bouton "utilisateur" (dans `js/vues.js`). Ensuite, il faut permettre de choisir l'utilisateur avec lequel on se connecte et se délogguer le cas échéant.
 * [ ] **Afficher les questions et les propositions d'un quiz** : lorsque l'on clique sur un quiz, la fonction `clickQuiz` (définie dans `js/vues.js`) est appelée. Elle appelle `renderCurrentQuizz` qui va changer l'affichage du div HTML `id-all-quizzes-main`. Modifier ces fonctions de façon à afficher les questions (et leurs propositions de réponses) du quiz au lieu de "Ici les détails pour le quiz _xxyyzz_".
@@ -19,11 +19,12 @@ _*_Vous devez réaliser _toutes ces fonctionnalités_ pour avoir la note maximal
 * [ ] **Afficher les quiz de l'utilisateur connecté et des réponses déjà données** : reprendre la fonctionnalité d'affichage de tous les quiz et l'adapter pour afficher les quiz de l'utilisateur connecté dans l'onglet "MES QUIZ". Similairement, remplir l'onglet "MES REPONSES" pour afficher les quiz auxquels l'utilisateur connecté a répondu
 * [ ] **Créer un quiz pour l'utilisateur connecté** : ajouter un formulaire permettant de saisir les informations d'un nouveau quiz dans l'onglet "MES QUIZ". Ajouter un bouton "Créer" qu déclenchera l'ajout du quiz sur le serveur et le rafraîchissement de la liste des quiz. Permettre d'ajouter aux quiz de l'utilisateur connecté un formulaire d'ajout de question. Ce formulaire permettra de saisir les propositions possibles pour la question. Sa validation déclenchera l'ajout de la question sur le serveur.
 
-Fonctionnalités optionnelles (au choix)
----------------------------------------
 
 
-*Vous devez réaliser _au moins trois catégories de fonctionnalités_ pour avoir la note maximale*. Cocher celles réalisées :
+Partie 2 : fonctionnalités optionnelles (au choix) pour le 24/05/20 - 23h59 
+----------------------------------------------------------------
+
+*Vous devez réaliser **au moins trois catégories** de fonctionnalités pour avoir la note maximale*. Cocher celles réalisées :
 
 * [ ] Catégorie **modifications de quiz et de leurs questions**
   - Mettre à jour un quiz : changer la description et le titre d'un quiz. Ajouter un bouton "Modifier" qui va faire apparaître un formulaire de modification. Gérer ce formulaire pour mettre à jour les données sur le serveur.
