@@ -8,14 +8,14 @@ DROP VIEW IF EXISTS lifap5.v_quiz_user_ext;
 CREATE OR REPLACE VIEW lifap5.v_quiz_user_ext AS(
 
   WITH answers_json AS(
-    SELECT  a.user_id, a.quiz_id, q.title, q.description,
+    SELECT  a.user_id, a.quiz_id, q.title, q.description, q.owner_id, q.created_at, q.open,
             jsonb_agg(jsonb_build_object(
               'question_id', a.question_id,
               'proposition_id', a.proposition_id,
               'answered_at', a.answered_at
             ) ORDER BY question_id, proposition_id) AS answers
     FROM answer a INNER JOIN quiz q USING (quiz_id)
-    GROUP BY a.user_id, a.quiz_id, q.title, q.description
+    GROUP BY a.user_id, a.quiz_id, q.title, q.description, q.owner_id,q.created_at, q.open
     ORDER BY user_id, quiz_id
   ),
 
@@ -25,6 +25,9 @@ CREATE OR REPLACE VIEW lifap5.v_quiz_user_ext AS(
               'quiz_id', d.quiz_id,
               'title', d.title,
               'description', d.description,
+              'owner_id', d.owner_id,
+              'created_at', d.created_at,
+              'open', d.open,
               'answers', d.answers
             ) ORDER BY quiz_id) AS answers
     FROM    answers_json d

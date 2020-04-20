@@ -10,7 +10,7 @@ TODO
 * [ ] meilleur contrôle de validité des structures JSON des body avec JSON.schema
 * [ ] gérer le cache pour les fichiers statiques via nginx
 * [ ] rendre l'application auto déploiante sur le serveur postgres (crée le schéma s'il n'existe pas)
-
+* [ ] tenir un changelog
 
 
 Gestion d'erreur Node.JS
