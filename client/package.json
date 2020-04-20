@@ -1,0 +1,22 @@
+{
+  "name": "lifap5-client-2019-2020",
+  "version": "1.0.0",
+  "description": "Client pour le projet LIFAP5 2019-2020 (gestion de qcm)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/romulusFR/lifap5-backend-2019-2020.git"
+  },
+  "author": "Romuald THION",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/romulusFR/lifap5-backend-2019-2020/issues"
+  },
+  "homepage": "https://github.com/romulusFR/lifap5-backend-2019-2020#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-promise": "^4.2.1"
+  }
+}
