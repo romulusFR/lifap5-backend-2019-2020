@@ -64,9 +64,10 @@ Les différents _routes_ du serveur permettent de lire, modifier et supprimer ce
 ### Remarques importantes
 
 * Une partie de l'API est accessible [sans authentification](https://lifap5.univ-lyon1.fr/api-docs/#/public) mais la majorité des fonctionnalités n'est accessible qu'aux utilisateurs disposant d'une _clef d'API_ (header HTTP _X-API-KEY_ et attribut _api_key_ dans la base).
-  * **Chaque étudiant-e dispose d'une clef d'API _propre_ qui est indiquée dans <https://tomuss.univ-lyon1.fr/>**
+  * Chaque étudiant-e **dispose d'une clef d'API _propre_** qui est indiquée dans <https://tomuss.univ-lyon1.fr/>
   * Le projet de départ montre comment utiliser cette clef d'API.
-* **Le contenu de la base de données est remis à zéro tous les jours à 13:37.**
+* Le contenu de la base de données est **remis à zéro tous les jours à 13:37.**
+* **Un _rate limiter_** a été installé sur le [front nginx](https://www.nginx.com/blog/rate-limiting-nginx/), il limite à 10/requêtes par seconde et autorise des rafales d'au plus 20. Si vous dépassez cette fréquence, alors **vous recevrez une erreur _503 Service Unavailable_** 
 
 Gestionnaire de QCM : partie client
 ------------------------------------
