@@ -15,3 +15,6 @@ Questions fréquemment posées sur le projet <https://chat-info.univ-lyon1.fr/ch
 
 * **J'ai une erreur _403 Forbidden_ quand j'envoie les réponses à certains quizz**
   * Vérifiez que le quizz n'est pas fermé : chaque quizz a une propriété `open` qui indique s'il autorise les réponses ou pas
+
+* **Comment gérer un projet sur le GitLab <https://forge.univ-lyon1.fr/>**
+  * Voir cours 4 et TD 4 de LIFAP4 <https://perso.liris.cnrs.fr/alexandre.meyer/public_html/www/doku.php?id=lifap4>
