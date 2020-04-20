@@ -7,6 +7,7 @@ Ce dépôt est celui du projet 2019-2020 (Printemps) de l'unité d'enseignement 
 * le [travail à faire](client/README.md)
 * la [spécification de l'API du serveur](https://lifap5.univ-lyon1.fr/api-docs)
 * le [client de départ](./client/)
+* le [la Foire Aux Questions](./FAQ.md) les plus fréquemment posées
 
 
 **L'application est déployée sur le serveur <https://lifap5.univ-lyon1.fr/>**
