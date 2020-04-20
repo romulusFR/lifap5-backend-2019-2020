@@ -7,6 +7,7 @@ TODO
 
 * [X] déploiement "auto" prod et pm2
 * [X] negotiation de contenus application/json et text/html
+* [ ] meilleur contrôle de validité des structures JSON des body avec JSON.schema
 * [ ] gérer le cache pour les fichiers statiques via nginx
 * [ ] rendre l'application auto déploiante sur le serveur postgres (crée le schéma s'il n'existe pas)
 
