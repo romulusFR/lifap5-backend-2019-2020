@@ -18,3 +18,6 @@ Questions fréquemment posées sur le projet <https://chat-info.univ-lyon1.fr/ch
 
 * **Comment gérer un projet sur le GitLab <https://forge.univ-lyon1.fr/>**
   * Voir cours 4 et TD 4 de LIFAP4 <https://perso.liris.cnrs.fr/alexandre.meyer/public_html/www/doku.php?id=lifap4>
+
+* **J'utilise materialize, et mes radio buttons / checkboxes ne s'affichent pas**
+  * Si le HTML de vos [radio buttons](https://materializecss.com/radio-buttons.html) / [checkboxes](https://materializecss.com/checkboxes.html) est bien inséré dans la page, mais que vous ne les voyez pas s'afficher, il est probable que vous ne respectiez pas rigoureusement la [syntaxe](https://materializecss.com/radio-buttons.html) [préconisée](https://materializecss.com/checkboxes.html) par materialize : vérifiez bien que vous n'avez pas oublié un `<span>`, inversé deux tags, etc. ; tout est important
