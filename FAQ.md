@@ -11,4 +11,4 @@ Questions fréquemment posées sur le projet <https://chat-info.univ-lyon1.fr/ch
   * Effectivement, une <https://developer.mozilla.org/en-US/docs/Web/API/NodeList> n'est pas un _vrai_ tableau, il n'implémente qu'une partie de l'API de `Array`. La méthode <https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach> existe, pour le reste, soit on itère sur <https://developer.mozilla.org/en-US/docs/Web/API/NodeList/entries> ou alors on converti en tableau avec <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from>
 
 * **J'ai des erreurs _503 Service Unavailable_**
-  * Vous attégniez la fréquence max autorisée du nombre de requêtes/seconde, voir [les informations importantes](./SUJET.md#informations-importantes)
+  * Vous attégniez la fréquence max autorisée du nombre de requêtes/seconde, voir [les informations importantes](./SUJET.md#remarques-importantes)
