@@ -8,7 +8,10 @@ Questions fréquemment posées sur le projet <https://chat-info.univ-lyon1.fr/ch
 
 
 * **Après `getElementsByName` ou `querySelectorAll` je n'ai pas de tableau, comment faire ?**
-  * Effectivement, une <https://developer.mozilla.org/en-US/docs/Web/API/NodeList> n'est pas un _vrai_ tableau, il n'implémente qu'une partie de l'API de `Array`. La méthode <https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach> existe, pour le reste, soit on itère sur <https://developer.mozilla.org/en-US/docs/Web/API/NodeList/entries> ou alors on converti en tableau avec <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from>
+  * Effectivement, une [NodeList](https://developer.mozilla.org/en-US/docs/Web/API/NodeList) n'est pas un _vrai_ tableau, il n'implémente qu'une partie de l'API de `Array`. La méthode [forEach](https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach) existe, pour le reste, soit on itère sur [NodeList.entries](https://developer.mozilla.org/en-US/docs/Web/API/NodeList/entries) ou alors on converti en tableau avec [Array.from](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from)
 
 * **J'ai des erreurs _503 Service Unavailable_**
   * Vous attégniez la fréquence max autorisée du nombre de requêtes/seconde, voir [les informations importantes](./SUJET.md#remarques-importantes)
+
+* **J'ai une erreur _403 Forbidden_ quand j'envoie les réponses à certains quizz**
+  * Vérifiez que le quizz n'est pas fermé : chaque quizz a une propriété `open` qui indique s'il autorise les réponses ou pas
