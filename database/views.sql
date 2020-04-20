@@ -8,21 +8,23 @@ DROP VIEW IF EXISTS lifap5.v_quiz_user_ext;
 CREATE OR REPLACE VIEW lifap5.v_quiz_user_ext AS(
 
   WITH answers_json AS(
-    SELECT  user_id, quiz_id,
+    SELECT  a.user_id, a.quiz_id, q.title, q.description,
             jsonb_agg(jsonb_build_object(
               'question_id', a.question_id,
               'proposition_id', a.proposition_id,
               'answered_at', a.answered_at
             ) ORDER BY question_id, proposition_id) AS answers
-    FROM answer a
-    GROUP BY user_id, quiz_id
-    ORDER BY  user_id, quiz_id
+    FROM answer a INNER JOIN quiz q USING (quiz_id)
+    GROUP BY a.user_id, a.quiz_id, q.title, q.description
+    ORDER BY user_id, quiz_id
   ),
 
   quizzes_json AS(
     SELECT  user_id,
             jsonb_agg(jsonb_build_object(
               'quiz_id', d.quiz_id,
+              'title', d.title,
+              'description', d.description,
               'answers', d.answers
             ) ORDER BY quiz_id) AS answers
     FROM    answers_json d
@@ -37,53 +39,65 @@ CREATE OR REPLACE VIEW lifap5.v_quiz_user_ext AS(
 );
 
 -- select user_id, jsonb_pretty(answers) from v_quiz_user_ext ;
---      user_id      |                            jsonb_pretty                            
+     user_id      |                            jsonb_pretty                            
 -- ------------------+--------------------------------------------------------------------
+--  emmanuel.coquery | [                                                                 +
+--                   | ]
 --  other.user       | [                                                                 +
 --                   |     {                                                             +
+--                   |         "title": "QCM LIFAP5 #1",                                 +
 --                   |         "answers": [                                              +
 --                   |             {                                                     +
---                   |                 "answered_at": "2020-03-18T17:11:32.263172+01:00",+
+--                   |                 "answered_at": "2020-04-20T11:47:47.857761+02:00",+
 --                   |                 "question_id": 0,                                 +
 --                   |                 "proposition_id": 0                               +
 --                   |             }                                                     +
 --                   |         ],                                                        +
---                   |         "quiz_id": 0                                              +
+--                   |         "quiz_id": 0,                                             +
+--                   |         "description": "Des questions de JS et lambda calcul"     +
 --                   |     },                                                            +
 --                   |     {                                                             +
+--                   |         "title": "QCM LIFAP5 #2",                                 +
 --                   |         "answers": [                                              +
 --                   |             {                                                     +
---                   |                 "answered_at": "2020-03-18T17:11:32.263172+01:00",+
+--                   |                 "answered_at": "2020-04-20T11:47:47.857761+02:00",+
 --                   |                 "question_id": 0,                                 +
 --                   |                 "proposition_id": 1                               +
 --                   |             }                                                     +
 --                   |         ],                                                        +
---                   |         "quiz_id": 1                                              +
+--                   |         "quiz_id": 1,                                             +
+--                   |         "description": "Des questions de JS et lambda calcul"     +
 --                   |     }                                                             +
+--                   | ]
+--  romuald.thion    | [                                                                 +
 --                   | ]
 --  test.user        | [                                                                 +
 --                   |     {                                                             +
+--                   |         "title": "QCM LIFAP5 #1",      
 --                   |         "answers": [                                              +
 --                   |             {                                                     +
---                   |                 "answered_at": "2020-03-18T17:11:32.263172+01:00",+
---                   |                 "question_id": 0,                                 +
---                   |                 "proposition_id": 1                               +
---                   |             },                                                    +
---                   |             {                                                     +
---                   |                 "answered_at": "2020-03-18T17:11:32.263172+01:00",+
+--                   |                 "answered_at": "2020-04-20T11:47:47.857761+02:00",+
 --                   |                 "question_id": 1,                                 +
 --                   |                 "proposition_id": 0                               +
 --                   |             }                                                     +
 --                   |         ],                                                        +
---                   |         "quiz_id": 0                                              +
+--                   |         "quiz_id": 0,                                             +
+--                   |         "description": "Des questions de JS et lambda calcul"     +
+--                   |     },                                                            +
+--                   |     {                                                             +
+--                   |         "title": "QCM LIFAP5 #2",                                 +
+--                   |         "answers": [                                              +
+--                   |             {                                                     +
+--                   |                 "answered_at": "2020-04-20T11:47:47.857761+02:00",+
+--                   |                 "question_id": 0,                                 +
+--                   |                 "proposition_id": 0                               +
+--                   |             }                                                     +
+--                   |         ],                                                        +
+--                   |         "quiz_id": 1,                                             +
+--                   |         "description": "Des questions de JS et lambda calcul"     +
 --                   |     }                                                             +
 --                   | ]
---  emmanuel.coquery | [                                                                 +
---                   | ]
---  romuald.thion    | [                                                                 +
---                   | ]
-
-
+-- (4 rows)
 
 
 -- ---------------------------------------- EXTENDED QUIZZES ----------------------------------------
