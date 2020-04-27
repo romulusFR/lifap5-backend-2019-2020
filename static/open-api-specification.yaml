@@ -180,7 +180,7 @@ paths:
                       type: string
                     quiz_id:
                       type: integer
-                    quesiton_id:
+                    question_id:
                       type: integer
                     proposition_id:
                       type: integer
