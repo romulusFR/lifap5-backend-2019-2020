@@ -46,7 +46,7 @@ Partie 2 : fonctionnalités optionnelles (au choix) pour le 24/05/20 - 23h59
   - Supprimer l'onglet "MES QUIZ" et intégrer ses fonctionnalités à l' onglet "TOUS LES QUIZ" en faisant en sorte que si le quiz affiché appartient à l'utilisateur connecté, les fonctionnalités de création (et modifications le cas échéant) sont accessibles.
 
 * [ ] Catégorie **formulaire de recherche**
-  - Le formulaire de recherche en haut de la page permet de recherche en texte plein sur tous les champ de texte des quiz, des questions et des propositions. Changer le comportement de l'onglet "TOUS LES QUIZ" mette en surbrillance les éléments au 
+  - Le formulaire de recherche en haut de la page permet de recherche en texte plein sur tous les champ de texte des quiz, des questions et des propositions. Changer le comportement de l'onglet "TOUS LES QUIZ" pour mettre en surbrillance les éléments retournés pas le résultat de la recherche.
 
 * [ ] Catégorie **mise à jour dynamique**
   - Gérer la mise à jour dynamique de la liste des quiz avec avec le _websocket_ fourni par le fichier [`websocket.js`](./js/websocket.js). La fonction fournie `installWebSocket(callbackOnMessage)` prend un paramètre un callback qui devra lancer le rafraichissement de votre interface lors d'une mise à jour sur le serveur.
