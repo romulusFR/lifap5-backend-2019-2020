@@ -13,6 +13,7 @@ Guide d'installation et de déploiement de l'application sous Linux Ubuntu.
     - [Installation nginx](#installation-nginx)
     - [Creation du compte non privilegié `lifap5`](#creation-du-compte-non-privilegi%c3%a9-lifap5)
     - [Configuration nginx](#configuration-nginx)
+    - [Configuration PostgreSQL](#configuration-postgresql-1)
     - [Lancement de l'application Node.JS via PM2](#lancement-de-lapplication-nodejs-via-pm2)
     - [Crontab pour remise à zéro de la base](#crontab-pour-remise-%c3%a0-z%c3%a9ro-de-la-base)
 
@@ -71,25 +72,6 @@ Un point à assurer  <https://docs.npmjs.com/resolving-eacces-permissions-errors
 
 ### Configuration PostgreSQL
 
-
-On va sauvegarder la configuration et mettre la notre :
-
-* accès ssl et authentif scram-sha-256
-* logging
-* tuning des paramètres mémoire
-
-```bash
-sudo -u postgres cp /etc/postgresql/12/main/pg_hba.conf \
-                    /etc/postgresql/12/main/pg_hba.conf.back
-sudo -u postgres cp /etc/postgresql/12/main/postgresql.conf \
-                    /etc/postgresql/12/main/postgresql.conf.back
-
-cd ~/lifap5-backend-2019-2020/system/postgresql
-sudo -u postgres cp pg_hba.conf /etc/postgresql/12/main/pg_hba.conf
-sudo -u postgres cp postgresql.conf /etc/postgresql/12/main/postgresql.conf
-
-sudo service postgresql restart
-```
 
 Exécuter le script [`system/postgresql/init-db.sh`](system/postgresql/init-db.sh) en tant que `postgres`.
  
@@ -244,6 +226,27 @@ openssl s_client -connect lifap5:443 -tls1_3
 
 A ce stade on a une 502 sur le port 80 si l'application n'est pas lancée.
 
+### Configuration PostgreSQL
+
+
+On va sauvegarder la configuration et mettre la notre :
+
+* accès ssl et authentif scram-sha-256
+* logging
+* tuning des paramètres mémoire
+
+```bash
+sudo -u postgres cp /etc/postgresql/12/main/pg_hba.conf \
+                    /etc/postgresql/12/main/pg_hba.conf.back
+sudo -u postgres cp /etc/postgresql/12/main/postgresql.conf \
+                    /etc/postgresql/12/main/postgresql.conf.back
+
+cd ~/lifap5-backend-2019-2020/system/postgresql
+sudo -u postgres cp pg_hba.conf /etc/postgresql/12/main/pg_hba.conf
+sudo -u postgres cp postgresql.conf /etc/postgresql/12/main/postgresql.conf
+
+sudo service postgresql restart
+```
 
 ### Lancement de l'application Node.JS via PM2
 
