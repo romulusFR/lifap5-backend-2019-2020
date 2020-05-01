@@ -28,7 +28,7 @@ Partie 2 : fonctionnalités optionnelles (au choix) pour le 24/05/20 - 23h59
 
 * [ ] Catégorie **modifications de quiz et de leurs questions**
   - Mettre à jour un quiz : changer la description et le titre d'un quiz. Ajouter un bouton "Modifier" qui va faire apparaître un formulaire de modification. Gérer ce formulaire pour mettre à jour les données sur le serveur.
-  - Mettre à jour l'énoncé une question: changer la phrase (`sentence`) d'énoncé et permettre d'ajouter / de supprimer une proposition à une question : ajouter par exemple un bouton de suppression à côté de chaque question et un formulaire d'ajout de proposition (NB, le serveur ne propose pas de route permettant de manipuler les propositions, tout passe par l'API des questions)
+  - Mettre à jour l'énoncé une question: changer la phrase (`sentence`) d'énoncé et permettre ~~d'ajouter / de supprimer une proposition à une question~~ de modifier une proposition: ajouter par exemple un bouton de suppression à côté de chaque question ~~et un formulaire d'ajout de proposition~~ (NB, le serveur ne propose pas de route permettant de manipuler les propositions, tout passe par l'API des questions)
 
 * [ ] Catégorie **affichage des quiz**
   - Permettre de choisir le nombre de résultats, le critère de tri des quiz ainsi que l'ordre (croissant ou décroissant) de l'affichage
