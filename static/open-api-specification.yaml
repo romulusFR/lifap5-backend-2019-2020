@@ -502,13 +502,13 @@ paths:
                   - quiz_id
                   - question_id
                 properties:
-                  question_id:
-                    type: integer
                   quiz_id:
                     type: integer
+                  question_id:
+                    type: integer
               example:
-                question_id: 0
                 quiz_id: 1
+                question_id: 0
         400:
           $ref: '#/components/responses/BadRequest'
         401:
@@ -588,6 +588,35 @@ paths:
           $ref: '#/components/responses/Forbidden'
         404:
           $ref: '#/components/responses/NotFound'
+    delete:
+      summary: Delete a question of a quizz and its propositions
+      description: owner_id must be current user
+      operationId: deleteQuestionHandler
+      tags:
+        - authenticated
+        - questions  
+      security:
+        - XApiKeyAuth: []
+      responses:
+        200:
+          description: Content deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quiz_id:
+                    type: integer
+                    example: 0
+                  question_id:
+                    type: integer
+                    example: 0
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'  
 
   /quizzes/{quiz_id}/questions/{question_id}/answers/:
     parameters:
