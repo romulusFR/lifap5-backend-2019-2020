@@ -108,7 +108,7 @@ Comme indiqué précédement, le rendu se fait en deux temps, à chaque fois, vo
 
 * /6 _fonctionnalités optionnelles_, au moins trois catégories réalisées
     * -2 par catégorie manquante, -1 par fonctionnalité mal réalisée,
-* /4 _qualité logicielle_ : commentaires, structure du projet, outillage (linting, tests, mise en forme), élégance et simplicité du code, style fonctionnel, qualité de la livraison.
+* /4 _qualité logicielle_ : commentaires, structure du projet, outillage (linting, tests, mise en forme), élégance et simplicité du code, style fonctionnel, qualité de la livraison, accès et structure du GIT.
 
 #### Bonus (réparties aux notes précédentes pour le calcul de la moyenne)
 
