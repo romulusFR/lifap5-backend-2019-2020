@@ -6,8 +6,11 @@
 // eslint-disable-next-line no-unused-vars
 function installWebSocket(callbackOnMessage) {
   // Server's address
-  // const socket = new WebSocket('ws://localhost:3000/stream/');
-  const socket = new WebSocket('wss://lifap5.univ-lyon1.fr:443/stream/');
+  const host = new URL(state.serverUrl).hostname;
+  const socket =
+    host === 'localhost' 
+    ? new WebSocket('ws://localhost:3000/stream/') 
+    : new WebSocket(`wss://${host}:443/stream/`);
 
   console.debug(`installWebSocket@`);
   // the global heartbeat's ID
