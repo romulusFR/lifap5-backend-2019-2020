@@ -13,6 +13,12 @@ const state = {
   // l'URL du serveur où accéder aux données
   serverUrl: 'https://lifap5.univ-lyon1.fr',
 
+  // l'URL du stream pour la websocket
+  getStreamUrl: () => {
+    const host = new URL(state.serverUrl).hostname;
+    return host === 'localhost' ? 'ws://localhost:3000/stream/' : `wss://${host}:443/stream/`;
+  },
+
   // la liste des quizzes
   quizzes: [],
 
