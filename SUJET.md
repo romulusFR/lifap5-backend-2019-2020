@@ -101,17 +101,26 @@ Comme indiqué précédement, le rendu se fait en deux temps, à chaque fois, vo
 
 #### Pour la première partie
 
-* /10 _fonctionnalités obligatoires_ :
-    * -2 point par fonctionnalité manquante, -1 par fonctionnalité mal réalisée.
+* /20 _fonctionnalités obligatoires_ :
+    * -4 point par fonctionnalité manquante, -2 par fonctionnalité mal réalisée.
 
 #### Pour la seconde partie
 
-* /6 _fonctionnalités optionnelles_, au moins trois catégories réalisées
-    * -2 par catégorie manquante, -1 par fonctionnalité mal réalisée,
-* /4 _qualité logicielle_ : commentaires, structure du projet, outillage (linting, tests, mise en forme), élégance et simplicité du code, style fonctionnel, qualité de la livraison, accès et structure du GIT.
+* /12 _fonctionnalités optionnelles_, au moins trois catégories réalisées
+    * -4 par catégorie manquante, -2 par fonctionnalité mal réalisée,
+* /8 _qualité logicielle_ : voir ci dessous
 
-#### Bonus (réparties aux notes précédentes pour le calcul de la moyenne)
+Les critères d'évaluation, de la qualité logicielle incluent, par ordre d'importante à peu près décroissant :
 
-* /2 _bonus contributions_ : pour les utilisateurs qui ont posé des _issues_ ou des _pull requests_ pertinentes sur GitHub
+  1. la qualité de la livraison : README.md complété, pas de fichiers parasites rendus dans le zip, archive zip et pas autre chose
+  2. l'accès et l'utilisation de la forge : le projet doit être privé et les enseignants **doivent avoir les droits de REPORTER**. Les commits devront être réguliers (à la fin de chaque séance de travail).
+  3. les commentaires dans le code : le code fourni était commenté, on en attend autant de vos contributions
+  4. l'élégance et la simplicité du code : souvent, le style fonctionnel est une façon d'y parvenir, mais ceci inclus l'indentation et le respect de conventions de nommage
+  5. la structure du projet, son découpage en plusieurs fichiers .js : tout ne devrait pas être dans `vue.js`
+  6. l'outillage utilisé (eslint, prettier) : ce n'est pas obligatoire, mais les utiliser vous aideront beaucoup pour les points précédents.
 
-**Quelques rendus sélectionnés seront proposés à leurs auteurs à être rendus publics**
+#### Bonus et malus
+
+* Les utilisateurs qui ont posé des _issues_ ou des _pull requests_ pertinentes sur GitHub seront valorisés. Les fonctionnalités originales et bien réalisées pourront aussi être valorisées
+* Le partage de code entre projets sera sanctionné. 
+
